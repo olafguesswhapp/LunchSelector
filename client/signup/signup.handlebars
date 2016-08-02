@@ -1,0 +1,152 @@
+<h1>REGISTRIEREN</h1>
+
+<form role="form" method="POST" name="signupForm" action="signup">
+	
+	<label>Wie heisst Du: <input id="signupName" type="text" required name="signupName" size='50'>
+  </label><br>
+	<label>Deine Email: <input id="signupEmail" type="email" required name="signupEmail">
+	</label><br>
+	<label>Bitte ein Passwort eingeben: 
+		<input type="password" required id="signupPassword" name="signupPassword">
+	</label><br>
+  <label>Bitte das Passwort bestätigen: 
+  	<input type="password" required id="signupPassword2" name="signupPassword2" onchange="return checkForm(this);">
+  	</label><br>
+  <p id="FieldAltertPWUnconfirmed" style="display: none;">
+  	Warnung: Die Bestätigung des Passwortes stimmt nicht. Bitte bestätigen Sie dieses erneut</p><br>
+	<label>Für welche Stadt möchtest Du die Mittagsessen Deiner Lieblings-Restaurants täglich erhalten? <select id="signupCity" required name="signupCity">
+		  <option value="Düsseldorf" selected="">Düsseldorf</option>
+		  <option value="Köln">Köln</option></select>
+	</label><br>
+	<br>
+	<label><input id="signupIsRestaurant" type="checkbox" name="signupIsRestaurant">Betreibst Du auch ein Restaurant und möchtest die tägliche Mittagskarte anzeigen lassen?</label><br>
+	<label><input id="signupHasLunch" type="checkbox" name="signupHasLunch">Bietet das Restaurant eine täglich sich ändernde Mittagskarte an? </label><br>
+	<br>
+	<input type='submit' id='signupUserBtn' value='Jetzt registrieren' style="display: none" />
+
+	<div id='sectionRestaurant' style="display:block;">
+		<label>Wie heisst das Restaurant: <input id="signupRestaurantName" type="text" name="signupRestaurantName" size='50' required></label><br>
+		<label>Art der Küche: <input id="signupRestaurantType" type="text" name="signupRestaurantType" size="50"></label><br>
+		<label>Wann gibt es Mittagsessen - von: <input id="signupRestaurantStart" type="time" name="signupRestaurantStart" value="12:00"> bis: <input id="signupRestaurantEnd" type="time" name="signupRestaurantEnd" value="14:30"></label><br>
+		<br>
+		<label>Strasse und Hausnr.: <input id="signupRestaurantStreet" type="text" name="signupRestaurantStreet" size='50'></label><br>
+		<label>PLZ und Stadt: <input id="signupRestaurantPLZ" type="text" name="signupRestaurantPLZ" size='5'> <input id="signupRestaurantCity" type="text" name="signupRestaurantCity" size='30'></label><br>
+		<br>
+		
+		<label><input id="signupRestaurantDoesDeliver" type="checkbox" name="signupRestaurantDoesDeliver">Liefert Ihr Mittagsessen ausser Haus (auch wenn es von Dritten geliefert wird)? </label><br>
+		<div id='sectionDelivery' style="display:block;">
+			<label>Wer liefert ausser Haus? <select id="signupRestaurantDelivery" name="signupRestaurantDelivery">
+			  <option value="Intern" selected="">Intern</option>
+			  <option value="Foodora">Foodora</option>
+			  <option value="Deliveroo">Deliveroo</option>
+			  <option value="Lieferheld">Lieferheld</option>
+				  <option value="Andere">Andere</option></select>
+			</label><br>
+			<label id='sectionOtherDelivery' style="display: block;">Andere: <input id="signupRestaurantOtherDelivery" type="text" name="signupRestaurantOtherDelivery" size="50"></label><br>
+		</div><br>
+	<input type='submit' id='signupRestaurantBtn' value='Jetzt registrieren' />
+
+	</div>
+</form>
+
+
+<script type="text/javascript">
+	var signupIsRestaurant = document.getElementById('signupIsRestaurant');
+	var signupHasLunch = document.getElementById('signupHasLunch');
+	var sectionRestaurant = document.getElementById('sectionRestaurant');
+	var signupUserBtn = document.getElementById('signupUserBtn');
+	var signupRestaurantName = document.getElementById('signupRestaurantName');
+	var signupEmail = document.getElementById('signupEmail');
+	var sectionDelivery = document.getElementById('sectionDelivery');
+	var signupRestaurantDoesDeliver = document.getElementById('signupRestaurantDoesDeliver');
+	var sectionOtherDelivery = document.getElementById('sectionOtherDelivery');
+	var signupRestaurantDelivery = document.getElementById('signupRestaurantDelivery');
+
+	// INIT IN CASE JS ACTIVATED (IF NOT THAN SHOW ALL SECTIONS AS DEFINED ABOVE IN PURE HTML)
+	if (sectionRestaurant) {
+		sectionRestaurant.style.display = 'none';
+		signupUserBtn.style.display = 'block';
+		signupRestaurantName.required = false;
+	}
+
+	// EXPAND RESTAURANT-INPUT FORM IF USER HAS A RESTAURANT AND WANTS TO REGISTER IT
+	signupIsRestaurant.addEventListener('change',function() {
+    if (signupIsRestaurant.checked == true && signupHasLunch.checked == true){
+    	signupUserBtn.style.display = 'none';
+    	signupRestaurantName.required = true;
+    	sectionRestaurant.style.display = 'block';
+    } else {
+    	signupUserBtn.style.display = 'block';
+    	signupRestaurantName.required = false;
+    	sectionRestaurant.style.display = 'none';
+    }
+	});
+	signupHasLunch.addEventListener('change',function() {
+    if (signupIsRestaurant.checked == true && signupHasLunch.checked == true){
+    	signupUserBtn.style.display = 'none';
+    	signupRestaurantName.required = true;
+    	sectionRestaurant.style.display = 'block';
+    } else {
+    	signupUserBtn.style.display = 'block';
+    	signupRestaurantName.required = false;
+    	sectionRestaurant.style.display = 'none';
+    }
+	});
+
+	// EXPAND DELIVERY-INPUT FORM IF USER HAS A RESTAURANT AND WANTS TO REGISTER IT
+	if (sectionDelivery) {
+		sectionDelivery.style.display = 'none';
+	}
+	signupRestaurantDoesDeliver.addEventListener('change',function() {
+    if (signupRestaurantDoesDeliver.checked == true){
+    	sectionDelivery.style.display = 'block';
+    } else {
+    	sectionDelivery.style.display = 'none';
+    }
+	});
+
+	// EXPAND DELIVERY-OTHER-INPUT SECTION IF OPTION 'OTHER' WAS SELECTED
+	if (sectionOtherDelivery) {
+		sectionOtherDelivery.style.display = 'none';
+	}
+	signupRestaurantDelivery.addEventListener('change', function(){
+		if (signupRestaurantDelivery.value === 'Andere') {
+			sectionOtherDelivery.style.display = 'block';
+		} else {
+			sectionOtherDelivery.style.display = 'none';
+		}
+	});
+
+	// VERIFY THAT BOTH PASSWORD INPUTS ARE IDENTICAL
+	function checkForm(){
+    var signupPassword = document.getElementById('signupPassword');
+    var signupPassword2 = document.getElementById('signupPassword2');
+    var AlertPWUnconfirmed = document.getElementById('FieldAltertPWUnconfirmed');
+
+    if(!(signupPassword2.value === signupPassword.value)) {
+    AlertPWUnconfirmed.style.display = "block";
+    signupPassword2.value = "";
+    setTimeout((function() { signupPassword2.focus() }), 0);
+    } else {
+        AlertPWUnconfirmed.style.display = "none";
+    }
+	};
+
+	// VERIFY DURING INPUT IF EMAIL ALREADY EXISTS IN BACKEND-DB
+	signupEmail.addEventListener('change', function(event) {
+		var requestData = encodeURIComponent('signupEmail')+'='+encodeURIComponent(signupEmail.value);
+		var request = new XMLHttpRequest();
+	  request.open("POST", "signup/verify", true);
+	  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	  request.onload = function(ev) {
+	    if (request.status == 200) {
+	    	console.log(request.statusText);
+	      // requestResponse.innerHTML = 	request.statusText + ' ' + request.responseText;
+	    } else {
+	    	console.log(request.status + ' ' +  request.statusText);
+	      // requestResponse.innerHTML = "Error " + request.status + " occurred when trying to send your request.<br \/>";
+	    }
+	  };
+	  request.send(requestData);
+	}, false);
+</script>

@@ -1,0 +1,96 @@
+<h1>Das gibt es heute:</h1>
+
+<div style="width: 100%; margin: 0 0; text-align: center">
+	{{#todaysOffers}}
+	<div style="width: 280px; height: 150px; border-radius: 5px;border-width: 1px;border-color: grey;border-style: solid;padding: 10px;margin: 10px; text-align: left; display: inline-table;" value="Click" onclick="switchVisible{{@index}}();">
+		<div id="oben{{@index}}" style="display: inline-table">
+			<span>{{timeOpen}} - {{timeClose}} {{#restaurantStatus timeOpen timeClose}}{{/restaurantStatus}}</span>
+			<h3 style='margin-top: 2px;'>{{name}}</h3>
+			{{#offers}}
+			<div style="width: 85%; display: inline-block">{{dish}}</div>
+			<div style="width: 15%; display: inline-block">{{price}}</div>
+			{{/offers}}
+		</div>
+		<div id="unten{{@index}}" style="display: none">
+			<span>{{timeOpen}} - {{timeClose}}</span>
+			<h3 style='margin-top: 2px;'>{{name}}</h3>
+				<div>{{street}}</div>
+				<div>{{PLZ}} {{city}}</div>
+				<div>{{tefl}}</div>
+				<div>{{site}}</div>
+				<div>{{email}}</div>
+		</div>
+		<script type="text/javascript">
+			function switchVisible{{@index}}() {
+	      if (document.getElementById('oben{{@index}}')) {
+	        if (document.getElementById('oben{{@index}}').style.display == 'none') {
+	          document.getElementById('oben{{@index}}').style.display = 'inline-table';
+	          document.getElementById('unten{{@index}}').style.display = 'none';
+	        } else {
+	          document.getElementById('oben{{@index}}').style.display = 'none';
+	          document.getElementById('unten{{@index}}').style.display = 'inline-table';
+	        }
+	      }
+	    }
+		</script>
+	</div>
+	{{/todaysOffers}}
+</div>
+
+<h3>Fehlt Dir ein Restaurant das Du hier gerne aufgeführt haben möchtest? <a href="http://localhost:3000/offers/select">Hast Du schon in der Auswahl nach dem Restaurant gesucht?</a> Wenn Du es dort nicht gefunden hast bitte trag hier Namen und andere Informationen ein - wir kümmern uns darum!</h3>
+
+<form role="form" method="POST" name="requestData" action="supply/request2">
+	<input type="hidden" name="userId" value="{{userId}}">
+	<input type="hidden" name="JWT" value="{{JWT}}">
+  <label>Restaurant Name (ggfs. Adresse, etc): 
+  	<input id="requestInfo" type="text" name="requestInfo" size='100'>
+  </label><br>
+  <div id='sectionRequestCheckboxes' style="display: block">
+  	<label><input id="requestUpdate" type="checkbox" name="requestUpdate" >Sollen wir Dich per Email informieren sobald das Restaurant sich bei uns angemeldet hat?</label><br>
+  	<label><input id="requestPersonal" type="checkbox" name="requestPersonal">Der Restaurant-Inhaber darf meinen Namen erfahren? (Email wird allerdings nicht weitergeben)</label>	
+  </div>
+  <br>
+  <input type='submit' id='requestBtn' value='Anfrage absenden'/>
+</form>
+<div id='requestResponse'></div>
+
+<script type="text/javascript">
+	var requestResponse = document.getElementById('requestResponse');
+	var requestInfo = document.getElementById('requestInfo');
+	var requestUpdate = document.getElementById('requestUpdate');
+	var requestPersonal = document.getElementById('requestPersonal');
+	var form = document.forms.namedItem("requestData");
+	var sectionRequestCheckboxes = document.getElementById('sectionRequestCheckboxes');
+
+	// DISPLAY CHECKBOX OF WISH SECTION ONLY IF RESTAURANT INFO HAS BEEN INPUT
+	if (sectionRequestCheckboxes) {
+		sectionRequestCheckboxes.style.display = 'none';
+	}
+	requestInfo.addEventListener('change', function(){
+		if (sectionRequestCheckboxes.style.display === 'none') {
+			sectionRequestCheckboxes.style.display = 'block';
+		}
+	});
+	// Verify Email is UNIQUE via AJAX with Server 
+	form.addEventListener('submit', function(event) {
+		var requestData = 
+			encodeURIComponent('requestInfo')+'='+encodeURIComponent(requestInfo.value)+ '\&' +
+			encodeURIComponent('requestUpdate')+'='+encodeURIComponent(requestUpdate.checked)+'\&'+
+			encodeURIComponent('requestPersonal')+'='+encodeURIComponent(requestPersonal.checked);
+		var request = new XMLHttpRequest();
+	  request.open("POST", "supply/request", true);
+	  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	  request.onload = function(ev) {
+	    if (request.status == 200) {
+	      requestResponse.innerHTML = 	request.statusText + ' ' + request.responseText;
+	    } else {
+	      requestResponse.innerHTML = "Error " + request.status + " occurred when trying to send your request.<br \/>";
+	    }
+	  };
+	  request.send(requestData);
+	  event.preventDefault();
+	  requestInfo.value = '';
+		requestUpdate.checked = false;
+		requestPersonal.checked = false;
+	}, false);
+</script>

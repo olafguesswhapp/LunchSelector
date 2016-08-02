@@ -1,0 +1,29 @@
+# Dependency directory
+node_modules
+
+#Credentials
+credentials.js
+
+# Debug log from npm
+npm-debug.log
+
+# Ignore Folders
+public/icons/
+public/images/
+
+# Backupfiles
+*~
+.DS_Store
+.com.apple.timemachine.supported
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# node-waf configuration
+.lock-wscript

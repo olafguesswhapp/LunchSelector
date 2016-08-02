@@ -1,0 +1,28 @@
+{
+  "name": "LunchSelector",
+  "version": "1.0.0",
+  "description": "Application to aggregate daily lunch offers from favorite Restaurants",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/olafguesswhapp/LunchSelector.git"
+  },
+  "author": "Olaf Peters",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/olafguesswhapp/LunchSelector/issues"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "express-handlebars": "^3.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.10.0"
+  }
+}
