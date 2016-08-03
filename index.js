@@ -6,10 +6,17 @@ var bodyParser = require('body-parser');
 var exphbs  = require('express-handlebars')
 	.create({ defaultLayout:'main',
 		helpers: {
-      restaurantStatus: function(timeOpen, timeClose, options) {
+      restaurantStatus: function(timeOpen, timeClose) {
         var d = new Date();
         var currentTime = d.getHours() + ':' + d.getMinutes();
         if (timeOpen<currentTime && currentTime<timeClose) {return 'open';} else {return 'closed';}
+      },
+      checkCity: function(selectedCity, dataSetCity) {
+        if (selectedCity === dataSetCity) {
+          return 'inline-table';
+        } else {
+          return 'none';
+        }
       }
     }
 });	

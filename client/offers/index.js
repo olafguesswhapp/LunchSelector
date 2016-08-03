@@ -16,6 +16,8 @@ router.get('/select', function (req, res) {
 module.exports = router;
 
 const useroffer = {
+	'selectedCity':	'Düsseldorf',
+	'availableCities': ['Düsseldorf', 'Köln', 'Wuppertal'],
 	'todaysOffers': [
 	{	'name':		'Restaurant AAA',
 		'street':	'AAA Str. 111',
@@ -34,7 +36,7 @@ const useroffer = {
 	{	'name':		'Restaurant BBB',
 		'street':	'BBB Str. 222',
 		'PLZ': 		'40222',
-		'city': 	'Düsseldorf',
+		'city': 	'Wuppertal',
 		'tefl': 	'+49123123222', 
 		'site': 	'www.bbb.de',
 		'email': 	'bbb.bbb.de',
@@ -62,7 +64,7 @@ const useroffer = {
 	{	'name':		'Restaurant BBB',
 		'street':	'BBB Str. 222',
 		'PLZ': 		'40222',
-		'city': 	'Düsseldorf',
+		'city': 	'Köln',
 		'tefl': 	'+49123123444', 
 		'site': 	'www.ddd.de',
 		'email': 	'ddd.ddd.de',
@@ -76,7 +78,7 @@ const useroffer = {
 	{	'name':		'Restaurant CCC',
 		'street':	'CCC Str. 333',
 		'PLZ': 		'40233',
-		'city': 	'Düsseldorf',
+		'city': 	'Köln',
 		'tefl': 	'+49123123555', 
 		'site': 	'www.eee.de',
 		'email': 	'eee.eee.de',

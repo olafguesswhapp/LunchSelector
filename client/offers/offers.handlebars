@@ -1,8 +1,26 @@
-<h1>Das gibt es heute:</h1>
+<h1 style="display: inline-block">Das gibt es heute:</h1>
+<ul style="list-style-type: none; display: inline-block; vertical-align: middle">
+	{{#each availableCities}}
+	<li style="float: left; padding: 5px;" onclick="switchFilter('{{this}}')"> {{this}} </li>
+	{{/each}}
+</ul>
+<script type="text/javascript">
+	function switchFilter(clickedCity){
+		var todaysOffers = [{{#each todaysOffers}}'{{city}}'{{#if @last}}{{else}}, {{/if}}{{/each}}];
+		var offerChilds = document.getElementById('offersParent').children;
+		[].forEach.call(offerChilds, function(child, index){
+			if (todaysOffers[index] === clickedCity) {
+				child.style.display = 'inline-table';
+			} else {
+				child.style.display = 'none';
+			}
+		});
+	};
+</script>
 
-<div style="width: 100%; margin: 0 0; text-align: center">
+<div id='offersParent' style="width: 100%; margin: 0 0; text-align: center">
 	{{#todaysOffers}}
-	<div style="width: 280px; height: 150px; border-radius: 5px;border-width: 1px;border-color: grey;border-style: solid;padding: 10px;margin: 10px; text-align: left; display: inline-table;" value="Click" onclick="switchVisible{{@index}}();">
+	<div style="width: 280px; height: 150px; border-radius: 5px;border-width: 1px;border-color: grey;border-style: solid;padding: 10px;margin: 10px; text-align: left; display: {{#checkCity ../selectedCity city}}{{/checkCity}};" onclick="switchVisible{{@index}}();">
 		<div id="oben{{@index}}" style="display: inline-table">
 			<span>{{timeOpen}} - {{timeClose}} {{#restaurantStatus timeOpen timeClose}}{{/restaurantStatus}}</span>
 			<h3 style='margin-top: 2px;'>{{name}}</h3>
