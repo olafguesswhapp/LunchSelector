@@ -16,10 +16,11 @@ router.get('/select', function (req, res) {
 module.exports = router;
 
 const useroffer = {
+	'userName': 'olafguesswhapp',
 	'selectedCity':	'Düsseldorf',
 	'availableCities': ['Düsseldorf', 'Köln', 'Wuppertal'],
 	'todaysOffers': [
-	{	'name':		'Restaurant AAA',
+	{	'supplierName':		'Restaurant AAA',
 		'street':	'AAA Str. 111',
 		'PLZ': 		'40211',
 		'city': 	'Düsseldorf',
@@ -33,7 +34,7 @@ const useroffer = {
 			{'dish': 'Salat AAA', 'price': 3.11 },
 			{'dish': 'Nudeln AAA', 'price': 4.11 },
 			{'dish': 'Steak AAA', 'price': 5.11 }] },
-	{	'name':		'Restaurant BBB',
+	{	'supplierName':		'Restaurant BBB',
 		'street':	'BBB Str. 222',
 		'PLZ': 		'40222',
 		'city': 	'Wuppertal',
@@ -47,7 +48,7 @@ const useroffer = {
 			{'dish': 'Salat BBB', 'price': 3.22 },
 			{'dish': 'Nudeln BBB', 'price': 4.22 },
 			{'dish': 'Steak BBB', 'price': 5.22 }] },
-	{	'name':		'Restaurant CCC',
+	{	'supplierName':		'Restaurant CCC',
 		'street':	'CCC Str. 333',
 		'PLZ': 		'40233',
 		'city': 	'Düsseldorf',
@@ -61,7 +62,7 @@ const useroffer = {
 			{'dish': 'Salat CCC', 'price': 3.33 },
 			{'dish': 'Nudeln CCC', 'price': 4.33 },
 			{'dish': 'Steak CCC', 'price': 5.33 }] },
-	{	'name':		'Restaurant BBB',
+	{	'supplierName':		'Restaurant BBB',
 		'street':	'BBB Str. 222',
 		'PLZ': 		'40222',
 		'city': 	'Köln',
@@ -75,7 +76,7 @@ const useroffer = {
 			{'dish': 'Salat BBB', 'price': 3.22 },
 			{'dish': 'Nudeln BBB', 'price': 4.22 },
 			{'dish': 'Steak BBB', 'price': 5.22 }] },
-	{	'name':		'Restaurant CCC',
+	{	'supplierName':		'Restaurant CCC',
 		'street':	'CCC Str. 333',
 		'PLZ': 		'40233',
 		'city': 	'Köln',

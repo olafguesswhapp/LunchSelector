@@ -3,8 +3,18 @@
 	{{#each availableCities}}
 	<li style="float: left; padding: 5px;" onclick="switchFilter('{{this}}')"> {{this}} </li>
 	{{/each}}
+	<li style="float: left; padding: 5px;"></li>
+	<li style="float: left; padding: 5px;" onclick="shareWithFriends()">Freund einladen</li>
 </ul>
+
 <script type="text/javascript">
+
+	function setCity() {
+		console.log('start with this city {{selectedCity}}');
+		window.selectedCity = '{{selectedCity}}';
+	};
+	window.onload=setCity;
+	
 	function switchFilter(clickedCity){
 		var todaysOffers = [{{#each todaysOffers}}'{{city}}'{{#if @last}}{{else}}, {{/if}}{{/each}}];
 		var offerChilds = document.getElementById('offersParent').children;
@@ -15,6 +25,26 @@
 				child.style.display = 'none';
 			}
 		});
+		window.selectedCity = clickedCity;
+	};
+	function shareWithFriends(){
+		var subject = "{{userName}}'s Vorschläge für die Mittagspause";
+		var body = 'Hi, hier die heutigen Mittagsgerichte meiner Lieblingsrestaurants in ' + window.selectedCity + ':\r\n\r\n';
+		{{#todaysOffers}}
+			if (window.selectedCity === '{{city}}'){
+				body += '{{supplierName}}\r\n';
+				body +='{{timeOpen}} - {{timeClose}} {{#restaurantStatus timeOpen timeClose}}{{/restaurantStatus}}\r\n';
+				{{#offers}}
+					body += '{{dish}}\t\t{{price}}\r\n';
+				{{/offers}}
+				body += '\r\n';
+			}
+		{{/todaysOffers}}
+		var uri = "mailto:?subject=";
+    uri += encodeURIComponent(subject);
+    uri += "&body=";
+    uri += encodeURIComponent(body);
+    var helpSend = window.open(uri, '_self');
 	};
 </script>
 
@@ -23,7 +53,7 @@
 	<div style="width: 280px; height: 150px; border-radius: 5px;border-width: 1px;border-color: grey;border-style: solid;padding: 10px;margin: 10px; text-align: left; display: {{#checkCity ../selectedCity city}}{{/checkCity}};" onclick="switchVisible{{@index}}();">
 		<div id="oben{{@index}}" style="display: inline-table">
 			<span>{{timeOpen}} - {{timeClose}} {{#restaurantStatus timeOpen timeClose}}{{/restaurantStatus}}</span>
-			<h3 style='margin-top: 2px;'>{{name}}</h3>
+			<h3 style='margin-top: 2px;'>{{supplierName}}</h3>
 			{{#offers}}
 			<div style="width: 85%; display: inline-block">{{dish}}</div>
 			<div style="width: 15%; display: inline-block">{{price}}</div>
@@ -31,7 +61,7 @@
 		</div>
 		<div id="unten{{@index}}" style="display: none">
 			<span>{{timeOpen}} - {{timeClose}}</span>
-			<h3 style='margin-top: 2px;'>{{name}}</h3>
+			<h3 style='margin-top: 2px;'>{{supplierName}}</h3>
 				<div>{{street}}</div>
 				<div>{{PLZ}} {{city}}</div>
 				<div>{{tefl}}</div>
