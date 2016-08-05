@@ -1,3 +1,50 @@
-<h1>Übernehme eines dieser Restaurants in Deine tägliche Preferred Liste</h1>
+<h1>Übernehme eines dieser Restaurants aus {{selectedCity}} in Deine tägliche Preferred Liste</h1>
 <br>
+{{#suppliers}}
+	<div>
+		<div style='float: left'>
+			<span>{{supplierName}}, Italian Food, {{street}}, <a target="_blank" href="http://{{site}}">{{site}}</a>  <span onmouseover='openOffers{{@index}}()' onmouseout='closeOffers{{@index}}()'>&#9776;</span></span>
+		</div>
+		<div style='float: right;'>
+			<span style='float: right; background-color: black;color: white;width: 30px;text-align: center;border-radius: 6px;' onclick='appendSupplier({{supplierId}})'> + </span>	
+		</div>
+		<div id='offer{{@index}}' style='width: 200px; display:none; position:absolute; background-color: black; color: white; padding: 8px;'><h4>{{supplierName}}</h4>{{#offers}}<span style='float: left;'>{{dish}}</span><span style='float: right;'>{{price}}</span><br><br>{{/offers}}</div>
+		
+	</div>
+	<script type="text/javascript">
+		function openOffers{{@index}}(){
+			var open = document.getElementById('offer{{@index}}');
+			open.style.display = 'block';
+		};
+		function closeOffers{{@index}}(){
+			var close = document.getElementById('offer{{@index}}');
+			close.style.display = 'none';
+		};
+	</script>
+<div style="clear:both;"></div><br>
+{{/suppliers}}
+
 <h1>Bitte erfasse hier die Daten zum Restaurant welches Du Dir in unserer Liste erwünscht</h1>
+
+<script type='text/javascript'>
+	function appendSupplier(supplierId){
+		console.log(supplierId);
+		
+		var requestData = encodeURIComponent('supplierId')+'='+encodeURIComponent(supplierId);
+		var request = new XMLHttpRequest();
+	  request.open("POST", "select/append", true);
+	  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	  request.onload = function() {
+	    if (request.status == 200) {
+	    	console.log(request.statusText);
+	      // requestResponse.innerHTML = 	request.statusText + ' ' + request.responseText;
+	    } else {
+	    	console.log(request.status + ' ' +  request.statusText);
+	      // requestResponse.innerHTML = "Error " + request.status + " occurred when trying to send your request.<br \/>";
+	    }
+	  };
+	  request.send(requestData);
+
+
+	};
+</script>

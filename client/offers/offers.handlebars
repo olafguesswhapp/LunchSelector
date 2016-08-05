@@ -16,10 +16,10 @@
 	window.onload=setCity;
 	
 	function switchFilter(clickedCity){
-		var todaysOffers = [{{#each todaysOffers}}'{{city}}'{{#if @last}}{{else}}, {{/if}}{{/each}}];
+		var suppliers = [{{#each suppliers}}'{{city}}'{{#if @last}}{{else}}, {{/if}}{{/each}}];
 		var offerChilds = document.getElementById('offersParent').children;
 		[].forEach.call(offerChilds, function(child, index){
-			if (todaysOffers[index] === clickedCity) {
+			if (suppliers[index] === clickedCity) {
 				child.style.display = 'inline-table';
 			} else {
 				child.style.display = 'none';
@@ -31,7 +31,7 @@
 		var subject = "{{userName}}'s Vorschläge für die Mittagspause";
 		var body = 'Hi, hier die heutigen Mittagsgerichte meiner Lieblingsrestaurants in ' + window.selectedCity + ':\r\n\r\n';
 		body += 'Visit us at http://localhost:3000 \r\n\r\n';
-		{{#todaysOffers}}
+		{{#suppliers}}
 			if (window.selectedCity === '{{city}}'){
 				body += '{{supplierName}}\r\n';
 				body +='{{timeOpen}} - {{timeClose}} {{#restaurantStatus timeOpen timeClose}}{{/restaurantStatus}}\r\n';
@@ -40,7 +40,7 @@
 				{{/offers}}
 				body += '\r\n';
 			}
-		{{/todaysOffers}}
+		{{/suppliers}}
 		var uri = "mailto:?subject=";
     uri += encodeURIComponent(subject);
     uri += "&body=";
@@ -50,7 +50,7 @@
 </script>
 
 <div id='offersParent' style="width: 100%; margin: 0 0; text-align: center">
-	{{#todaysOffers}}
+	{{#suppliers}}
 	<div style="width: 280px; height: 150px; border-radius: 5px;border-width: 1px;border-color: grey;border-style: solid;padding: 10px;margin: 10px; text-align: left; display: {{#checkCity ../selectedCity city}}{{/checkCity}};" onclick="switchVisible{{@index}}();">
 		<div id="oben{{@index}}" style="display: inline-table">
 			<span>{{timeOpen}} - {{timeClose}} {{#restaurantStatus timeOpen timeClose}}{{/restaurantStatus}}</span>
@@ -83,7 +83,7 @@
 	    }
 		</script>
 	</div>
-	{{/todaysOffers}}
+	{{/suppliers}}
 </div>
 
 <h3>Fehlt Dir ein Restaurant das Du hier gerne aufgeführt haben möchtest? <a href="http://localhost:3000/offers/select">Hast Du schon in der Auswahl nach dem Restaurant gesucht?</a> Wenn Du es dort nicht gefunden hast bitte trag hier Namen und andere Informationen ein - wir kümmern uns darum!</h3>

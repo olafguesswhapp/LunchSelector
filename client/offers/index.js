@@ -3,24 +3,13 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/', function (req, res) {
-		console.log('*** client/offfers/index.js route -offers- ');
-    res.render('../client/offers/offers', useroffer);
-});
-
-router.get('/select', function (req, res) {
-		console.log('*** client/offfers/index.js route -select- ');
-    res.render('../client/offers/select');
-});
-
-module.exports = router;
-
 const useroffer = {
 	'userName': 'olafguesswhapp',
 	'selectedCity':	'Düsseldorf',
 	'availableCities': ['Düsseldorf', 'Köln', 'Wuppertal'],
-	'todaysOffers': [
+	'suppliers': [
 	{	'supplierName':		'Restaurant AAA',
+		'supplierId': '1',
 		'street':	'AAA Str. 111',
 		'PLZ': 		'40211',
 		'city': 	'Düsseldorf',
@@ -35,6 +24,7 @@ const useroffer = {
 			{'dish': 'Nudeln AAA', 'price': 4.11 },
 			{'dish': 'Steak AAA', 'price': 5.11 }] },
 	{	'supplierName':		'Restaurant BBB',
+		'supplierId': '2',
 		'street':	'BBB Str. 222',
 		'PLZ': 		'40222',
 		'city': 	'Wuppertal',
@@ -49,6 +39,7 @@ const useroffer = {
 			{'dish': 'Nudeln BBB', 'price': 4.22 },
 			{'dish': 'Steak BBB', 'price': 5.22 }] },
 	{	'supplierName':		'Restaurant CCC',
+		'supplierId': '3',
 		'street':	'CCC Str. 333',
 		'PLZ': 		'40233',
 		'city': 	'Düsseldorf',
@@ -63,6 +54,7 @@ const useroffer = {
 			{'dish': 'Nudeln CCC', 'price': 4.33 },
 			{'dish': 'Steak CCC', 'price': 5.33 }] },
 	{	'supplierName':		'Restaurant BBB',
+		'supplierId': '4',
 		'street':	'BBB Str. 222',
 		'PLZ': 		'40222',
 		'city': 	'Köln',
@@ -77,6 +69,7 @@ const useroffer = {
 			{'dish': 'Nudeln BBB', 'price': 4.22 },
 			{'dish': 'Steak BBB', 'price': 5.22 }] },
 	{	'supplierName':		'Restaurant CCC',
+		'supplierId': '5',
 		'street':	'CCC Str. 333',
 		'PLZ': 		'40233',
 		'city': 	'Köln',
@@ -91,3 +84,30 @@ const useroffer = {
 			{'dish': 'Nudeln CCC', 'price': 4.33 },
 			{'dish': 'Steak CCC', 'price': 5.33 }] }
 ]};
+
+router.get('/', function (req, res) {
+		console.log('*** client/offfers/index.js route -offers- ');
+    res.render('../client/offers/offers', useroffer);
+});
+
+router.post('/select/append', function(req, res) {
+	console.log('*** client/offfers/index.js route -select/append- ');
+	console.log(req.body);
+});
+
+router.get('/select', function (req, res) {
+	console.log('*** client/offfers/index.js route -select- ');
+	var selectedCity = 'Düsseldorf'; // CHANGE from POST request
+	var supplierSelection = {
+		userName: useroffer.userName, // CHANGE from JWT
+		selectedCity: selectedCity, // CHANGE from POST request
+		suppliers: useroffer.suppliers.filter(function(offer){
+			return (offer.city === selectedCity);
+		})
+	};
+	console.log(supplierSelection);
+  res.render('../client/offers/select', supplierSelection);
+});
+
+
+module.exports = router;
