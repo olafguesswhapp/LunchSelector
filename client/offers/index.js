@@ -10,7 +10,7 @@ const useroffer = {
 	'suppliers': [
 	{	'supplierName':		'Restaurant AAA',
 		'supplierId': '1',
-		'preferredSupplier': false,
+		'preferredSupplier': true,
 		'street':	'AAA Str. 111',
 		'PLZ': 		'40211',
 		'city': 	'Düsseldorf',
@@ -92,21 +92,30 @@ const useroffer = {
 
 router.get('/', function (req, res) {
 		console.log('*** client/offfers/index.js route - offers/ - ');
-    res.render('../client/offers/offers', useroffer);
+		var helpArray = [];
+		var supplierOffers = {
+			userName: useroffer.userName, // CHANGE from JWT
+			selectedCity: useroffer.selectedCity, // CHANGE from POST request
+			suppliers: useroffer.suppliers.filter(function(offer){
+				if (offer.preferredSupplier) {helpArray.push(offer.city)}
+				return (offer.preferredSupplier);
+			})
+		};
+		supplierOffers.availableCities = helpArray.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
+    res.render('../client/offers/offers', supplierOffers);
 });
 
 router.post('/select/append', function(req, res) {
 	console.log('*** client/offfers/index.js route - offers/select/append - ');
-	console.log(req.body);
+	var indexToChange = useroffer.suppliers.findIndex(function(supplier) { return supplier.supplierId === req.body.supplierId})
+	console.log('gefunden ' + indexToChange + ' ' + useroffer.suppliers[indexToChange].supplierName);
+	useroffer.suppliers[indexToChange].preferredSupplier = true;
 	res.json();
 });
 
 router.get('/select', function (req, res) {
 	console.log('*** client/offfers/index.js route - offers/select - ');
-	selectInCity(req, res);
-});
-
-function selectInCity (req, res) {
+	var helpArray = [];
 	if (req.query.selectedCity){
 		useroffer.selectedCity = req.query.selectedCity;
 		console.log('Changed selectedCity to ' + req.query.selectedCity);
@@ -114,12 +123,12 @@ function selectInCity (req, res) {
 	var supplierSelection = {
 		userName: useroffer.userName, // CHANGE from JWT
 		selectedCity: useroffer.selectedCity, // CHANGE from POST request
-		availableCities: useroffer.availableCities, // CHANGE from POST request
+		availableCities: useroffer.availableCities,
 		suppliers: useroffer.suppliers.filter(function(offer){
-			return (offer.city === useroffer.selectedCity);
+			return (offer.city === useroffer.selectedCity && offer.preferredSupplier == false);
 		})
 	};
   res.render('../client/offers/select', supplierSelection);
-};
+});
 
 module.exports = router;
