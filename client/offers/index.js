@@ -10,6 +10,7 @@ const useroffer = {
 	'suppliers': [
 	{	'supplierName':		'Restaurant AAA',
 		'supplierId': '1',
+		'preferredSupplier': false,
 		'street':	'AAA Str. 111',
 		'PLZ': 		'40211',
 		'city': 	'Düsseldorf',
@@ -25,9 +26,10 @@ const useroffer = {
 			{'dish': 'Steak AAA', 'price': 5.11 }] },
 	{	'supplierName':		'Restaurant BBB',
 		'supplierId': '2',
+		'preferredSupplier': false,
 		'street':	'BBB Str. 222',
 		'PLZ': 		'40222',
-		'city': 	'Wuppertal',
+		'city': 	'Düsseldorf',
 		'tefl': 	'+49123123222', 
 		'site': 	'www.bbb.de',
 		'email': 	'bbb.bbb.de',
@@ -40,6 +42,7 @@ const useroffer = {
 			{'dish': 'Steak BBB', 'price': 5.22 }] },
 	{	'supplierName':		'Restaurant CCC',
 		'supplierId': '3',
+		'preferredSupplier': false,
 		'street':	'CCC Str. 333',
 		'PLZ': 		'40233',
 		'city': 	'Düsseldorf',
@@ -55,6 +58,7 @@ const useroffer = {
 			{'dish': 'Steak CCC', 'price': 5.33 }] },
 	{	'supplierName':		'Restaurant BBB',
 		'supplierId': '4',
+		'preferredSupplier': false,
 		'street':	'BBB Str. 222',
 		'PLZ': 		'40222',
 		'city': 	'Köln',
@@ -70,6 +74,7 @@ const useroffer = {
 			{'dish': 'Steak BBB', 'price': 5.22 }] },
 	{	'supplierName':		'Restaurant CCC',
 		'supplierId': '5',
+		'preferredSupplier': false,
 		'street':	'CCC Str. 333',
 		'PLZ': 		'40233',
 		'city': 	'Köln',
@@ -93,6 +98,7 @@ router.get('/', function (req, res) {
 router.post('/select/append', function(req, res) {
 	console.log('*** client/offfers/index.js route -select/append- ');
 	console.log(req.body);
+	res.json();
 });
 
 router.get('/select', function (req, res) {
