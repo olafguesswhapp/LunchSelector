@@ -11,11 +11,11 @@ var exphbs  = require('express-handlebars')
         var currentTime = d.getHours() + ':' + d.getMinutes();
         if (timeOpen<currentTime && currentTime<timeClose) {return 'open';} else {return 'closed';}
       },
-      checkCity: function(selectedCity, dataSetCity) {
+      checkCity: function(selectedCity, dataSetCity, ifTrue, ifFalse) {
         if (selectedCity === dataSetCity) {
-          return 'inline-table';
+          return ifTrue;
         } else {
-          return 'none';
+          return ifFalse;
         }
       }
     }

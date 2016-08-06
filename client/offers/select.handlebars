@@ -1,5 +1,14 @@
 <h1>Übernehme eines dieser Restaurants aus {{selectedCity}} in Deine tägliche Preferred Liste</h1>
-<br>
+<form action='/offers/select' method='GET'> {{!--  target="_blank"  --}}
+	<label>In einer anderen Stadt nach Lieblingsrestaurant suchen? 
+		<select id="selectedCity" required name="selectedCity" onchange='this.form.submit();'>
+		  {{#each availableCities}}
+		  <option value='{{this}}' {{#checkCity ../selectedCity this 'selected' ''}}{{/checkCity}}>{{this}}</option>
+		  {{/each}}
+	  </select>
+	</label>
+</form>
+<br><br>
 {{#suppliers}}
 	<div id='supplier{{supplierId}}'>
 		<div style='float: left'>
@@ -23,9 +32,15 @@
 	</div>
 {{/suppliers}}
 
-<h1>Bitte erfasse hier die Daten zum Restaurant welches Du Dir in unserer Liste erwünscht</h1>
+{{> requestSupplier}}
 
 <script type='text/javascript'>
+
+	function changeCity(optionIndex){
+		console.log('Option selected is ' + optionIndex);
+		
+	};
+
 	function appendSupplier(supplierId){
 		console.log(supplierId);
 		

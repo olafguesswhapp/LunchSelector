@@ -6,7 +6,7 @@ var router = express.Router();
 const useroffer = {
 	'userName': 'olafguesswhapp',
 	'selectedCity':	'Düsseldorf',
-	'availableCities': ['Düsseldorf', 'Köln', 'Wuppertal'],
+	'availableCities': ['Düsseldorf', 'Köln'],
 	'suppliers': [
 	{	'supplierName':		'Restaurant AAA',
 		'supplierId': '1',
@@ -91,29 +91,35 @@ const useroffer = {
 ]};
 
 router.get('/', function (req, res) {
-		console.log('*** client/offfers/index.js route -offers- ');
+		console.log('*** client/offfers/index.js route - offers/ - ');
     res.render('../client/offers/offers', useroffer);
 });
 
 router.post('/select/append', function(req, res) {
-	console.log('*** client/offfers/index.js route -select/append- ');
+	console.log('*** client/offfers/index.js route - offers/select/append - ');
 	console.log(req.body);
 	res.json();
 });
 
 router.get('/select', function (req, res) {
-	console.log('*** client/offfers/index.js route -select- ');
-	var selectedCity = 'Düsseldorf'; // CHANGE from POST request
-	var supplierSelection = {
-		userName: useroffer.userName, // CHANGE from JWT
-		selectedCity: selectedCity, // CHANGE from POST request
-		suppliers: useroffer.suppliers.filter(function(offer){
-			return (offer.city === selectedCity);
-		})
-	};
-	console.log(supplierSelection);
-  res.render('../client/offers/select', supplierSelection);
+	console.log('*** client/offfers/index.js route - offers/select - ');
+	selectInCity(req, res);
 });
 
+function selectInCity (req, res) {
+	if (req.query.selectedCity){
+		useroffer.selectedCity = req.query.selectedCity;
+		console.log('Changed selectedCity to ' + req.query.selectedCity);
+	}
+	var supplierSelection = {
+		userName: useroffer.userName, // CHANGE from JWT
+		selectedCity: useroffer.selectedCity, // CHANGE from POST request
+		availableCities: useroffer.availableCities, // CHANGE from POST request
+		suppliers: useroffer.suppliers.filter(function(offer){
+			return (offer.city === useroffer.selectedCity);
+		})
+	};
+  res.render('../client/offers/select', supplierSelection);
+};
 
 module.exports = router;

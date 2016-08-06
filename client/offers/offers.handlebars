@@ -51,7 +51,7 @@
 
 <div id='offersParent' style="width: 100%; margin: 0 0; text-align: center">
 	{{#suppliers}}
-	<div style="width: 280px; height: 150px; border-radius: 5px;border-width: 1px;border-color: grey;border-style: solid;padding: 10px;margin: 10px; text-align: left; display: {{#checkCity ../selectedCity city}}{{/checkCity}};" onclick="switchVisible{{@index}}();">
+	<div style="width: 280px; height: 150px; border-radius: 5px;border-width: 1px;border-color: grey;border-style: solid;padding: 10px;margin: 10px; text-align: left; display: {{#checkCity ../selectedCity city 'inline-table' 'none'}}{{/checkCity}};" onclick="switchVisible{{@index}}();">
 		<div id="oben{{@index}}" style="display: inline-table">
 			<span>{{timeOpen}} - {{timeClose}} {{#restaurantStatus timeOpen timeClose}}{{/restaurantStatus}}</span>
 			<h3 style='margin-top: 2px;'>{{supplierName}}</h3>
@@ -86,60 +86,4 @@
 	{{/suppliers}}
 </div>
 
-<h3>Fehlt Dir ein Restaurant das Du hier gerne aufgeführt haben möchtest? <a href="http://localhost:3000/offers/select">Hast Du schon in der Auswahl nach dem Restaurant gesucht?</a> Wenn Du es dort nicht gefunden hast bitte trag hier Namen und andere Informationen ein - wir kümmern uns darum!</h3>
-
-<form role="form" method="POST" name="requestData" action="supply/request2">
-	<input type="hidden" name="userId" value="{{userId}}">
-	<input type="hidden" name="JWT" value="{{JWT}}">
-  <label>Restaurant Name (ggfs. Adresse, etc): 
-  	<input id="requestInfo" type="text" name="requestInfo" size='100'>
-  </label><br>
-  <div id='sectionRequestCheckboxes' style="display: block">
-  	<label><input id="requestUpdate" type="checkbox" name="requestUpdate" >Sollen wir Dich per Email informieren sobald das Restaurant sich bei uns angemeldet hat?</label><br>
-  	<label><input id="requestPersonal" type="checkbox" name="requestPersonal">Der Restaurant-Inhaber darf meinen Namen erfahren? (Email wird allerdings nicht weitergeben)</label>	
-  </div>
-  <br>
-  <input type='submit' id='requestBtn' value='Anfrage absenden'/>
-</form>
-<div id='requestResponse'></div>
-
-<script type="text/javascript">
-	var requestResponse = document.getElementById('requestResponse');
-	var requestInfo = document.getElementById('requestInfo');
-	var requestUpdate = document.getElementById('requestUpdate');
-	var requestPersonal = document.getElementById('requestPersonal');
-	var form = document.forms.namedItem("requestData");
-	var sectionRequestCheckboxes = document.getElementById('sectionRequestCheckboxes');
-
-	// DISPLAY CHECKBOX OF WISH SECTION ONLY IF RESTAURANT INFO HAS BEEN INPUT
-	if (sectionRequestCheckboxes) {
-		sectionRequestCheckboxes.style.display = 'none';
-	}
-	requestInfo.addEventListener('change', function(){
-		if (sectionRequestCheckboxes.style.display === 'none') {
-			sectionRequestCheckboxes.style.display = 'block';
-		}
-	});
-	// Verify Email is UNIQUE via AJAX with Server 
-	form.addEventListener('submit', function(event) {
-		var requestData = 
-			encodeURIComponent('requestInfo')+'='+encodeURIComponent(requestInfo.value)+ '\&' +
-			encodeURIComponent('requestUpdate')+'='+encodeURIComponent(requestUpdate.checked)+'\&'+
-			encodeURIComponent('requestPersonal')+'='+encodeURIComponent(requestPersonal.checked);
-		var request = new XMLHttpRequest();
-	  request.open("POST", "supply/request", true);
-	  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	  request.onload = function(ev) {
-	    if (request.status == 200) {
-	      requestResponse.innerHTML = 	request.statusText + ' ' + request.responseText;
-	    } else {
-	      requestResponse.innerHTML = "Error " + request.status + " occurred when trying to send your request.<br \/>";
-	    }
-	  };
-	  request.send(requestData);
-	  event.preventDefault();
-	  requestInfo.value = '';
-		requestUpdate.checked = false;
-		requestPersonal.checked = false;
-	}, false);
-</script>
+{{> requestSupplier}}
