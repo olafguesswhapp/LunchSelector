@@ -1,4 +1,4 @@
-<h1 style="display: inline-block">Das gibt es heute:</h1>
+<h1 style="display: inline-block">Das gibt es heute: </h1>
 <ul style="list-style-type: none; display: inline-block; vertical-align: middle">
 	{{#each availableCities}}
 	<li style="float: left; padding: 5px;" onclick="switchFilter('{{this}}')"> {{this}} </li>
@@ -6,6 +6,43 @@
 	<li style="float: left; padding: 5px;"></li>
 	<li style="float: left; padding: 5px;" onclick="shareWithFriends()">Freund einladen</li>
 </ul>
+
+<div id='offersParent' style="width: 100%; margin: 0 0; text-align: center">
+	{{#suppliers}}
+	<div id='supplierCard{{@index}}' style='width: 280px; height: 150px; border-radius: 5px;border-width: 1px;border-color: grey;border-style: solid;padding: 10px;margin: 10px; text-align: left; display: {{#checkCity ../selectedCity city 'inline-table' 'none'}}{{/checkCity}};' >
+		<div>
+			<span>{{timeOpen}} - {{timeClose}} {{#restaurantStatus timeOpen timeClose}}{{/restaurantStatus}}</span>
+			<span style='float: right;' onclick='removeSupplier({{@index}});'>x</span>
+			<h3 style='margin-top: 2px;'>{{supplierName}}</h3>
+			{{!-- Content to swith up and down --}}
+			<div id="oben{{@index}}" style="display: inline-table" onclick='switchVisible({{@index}});'>
+				{{#offers}}
+				<div style="width: 83%; display: inline-block;">{{dish}}</div>
+				<div style="width: 15%; display: inline-block; text-align: right;">{{price}}</div>
+				{{/offers}}
+			</div>
+			<div id='unten{{@index}}' style='display: none; width: 100%;' onclick='switchVisible({{@index}});'>
+				<div>{{street}}</div>
+				<div>{{PLZ}} {{city}}</div>
+				<div>{{tefl}}</div>
+				<div>{{site}}</div>
+				<div>{{email}}</div>
+			</div>
+			<div id='alert{{@index}}' style='display: none; width: 100%;'>
+				<div>Sol {{supplierName}} wirklich aus Deiner Favoriten-Liste genommen werden?</div>
+				<br>
+				<div style='width: 45%; margin: auto;'>
+					<span><button onclick='removeConfirmed({{@index}}, {{supplierId}})'>Ja</button></span>
+					<span style='float: right;'><button onclick='doNotRemoveSupplier({{@index}})'>Nein</button></span>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	{{/suppliers}}
+</div>
+
+{{> requestSupplier}}
 
 <script type="text/javascript">
 
@@ -47,43 +84,48 @@
     uri += encodeURIComponent(body);
     var helpSend = window.open(uri, '_self');
 	};
-</script>
 
-<div id='offersParent' style="width: 100%; margin: 0 0; text-align: center">
-	{{#suppliers}}
-	<div style="width: 280px; height: 150px; border-radius: 5px;border-width: 1px;border-color: grey;border-style: solid;padding: 10px;margin: 10px; text-align: left; display: {{#checkCity ../selectedCity city 'inline-table' 'none'}}{{/checkCity}};" onclick="switchVisible{{@index}}();">
-		<div id="oben{{@index}}" style="display: inline-table">
-			<span>{{timeOpen}} - {{timeClose}} {{#restaurantStatus timeOpen timeClose}}{{/restaurantStatus}}</span>
-			<h3 style='margin-top: 2px;'>{{supplierName}}</h3>
-			{{#offers}}
-			<div style="width: 85%; display: inline-block">{{dish}}</div>
-			<div style="width: 15%; display: inline-block">{{price}}</div>
-			{{/offers}}
-		</div>
-		<div id="unten{{@index}}" style="display: none">
-			<span>{{timeOpen}} - {{timeClose}}</span>
-			<h3 style='margin-top: 2px;'>{{supplierName}}</h3>
-				<div>{{street}}</div>
-				<div>{{PLZ}} {{city}}</div>
-				<div>{{tefl}}</div>
-				<div>{{site}}</div>
-				<div>{{email}}</div>
-		</div>
-		<script type="text/javascript">
-			function switchVisible{{@index}}() {
-	      if (document.getElementById('oben{{@index}}')) {
-	        if (document.getElementById('oben{{@index}}').style.display == 'none') {
-	          document.getElementById('oben{{@index}}').style.display = 'inline-table';
-	          document.getElementById('unten{{@index}}').style.display = 'none';
-	        } else {
-	          document.getElementById('oben{{@index}}').style.display = 'none';
-	          document.getElementById('unten{{@index}}').style.display = 'inline-table';
-	        }
-	      }
+	function switchVisible(index) {
+    if (document.getElementById('oben' + index)) {
+      if (document.getElementById('oben' + index).style.display == 'none') {
+        document.getElementById('oben' + index).style.display = 'inline-table';
+        document.getElementById('unten' + index).style.display = 'none';
+      } else {
+        document.getElementById('oben' + index).style.display = 'none';
+        document.getElementById('unten' + index).style.display = 'inline-table';
+      }
+    }
+  };
+
+	function removeSupplier(index){
+		console.log('oben' + index);
+		document.getElementById('oben' + index).style.display = 'none';
+		document.getElementById('unten' + index).style.display = 'none';
+		document.getElementById('alert' + index).style.display = 'inline-table';
+	};
+
+	function doNotRemoveSupplier(index){
+		document.getElementById('oben' + index).style.display = 'inline-table';
+		document.getElementById('unten' + index).style.display = 'none';
+		document.getElementById('alert' + index).style.display = 'none';
+	};
+
+	function removeConfirmed(cardId, supplierId){
+		console.log('Card to be removed ' + cardId + ' Supplier to be removed' + supplierId);
+		
+		var requestData = encodeURIComponent('supplierId')+'='+encodeURIComponent(supplierId);
+		var request = new XMLHttpRequest();
+	  request.open("POST", "/offers/remove", true);
+	  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	  request.onload = function() {
+	    if (request.status == 200) {
+	    	console.log(request.statusText);
+	    	document.getElementById('supplierCard'+cardId).style.display='none';
+	    } else {
+	    	console.log(request.status + ' ' +  request.statusText);
 	    }
-		</script>
-	</div>
-	{{/suppliers}}
-</div>
+	  };
+	  request.send(requestData);
+	};
 
-{{> requestSupplier}}
+</script>

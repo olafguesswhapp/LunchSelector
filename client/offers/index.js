@@ -108,9 +108,26 @@ router.get('/', function (req, res) {
 router.post('/select/append', function(req, res) {
 	console.log('*** client/offfers/index.js route - offers/select/append - ');
 	var indexToChange = useroffer.suppliers.findIndex(function(supplier) { return supplier.supplierId === req.body.supplierId})
-	console.log('gefunden ' + indexToChange + ' ' + useroffer.suppliers[indexToChange].supplierName);
-	useroffer.suppliers[indexToChange].preferredSupplier = true;
-	res.json();
+	if (indexToChange > -1){
+		console.log('gefunden ' + indexToChange + ' ' + useroffer.suppliers[indexToChange].supplierName);
+		useroffer.suppliers[indexToChange].preferredSupplier = true;
+		res.json();
+	} else {
+		res.status(404).json(); 
+	}
+});
+
+router.post('/remove', function(req, res) {
+	console.log('*** client/offfers/index.js route - offers/remove - ');
+	console.log(req.body);
+	var indexToChange = useroffer.suppliers.findIndex(function(supplier) { return supplier.supplierId === req.body.supplierId})
+	if (indexToChange > -1) {
+		console.log('gefunden ' + indexToChange + ' ' + useroffer.suppliers[indexToChange].supplierName);
+		useroffer.suppliers[indexToChange].preferredSupplier = false;
+		res.json();
+	} else {
+		res.status(404).json(); 
+	}
 });
 
 router.get('/select', function (req, res) {
