@@ -9,28 +9,32 @@
 	</label>
 </form>
 <br><br>
-{{#suppliers}}
-	<div id='supplier{{supplierId}}'>
-		<div style='float: left'>
-			<span>{{supplierName}}, Italian Food, {{street}}, <a target="_blank" href="http://{{site}}">{{site}}</a>  <span onmouseover='openOffers{{@index}}()' onmouseout='closeOffers{{@index}}()'>&#9776;</span></span>
+{{#if suppliers}}
+	{{#suppliers}}
+		<div id='supplier{{supplierId}}'>
+			<div style='float: left'>
+				<span>{{supplierName}}, Italian Food, {{street}}, <a target="_blank" href="http://{{site}}">{{site}}</a>  <span onmouseover='openOffers{{@index}}()' onmouseout='closeOffers{{@index}}()'>&#9776;</span></span>
+			</div>
+			<div style='float: right;'>
+				<span style='float: right; background-color: black;color: white;width: 30px;text-align: center;border-radius: 6px;' onclick='appendSupplier({{supplierId}})'> + </span>	
+			</div>
+			<div id='offer{{@index}}' style='width: 200px; display:none; position:absolute; background-color: black; color: white; padding: 8px;'><h4>{{supplierName}}</h4>{{#offers}}<span style='float: left;'>{{dish}}</span><span style='float: right;'>{{price}}</span><br><br>{{/offers}}</div>
+			<script type="text/javascript">
+				function openOffers{{@index}}(){
+					var open = document.getElementById('offer{{@index}}');
+					open.style.display = 'block';
+				};
+				function closeOffers{{@index}}(){
+					var close = document.getElementById('offer{{@index}}');
+					close.style.display = 'none';
+				};
+			</script>
+			<div style="clear:both;"></div><br>
 		</div>
-		<div style='float: right;'>
-			<span style='float: right; background-color: black;color: white;width: 30px;text-align: center;border-radius: 6px;' onclick='appendSupplier({{supplierId}})'> + </span>	
-		</div>
-		<div id='offer{{@index}}' style='width: 200px; display:none; position:absolute; background-color: black; color: white; padding: 8px;'><h4>{{supplierName}}</h4>{{#offers}}<span style='float: left;'>{{dish}}</span><span style='float: right;'>{{price}}</span><br><br>{{/offers}}</div>
-		<script type="text/javascript">
-			function openOffers{{@index}}(){
-				var open = document.getElementById('offer{{@index}}');
-				open.style.display = 'block';
-			};
-			function closeOffers{{@index}}(){
-				var close = document.getElementById('offer{{@index}}');
-				close.style.display = 'none';
-			};
-		</script>
-		<div style="clear:both;"></div><br>
-	</div>
-{{/suppliers}}
+	{{/suppliers}}
+{{else}}
+	<div>Bitte helf uns weitere Restaurants für unsere Liste zu gewinnen und trage Deine Vorschläge unten ein</div>
+{{/if}}
 
 {{> requestSupplier}}
 

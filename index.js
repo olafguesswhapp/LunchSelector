@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var exphbs  = require('express-handlebars')
 	.create({ defaultLayout:'main',
 		helpers: {
-      restaurantStatus: function(timeOpen, timeClose) {
+      restaurantOpen: function(timeOpen, timeClose) {
         var d = new Date();
         var currentTime = d.getHours() + ':' + d.getMinutes();
         if (timeOpen<currentTime && currentTime<timeClose) {return 'open';} else {return 'closed';}

@@ -11,7 +11,7 @@
 	{{#suppliers}}
 	<div id='supplierCard{{@index}}' style='width: 280px; height: 150px; border-radius: 5px;border-width: 1px;border-color: grey;border-style: solid;padding: 10px;margin: 10px; text-align: left; display: {{#checkCity ../selectedCity city 'inline-table' 'none'}}{{/checkCity}};' >
 		<div>
-			<span>{{timeOpen}} - {{timeClose}} {{#restaurantStatus timeOpen timeClose}}{{/restaurantStatus}}</span>
+			<span>{{timeOpen}} - {{timeClose}} {{#restaurantOpen timeOpen timeClose}}{{/restaurantOpen}}</span>
 			<span style='float: right;' onclick='removeSupplier({{@index}});'>x</span>
 			<h3 style='margin-top: 2px;'>{{supplierName}}</h3>
 			{{!-- Content to swith up and down --}}
@@ -71,7 +71,7 @@
 		{{#suppliers}}
 			if (window.selectedCity === '{{city}}'){
 				body += '{{supplierName}}\r\n';
-				body +='{{timeOpen}} - {{timeClose}} {{#restaurantStatus timeOpen timeClose}}{{/restaurantStatus}}\r\n';
+				body +='{{timeOpen}} - {{timeClose}} {{#restaurantOpen timeOpen timeClose}}{{/restaurantOpen}}\r\n';
 				{{#offers}}
 					body += '{{dish}}\t\t{{price}}\r\n';
 				{{/offers}}
@@ -112,7 +112,6 @@
 
 	function removeConfirmed(cardId, supplierId){
 		console.log('Card to be removed ' + cardId + ' Supplier to be removed' + supplierId);
-		
 		var requestData = encodeURIComponent('supplierId')+'='+encodeURIComponent(supplierId);
 		var request = new XMLHttpRequest();
 	  request.open("POST", "/offers/remove", true);
@@ -121,6 +120,7 @@
 	    if (request.status == 200) {
 	    	console.log(request.statusText);
 	    	document.getElementById('supplierCard'+cardId).style.display='none';
+	    	document.getElementById('offersParent').removeChild(document.getElementById('supplierCard' + cardId));
 	    } else {
 	    	console.log(request.status + ' ' +  request.statusText);
 	    }
