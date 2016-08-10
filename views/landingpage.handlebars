@@ -1,4 +1,17 @@
 <h1>Hello World!</h1>
 <br>
 <h1>LOGIN</h1>
-<p>Please input your username</p>
+
+<form role="form" action="/login" method="POST">
+  <label>Email
+  <input type="email" required id="fieldUsername" name="username"></label>
+  <label>Passwort
+  <input type="password" required id="fieldPassword" name="password"></label>
+  <button type="submit">Einloggen</button>
+  <div></br>
+    <p>oder</p></br>
+    <a href="/signup">Neu Anmelden</a>
+  </div>
+</form>
+<script type="text/javascript">document.getElementById('fieldUsername').focus();</script>
+

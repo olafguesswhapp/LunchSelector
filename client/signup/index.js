@@ -9,8 +9,8 @@ var LSUsers = require('../../models/lsusers');
 var moment = require('moment');
 
 router.get('/', function (req, res) {
-		console.log('*** client/signup/index.js');
-    res.render('../client/signup/signup');
+		console.log('*** client/signup/index.js route - signup/ - ');
+    res.render('../client/signup/signup', {layout: 'landingpage'});
 });
 
 router.post('/verify', function (req, res) {

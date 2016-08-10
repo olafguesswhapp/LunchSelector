@@ -2,6 +2,7 @@
 
 var express = require('express');
 var router = express.Router();
+var authentication = require('../../lib/authentication');
 
 const useroffer = {
 	'userName': 'olafguesswhapp',
@@ -90,7 +91,7 @@ const useroffer = {
 			{'dish': 'Steak CCC', 'price': 5.33 }] }
 ]};
 
-router.get('/', function (req, res) {
+router.get('/', authentication.isLoggedIn, function (req, res) {
 		console.log('*** client/offfers/index.js route - offers/ - ');
 		var helpArray = [];
 		var supplierOffers = {
@@ -105,7 +106,7 @@ router.get('/', function (req, res) {
     res.render('../client/offers/offers', supplierOffers);
 });
 
-router.post('/select/append', function(req, res) {
+router.post('/select/append', authentication.isLoggedIn, function(req, res) {
 	console.log('*** client/offfers/index.js route - offers/select/append - ');
 	var indexToChange = useroffer.suppliers.findIndex(function(supplier) { return supplier.supplierId === req.body.supplierId})
 	if (indexToChange > -1){
@@ -117,7 +118,7 @@ router.post('/select/append', function(req, res) {
 	}
 });
 
-router.post('/remove', function(req, res) {
+router.post('/remove', authentication.isLoggedIn, function(req, res) {
 	console.log('*** client/offfers/index.js route - offers/remove - ');
 	console.log(req.body);
 	var indexToChange = useroffer.suppliers.findIndex(function(supplier) { return supplier.supplierId === req.body.supplierId})
@@ -130,7 +131,7 @@ router.post('/remove', function(req, res) {
 	}
 });
 
-router.get('/select', function (req, res) {
+router.get('/select', authentication.isLoggedIn, function (req, res) {
 	console.log('*** client/offfers/index.js route - offers/select - ');
 	var helpArray = [];
 	if (req.query.selectedCity){

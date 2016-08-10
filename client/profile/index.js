@@ -5,7 +5,20 @@ var router = express.Router();
 
 router.get('/', function (req, res) {
 		console.log('*** client/profile/index.js');
-    res.render('../client/profile/profile');
+		console.log(req.user);
+		var context = {
+			username: req.user.username,
+			name: req.user.name,
+			role: req.user.role,
+			selectedCity: req.user.selectedCity
+		};
+    res.render('../client/profile/profile', context);
 });
+
+router.get('/logout', function(req, res){
+	console.log('*** client/profile/index.js route - /logout -');
+	req.logout();
+	res.redirect('/');
+})
 
 module.exports = router;
