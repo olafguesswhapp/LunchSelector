@@ -5,6 +5,8 @@
 
 var express = require('express');
 var router = express.Router();
+var LSUsers = require('../../models/lsusers');
+var moment = require('moment');
 
 router.get('/', function (req, res) {
 		console.log('*** client/signup/index.js');
@@ -24,13 +26,29 @@ router.post('/verify', function (req, res) {
 
 router.post('/', function (req, res) {
 		console.log('*** client/signup/index.js route - signup/ POST after submit -');
-		var respData = req.body;
-		console.log(respData);
-		if (respData.signupIsRestaurant && respData.signupHasLunch) {
-			res.redirect(303, '/supply');	
-		} else {
-			res.redirect(303, '/offers');
-		}
+		var newUserRole;
+		if (req.body.signupIsRestaurant && req.body.signupHasLunch) {newUserRole = 'supplier'} else {newUserRole = 'user'};
+		var newUserData = new LSUsers ({
+			username: req.body.signupEmail,
+			password: req.body.signupPassword,
+			name: req.body.signupName,
+			role: newUserRole,
+			created: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
+			gender: 0,
+			age: 0,
+			selectedCity: req.body.signupCity
+		});
+		newUserData.save(function(err, newUser){
+			if(err) {
+				res.redirect(303, '/signup');
+			} else {
+				if (req.body.signupIsRestaurant && req.body.signupHasLunch) {
+					res.redirect(303, '/supply');	
+				} else {
+					res.redirect(303, '/offers');
+				}
+			}
+		});
 });
 
 module.exports = router;
