@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var Suppliers = require('./suppliers.js');
 var uniqueValidator = require('mongoose-unique-validator');
 var bcrypt = require('bcrypt'),
 	SALT_WORK_FACTOR = 10;
@@ -13,8 +14,8 @@ var LSUsersSchema = new Schema({
 	gender: Number,
 	age: Number,
 	selectedCity: String,
-	preferredSuppliers: String,
-	supplier: String
+	preferredSuppliers: [{ type: Schema.Types.ObjectId, ref: 'Suppliers' }],
+	supplier: [{ type: Schema.Types.ObjectId, ref: 'Suppliers' }]
 });
 
 // make sure username (email) is unique
