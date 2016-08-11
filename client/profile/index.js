@@ -2,10 +2,10 @@
 
 var express = require('express');
 var router = express.Router();
+var authentication = require('../../lib/authentication');
 
-router.get('/', function (req, res) {
+router.get('/', authentication.isLoggedIn, function (req, res) {
 		console.log('*** client/profile/index.js');
-		console.log(req.user);
 		var context = {
 			username: req.user.username,
 			name: req.user.name,
