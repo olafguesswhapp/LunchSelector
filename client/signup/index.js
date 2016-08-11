@@ -14,14 +14,19 @@ router.get('/', function (req, res) {
 });
 
 router.post('/verify', function (req, res) {
-		console.log('*** client/signup/index.js route - signup/verify - ');
-		console.log(req.body);
-		var respData = req.body;
-		if (respData.signupEmail === 'olaf.peters@mediacom.de') { // HIER MUSS EIGENTLICH DB PRÜFUNG HIN OB EMAIL SCHON VORHANDEN, ETC.
-			res.status(409).json(); 
-		} else {
+	console.log('*** client/signup/index.js route - signup/verify - ');
+	console.log(req.body);
+	LSUsers.findOne({'username' : req.body.signupEmail})
+				.select('username')
+				.exec(function(err, user){
+		if (!user) {
+			console.log('No user with this username/email could be verified');
 			res.json();
+		} else {
+			console.log('user with this username/email could be verified');
+			res.status(409).json();
 		}
+	});
 });
 
 router.post('/', function (req, res) {

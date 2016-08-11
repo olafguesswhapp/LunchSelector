@@ -5,7 +5,7 @@
 	<label>Wie heisst Du: <input id="signupName" type="text" required name="signupName" size='50'>
   </label><br>
 	<label>Deine Email: <input id="signupEmail" type="email" required name="signupEmail">
-	</label><br>
+	</label><span id='emailAlert' style='display=none'></span><br>
 	<label>Bitte ein Passwort eingeben: 
 		<input type="password" required id="signupPassword" name="signupPassword">
 	</label><br>
@@ -134,6 +134,7 @@
 
 	// VERIFY DURING INPUT IF EMAIL ALREADY EXISTS IN BACKEND-DB
 	signupEmail.addEventListener('change', function(event) {
+		document.getElementById('emailAlert').style.display = 'none';
 		var requestData = encodeURIComponent('signupEmail')+'='+encodeURIComponent(signupEmail.value);
 		var request = new XMLHttpRequest();
 	  request.open("POST", "signup/verify", true);
@@ -143,7 +144,14 @@
 	    	console.log(request.statusText);
 	      // requestResponse.innerHTML = 	request.statusText + ' ' + request.responseText;
 	    } else {
+	    	var formerInput = signupEmail.value;
+	    	while( document.getElementById('emailAlert').firstChild ) {
+	    		document.getElementById('emailAlert').removeChild( document.getElementById('emailAlert').firstChild );
+	    	}
+	    	document.getElementById('emailAlert').appendChild(document.createTextNode('Ein Username mit der email ' + formerInput + ' ist bereits angemeldet. Wenn Du das bist bitte einfach einloggen.'));
+	    	document.getElementById('emailAlert').style.display = 'block';
 	    	console.log(request.status + ' ' +  request.statusText);
+	    	signupEmail.value = '';
 	      // requestResponse.innerHTML = "Error " + request.status + " occurred when trying to send your request.<br \/>";
 	    }
 	  };
