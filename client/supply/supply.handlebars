@@ -1,3 +1,94 @@
-<h1>Die Angebote Deines Restaurants</h1>
-<br>
 <h1>Bitte gibt neue Angebote ein bzw. änder ein aktuelles Angebot</h1>
+<br>
+<form role="form" method="POST" name="offerInput" action="supply/offer">
+	<label>Datum: <input type='date' id='offerDate' name='offerDate'></label>
+	<label>Speise: <input type='text' id='offerName' name='offerName'></label>
+	<label>Preis: <input type='number' min='0.01' step='0.01' max='100' id='offerPrice' name='offerPrice'></label>
+	<select name="offerType" id='offerType'>
+	  <option value="0">Vorspeise</option> 
+	  <option value="10" selected>Hauptspeise</option>
+	  <option value="100">Nachtisch</option>
+</select>
+	<input type='submit' id='offerSubmit' value='Senden'/>
+	<span id='offerAlert' style='display:none;'>Danke, Tagesangebot wurde erfasst</span>
+</form>
+{{#if category1}}
+	<h1>Die Angebote Deines Restaurants</h1>
+	<div style='width: 100%;'>
+		
+		<div>
+			<span style='width:30%; float: left;'>Datum</span>
+			<span style='width:60%; float: left;'>Speise</span>
+			<span style='width:10%; float: right;'>Preis</span>
+		</div>
+		
+		{{#each category1}}
+		<div style='border-style: solid; border-color: antiquewhite; border-width: thin; width: 100%; display: inline-block;'>
+			<div style='width:30%; float: left;'>
+				<span>{{date}}</span>
+			</div>
+			<div id='offers{{date}}' style='width:70%; float: right;'>
+				{{#each offers}}
+					<div id='{{offerId}}'>
+						<span style='width:85.71%; float: left;'>{{offerName}}</span>
+						<span style='width:14.29%; float: right;'>{{offerPrice}}<a href='#' onclick='deleteOffer("{{offerId}}", "offers{{../date}}");return false;' style='float: right;'>[ - ]</a></span>
+					</div>
+				{{/each}}
+			</div>
+		</div>
+		{{/each}}
+	</div>
+{{/if}}
+
+<script type="text/javascript">
+	function setDefaultDate (){
+		document.getElementById('offerDate').valueAsDate = new Date();
+		document.getElementById('offerName').focus();
+	};
+	window.onload= setDefaultDate();
+
+	function deleteOffer(offerId, offerDate){
+		console.log(offerId, offerDate);
+		var requestData = encodeURIComponent('offerId')+'='+encodeURIComponent(offerId);
+		var request = new XMLHttpRequest();
+	  request.open("DELETE", "supply/offer", true);
+	  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	  request.onload = function(ev) {
+	    if (request.status == 200) {
+	    	console.log(request.statusText);
+	      document.getElementById(offerDate).removeChild(document.getElementById(offerId));
+	    } else {
+	    	console.log(status);
+	    }
+	  };
+	  request.send(requestData);
+	};
+
+	document.forms.namedItem('offerInput').addEventListener('submit', function(event) {
+		var requestData = encodeURIComponent('offerDate') + '=' + 
+		encodeURIComponent(document.getElementById('offerDate').value) + '\&' +
+		encodeURIComponent('offerName') + '=' + 
+		encodeURIComponent(document.getElementById('offerName').value) + '\&' +
+		encodeURIComponent('offerPrice') + '=' + 
+		encodeURIComponent(document.getElementById('offerPrice').value) + '\&' +
+		encodeURIComponent('offerType') + '=' + 
+		encodeURIComponent(document.getElementById('offerType').value);
+		console.log(requestData);
+		var request = new XMLHttpRequest();
+	  request.open("POST", "/supply/offer", true);
+	  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	  request.onload = function() {
+	    if (request.status == 200) {
+	    	console.log(request.statusText);
+	    	document.getElementById('offerDate').value = '';
+	    	document.getElementById('offerName').value = '';
+	    	document.getElementById('offerPrice').value = 0;
+	    	document.getElementById('offerAlert').style.display = 'block';
+	    } else {
+	    	console.log(request.status);
+	    }
+	  };
+	  request.send(requestData);
+	  event.preventDefault();
+	}, false);
+</script>
