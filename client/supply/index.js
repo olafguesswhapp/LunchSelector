@@ -69,6 +69,7 @@ function displaySupplierOffers(req, res, startDate, endDate, offerCategory) {
 				// }
 			});
 		}
+		console.log(context);
 		res.render('../client/supply/supply', context);
 	});
 };

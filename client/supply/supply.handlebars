@@ -45,11 +45,14 @@
 <script type='text/javascript'>
 	function setDefaultDate (){
 		console.log('{{startDate}}');
-		document.getElementById('endNumberDays').value = {{numberDays}};
 		document.getElementById('offerDate').value = '{{startDate}}';
-		document.getElementById('startDate').value = '{{startDate}}';
 		document.getElementById('offerName').focus();
-		console.log(document.getElementById('startDate').value);
+		{{#if category1}}
+			document.getElementById('endNumberDays').value = {{numberDays}};
+			document.getElementById('startDate').value = '{{startDate}}';
+		{{else}}
+			console.log('No offers available');
+		{{/if}}
 	};
 
 	window.onload= setDefaultDate();
@@ -58,8 +61,10 @@
 		document.getElementById('offerUpdate').style.display='inline';
 	};
 
+	{{#if category1}}
 	document.getElementById('startDate').addEventListener('change', showUpdateBtn);
 	document.getElementById('endNumberDays').addEventListener('change', showUpdateBtn);
+	{{/if}}
 
 	function deleteOffer(offerId, offerDate){
 		console.log(offerId, offerDate);
