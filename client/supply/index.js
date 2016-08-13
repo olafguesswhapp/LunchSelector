@@ -10,9 +10,9 @@ router.get('/', authentication.isLoggedInAsSupplier, function (req, res) {
 	console.log('*** client/supply/index.js route - /supply -');
 	var offerCategory = 1; // 1 = Lunch
 	var startDate = new Date();
-	startDate.setHours(0,0,0,0);
+	startDate.setUTCHours(0,0,0,0);
 	var endDate = new Date();
-	endDate.setHours(0,0,0,0);
+	endDate.setUTCHours(0,0,0,0);
   endDate.setDate(endDate.getDate() + 5);
 	displaySupplierOffers(req, res, startDate, endDate, offerCategory)	
 });
@@ -21,7 +21,7 @@ router.post('/', authentication.isLoggedInAsSupplier, function(req, res) {
 	console.log('*** client/supply/index.js route POST - /supply -');
 	var offerCategory = 1; // 1 = Lunch
 	var startDate = new Date(req.body.startDate);
-	startDate.setHours(0,0,0,0);
+	startDate.setUTCHours(0,0,0,0);
 	var endDate = new Date(startDate);
 	var endDate = new Date();
   endDate.setDate(endDate.getDate() + parseInt(req.body.endNumberDays));

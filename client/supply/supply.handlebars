@@ -33,7 +33,7 @@
 				{{#each offers}}
 					<div id='{{offerId}}'>
 						<span style='width:85.71%; float: left;'>{{offerName}}</span>
-						<span style='width:14.29%; float: right;'>{{offerPrice}}<a href='#' onclick='deleteOffer('{{offerId}}', 'offers{{../date}}');return false;' style='float: right;'>[ - ]</a></span>
+						<span style='width:14.29%; float: right;'>{{offerPrice}}<a href='#' onclick='deleteOffer("{{offerId}}", "offers{{../date}}"); return false;' style='float: right;'>[ - ]</a></span>
 					</div>
 				{{/each}}
 			</div>

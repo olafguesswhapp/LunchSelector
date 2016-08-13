@@ -9,17 +9,46 @@ var authentication = require('../../lib/authentication');
 
 router.get('/', authentication.isLoggedIn, function (req, res) {
 		console.log('*** client/offfers/index.js route - offers/ - ');
+		var today = new Date(new Date().setUTCHours(0,0,0,0));
 		var helpArray = [];
-		var supplierOffers = {
-			userName: useroffer.userName, // CHANGE from JWT
-			selectedCity: useroffer.selectedCity, // CHANGE from POST request
-			suppliers: useroffer.suppliers.filter(function(offer){
-				if (offer.preferredSupplier) {helpArray.push(offer.city)}
-				return (offer.preferredSupplier);
-			})
-		};
-		supplierOffers.availableCities = helpArray.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
-    res.render('../client/offers/offers', supplierOffers);
+		Offers.find({ offerSupplier: { $in: req.user.preferredSuppliers }, offerDate: today})
+					.exec(function(err, currentOffers){
+			if (err || currentOffers.length === 0) {
+				console.log('Preferred Suppliers do not have any offers'); // ALARM create empty dishes?
+			} else {
+				Suppliers.find({ _id : { $in: req.user.preferredSuppliers }})
+						.exec(function(err, supplier){
+					if (err || supplier.length === 0) {
+						console.log('User has no preferredSupplier'); // Direct to supplier Selectio or MESSAGE
+					} else {
+						var supplierOffers = {
+							userName: req.user.username, // CHANGE from JWT
+							selectedCity: req.user.selectedCity, // CHANGE from POST request
+							suppliers: []
+						};
+						supplierOffers.suppliers = supplier.map(function(supplierElement){
+							helpArray.push(supplierElement.supplierCity);
+							return {
+								supplierId: 					supplierElement._id,
+								supplierName: 				supplierElement.supplierName,
+								supplierDescription: 	supplierElement.supplierDescription,
+								supplierType: 				supplierElement.supplierType,
+								supplierStart: 				supplierElement.supplierStart,
+								supplierEnd: 					supplierElement.supplierEnd,
+								supplierStreet: 			supplierElement.supplierStreet,
+								supplierZipCode: 			supplierElement.supplierZipCode,
+								supplierCity: 				supplierElement.supplierCity,
+								offers: 							currentOffers.filter(function(offerElement){
+									return (JSON.stringify(offerElement.offerSupplier) === JSON.stringify(supplierElement._id))
+								})
+							}
+						});
+						supplierOffers.availableCities = helpArray.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
+		    		res.render('../client/offers/offers', supplierOffers);
+					}
+				});
+			}
+		});
 });
 
 router.post('/select/append', authentication.isLoggedIn, function(req, res) {

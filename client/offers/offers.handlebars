@@ -9,26 +9,28 @@
 
 <div id='offersParent' style="width: 100%; margin: 0 0; text-align: center">
 	{{#suppliers}}
-	<div id='supplierCard{{@index}}' style='width: 280px; height: 150px; border-radius: 5px;border-width: 1px;border-color: grey;border-style: solid;padding: 10px;margin: 10px; text-align: left; display: {{#checkCity ../selectedCity city 'inline-table' 'none'}}{{/checkCity}};' >
-		<div>
-			<span>{{timeOpen}} - {{timeClose}} {{#restaurantOpen timeOpen timeClose}}{{/restaurantOpen}}</span>
-			<span style='float: right;' onclick='removeSupplier({{@index}});'>x</span>
-			<h3 style='margin-top: 2px;'>{{supplierName}}</h3>
+	<div id='supplierCard{{@index}}' style='width: 280px; height: 150px; border-radius: 5px;border-width: 1px;border-color: grey;border-style: solid;padding: 10px;margin: 10px; text-align: left; display: {{#checkCity ../selectedCity supplierCity 'inline-table' 'none'}}{{/checkCity}};' >
+		<div style='height: 100%;'>
+			<div style='height: 30%; background-color: aliceblue;'>
+				<span>{{supplierStart}} - {{supplierEnd}} {{#restaurantOpen supplierStart supplierEnd}}{{/restaurantOpen}}</span>
+				<span style='float: right;' onclick='removeSupplier({{@index}});'>x</span>
+				<h3 style='margin-top: 2px;'>{{supplierName}}</h3>
+			</div>
 			{{!-- Content to swith up and down --}}
-			<div id="oben{{@index}}" style="display: inline-table" onclick='switchVisible({{@index}});'>
+			<div id="oben{{@index}}" style="display: inline-table; width: 100%; height: 70%; background-color: lightgray;" onclick='switchVisible({{@index}});'>
 				{{#offers}}
-				<div style="width: 83%; display: inline-block;">{{dish}}</div>
-				<div style="width: 15%; display: inline-block; text-align: right;">{{price}}</div>
+				<div style="width: 83%; display: inline-block;">{{offerName}}</div>
+				<div style="width: 15%; display: inline-block; text-align: right;">{{offerPrice}}</div>
 				{{/offers}}
 			</div>
-			<div id='unten{{@index}}' style='display: none; width: 100%;' onclick='switchVisible({{@index}});'>
-				<div>{{street}}</div>
-				<div>{{PLZ}} {{city}}</div>
-				<div>{{tefl}}</div>
-				<div>{{site}}</div>
-				<div>{{email}}</div>
+			<div id='unten{{@index}}' style='display: none; width: 100%; height: 70%; background-color: lightgray;' onclick='switchVisible({{@index}});'>
+				<div>{{supplierStreet}}</div>
+				<div>{{supplierZipCode}} {{supplierCity}}</div>
+				<div>{{supplierTefl}}</div>
+				<div>{{supplierSite}}</div>
+				<div>{{supplierEmail}}</div>
 			</div>
-			<div id='alert{{@index}}' style='display: none; width: 100%;'>
+			<div id='alert{{@index}}' style='display: none; width: 100%; height: 70;'>
 				<div>Sol {{supplierName}} wirklich aus Deiner Favoriten-Liste genommen werden?</div>
 				<br>
 				<div style='width: 45%; margin: auto;'>
@@ -53,7 +55,7 @@
 	window.onload=setCity;
 	
 	function switchFilter(clickedCity){
-		var suppliers = [{{#each suppliers}}'{{city}}'{{#if @last}}{{else}}, {{/if}}{{/each}}];
+		var suppliers = [{{#each suppliers}}'{{supplierCity}}'{{#if @last}}{{else}}, {{/if}}{{/each}}];
 		var offerChilds = document.getElementById('offersParent').children;
 		[].forEach.call(offerChilds, function(child, index){
 			if (suppliers[index] === clickedCity) {
@@ -64,14 +66,15 @@
 		});
 		window.selectedCity = clickedCity;
 	};
+
 	function shareWithFriends(){
 		var subject = "{{userName}}'s Vorschläge für die Mittagspause";
 		var body = 'Hi, hier die heutigen Mittagsgerichte meiner Lieblingsrestaurants in ' + window.selectedCity + ':\r\n\r\n';
 		body += 'Visit us at http://localhost:3000 \r\n\r\n';
 		{{#suppliers}}
-			if (window.selectedCity === '{{city}}'){
+			if (window.selectedCity === '{{supplierCity}}'){
 				body += '{{supplierName}}\r\n';
-				body +='{{timeOpen}} - {{timeClose}} {{#restaurantOpen timeOpen timeClose}}{{/restaurantOpen}}\r\n';
+				body +='{{supplierStart}} - {{supplierEnd}} {{#restaurantOpen supplierStart supplierEnd}}{{/restaurantOpen}}\r\n';
 				{{#offers}}
 					body += '{{dish}}\t\t{{price}}\r\n';
 				{{/offers}}
