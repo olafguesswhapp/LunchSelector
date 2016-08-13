@@ -80,10 +80,11 @@
 	  request.onload = function() {
 	    if (request.status == 200) {
 	    	console.log(request.statusText);
-	    	document.getElementById('offerDate').value = '';
+	    	document.getElementById('offerDate').valueAsDate = new Date();
 	    	document.getElementById('offerName').value = '';
 	    	document.getElementById('offerPrice').value = 0;
 	    	document.getElementById('offerAlert').style.display = 'block';
+	    	document.getElementById('offerName').focus();
 	    } else {
 	    	console.log(request.status);
 	    }
