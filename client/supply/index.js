@@ -8,27 +8,35 @@ var authentication = require('../../lib/authentication');
 
 router.get('/', authentication.isLoggedInAsSupplier, function (req, res) {
 	console.log('*** client/supply/index.js route - /supply -');
+	var offerCategory = 1; // 1 = Lunch
 	var startDate = new Date();
+	startDate.setHours(0,0,0,0);
 	var endDate = new Date();
-  endDate.setDate(endDate.getDate() + 4);
-	displaySupplierOffers(req, res, startDate, endDate)	
+	endDate.setHours(0,0,0,0);
+  endDate.setDate(endDate.getDate() + 5);
+	displaySupplierOffers(req, res, startDate, endDate, offerCategory)	
 });
 
 router.post('/', authentication.isLoggedInAsSupplier, function(req, res) {
 	console.log('*** client/supply/index.js route POST - /supply -');
+	var offerCategory = 1; // 1 = Lunch
 	var startDate = new Date(req.body.startDate);
+	startDate.setHours(0,0,0,0);
 	var endDate = new Date(startDate);
+	var endDate = new Date();
   endDate.setDate(endDate.getDate() + parseInt(req.body.endNumberDays));
-	displaySupplierOffers(req, res, startDate, endDate)	
+	displaySupplierOffers(req, res, startDate, endDate, offerCategory)	
 });
 
-function displaySupplierOffers(req, res, startDate, endDate) {
+function displaySupplierOffers(req, res, startDate, endDate, offerCategory) {
 	var context = {
 		startDate: moment(new Date(startDate)).format('YYYY-MM-DD'),
 		numberDays: Math.round((endDate- startDate)/(1000*60*60*24)),
 		'category1': []
 	};
-	Offers.find({ offerSupplier: req.user.supplier[0], "offerDate": {"$gte": startDate, "$lt": endDate}})
+	Offers.find({ 'offerSupplier': req.user.supplier[0],
+							'offerDate': {'$gte': startDate, '$lte': endDate},
+							'offerCategory': 1})
 				.exec(function(err, offers){
 		if(err || offers.length<1){
 			console.log('No offer was found? Size of returned array ' + offers.length)
