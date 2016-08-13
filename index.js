@@ -70,6 +70,13 @@ app.use(bodyParser.urlencoded({
 }));
 auth.init();
 
+// app.all('*', function(req, res, next){
+//   console.log(req.url);
+//   console.log(req.method);
+//   console.log(req.body);
+//   next()}
+// );
+
 require('./routes.js')(app);
 
 // All other routes should redirect to the Landing Page
