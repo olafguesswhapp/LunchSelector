@@ -2,7 +2,87 @@
 
 var express = require('express');
 var router = express.Router();
+var LSUsers = require('../../models/lsusers');
+var Suppliers = require('../../models/suppliers');
+var Offers = require('../../models/offers');
 var authentication = require('../../lib/authentication');
+
+router.get('/', authentication.isLoggedIn, function (req, res) {
+		console.log('*** client/offfers/index.js route - offers/ - ');
+		var helpArray = [];
+		var supplierOffers = {
+			userName: useroffer.userName, // CHANGE from JWT
+			selectedCity: useroffer.selectedCity, // CHANGE from POST request
+			suppliers: useroffer.suppliers.filter(function(offer){
+				if (offer.preferredSupplier) {helpArray.push(offer.city)}
+				return (offer.preferredSupplier);
+			})
+		};
+		supplierOffers.availableCities = helpArray.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
+    res.render('../client/offers/offers', supplierOffers);
+});
+
+router.post('/select/append', authentication.isLoggedIn, function(req, res) {
+	console.log('*** client/offfers/index.js route - offers/select/append - ');
+	console.log(req.body);
+	LSUsers.findByIdAndUpdate( req.user._id,
+			    {$push: {'preferredSuppliers': req.body.supplierId }},
+			    {safe: true, upsert: true, new : true}, function(err, user) {
+    if (err || user.length === 0) {
+    	console.log('Could not be appended');
+    	res.status(404).json(); 
+    } else {
+    	res.json();
+    }
+  });
+});
+
+router.post('/remove', authentication.isLoggedIn, function(req, res) {
+	console.log('*** client/offfers/index.js route - offers/remove - ');
+	console.log(req.body);
+	var indexToChange = useroffer.suppliers.findIndex(function(supplier) { return supplier.supplierId === req.body.supplierId})
+	if (indexToChange > -1) {
+		console.log('gefunden ' + indexToChange + ' ' + useroffer.suppliers[indexToChange].supplierName);
+		useroffer.suppliers[indexToChange].preferredSupplier = false;
+		res.json();
+	} else {
+		res.status(404).json(); 
+	}
+});
+
+router.get('/select', authentication.isLoggedIn, function (req, res) {
+	console.log('*** client/offfers/index.js route - offers/select - ');
+	var helpArray = [];
+	if (req.query.selectedCity){
+		LSUsers.findOneAndUpdate({_id: req.user._id}, { $set: { selectedCity: req.query.selectedCity }}, {new: true}, function(err, doc){
+    	if(err){ console.log("Something wrong when updating data!");} else {
+    		console.log(doc);
+    		req.user.selectedCity = req.query.selectedCity;
+				console.log('Changed selectedCity to ' + req.user.selectedCity);
+    	}
+    });
+	}
+	var supplierHelp;
+	Suppliers.find({ supplierCity: req.query.selectedCity, _id: { $nin: req.user.preferredSuppliers }})
+					.exec(function(err, supplier){
+		if (err || supplier.length === 0) {
+			console.log('Currently no suppliers available to choose from');
+		} else {
+			supplierHelp = supplier;
+		}
+		var supplierSelection = {
+			userName: req.user.username, // CHANGE from JWT
+			selectedCity: req.user.selectedCity, // CHANGE from POST request
+			availableCities: useroffer.availableCities,
+			suppliers: supplierHelp
+		};
+		console.log(supplierSelection);
+	  res.render('../client/offers/select', supplierSelection);
+	});
+});
+
+module.exports = router;
+
 
 const useroffer = {
 	'userName': 'olafguesswhapp',
@@ -90,63 +170,3 @@ const useroffer = {
 			{'dish': 'Nudeln CCC', 'price': 4.33 },
 			{'dish': 'Steak CCC', 'price': 5.33 }] }
 ]};
-
-router.get('/', authentication.isLoggedIn, function (req, res) {
-		console.log('*** client/offfers/index.js route - offers/ - ');
-		var helpArray = [];
-		var supplierOffers = {
-			userName: useroffer.userName, // CHANGE from JWT
-			selectedCity: useroffer.selectedCity, // CHANGE from POST request
-			suppliers: useroffer.suppliers.filter(function(offer){
-				if (offer.preferredSupplier) {helpArray.push(offer.city)}
-				return (offer.preferredSupplier);
-			})
-		};
-		supplierOffers.availableCities = helpArray.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
-    res.render('../client/offers/offers', supplierOffers);
-});
-
-router.post('/select/append', authentication.isLoggedIn, function(req, res) {
-	console.log('*** client/offfers/index.js route - offers/select/append - ');
-	var indexToChange = useroffer.suppliers.findIndex(function(supplier) { return supplier.supplierId === req.body.supplierId})
-	if (indexToChange > -1){
-		console.log('gefunden ' + indexToChange + ' ' + useroffer.suppliers[indexToChange].supplierName);
-		useroffer.suppliers[indexToChange].preferredSupplier = true;
-		res.json();
-	} else {
-		res.status(404).json(); 
-	}
-});
-
-router.post('/remove', authentication.isLoggedIn, function(req, res) {
-	console.log('*** client/offfers/index.js route - offers/remove - ');
-	console.log(req.body);
-	var indexToChange = useroffer.suppliers.findIndex(function(supplier) { return supplier.supplierId === req.body.supplierId})
-	if (indexToChange > -1) {
-		console.log('gefunden ' + indexToChange + ' ' + useroffer.suppliers[indexToChange].supplierName);
-		useroffer.suppliers[indexToChange].preferredSupplier = false;
-		res.json();
-	} else {
-		res.status(404).json(); 
-	}
-});
-
-router.get('/select', authentication.isLoggedIn, function (req, res) {
-	console.log('*** client/offfers/index.js route - offers/select - ');
-	var helpArray = [];
-	if (req.query.selectedCity){
-		useroffer.selectedCity = req.query.selectedCity;
-		console.log('Changed selectedCity to ' + req.query.selectedCity);
-	}
-	var supplierSelection = {
-		userName: useroffer.userName, // CHANGE from JWT
-		selectedCity: useroffer.selectedCity, // CHANGE from POST request
-		availableCities: useroffer.availableCities,
-		suppliers: useroffer.suppliers.filter(function(offer){
-			return (offer.city === useroffer.selectedCity && offer.preferredSupplier == false);
-		})
-	};
-  res.render('../client/offers/select', supplierSelection);
-});
-
-module.exports = router;
