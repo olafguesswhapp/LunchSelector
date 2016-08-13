@@ -32,6 +32,7 @@ router.post('/verify', function (req, res) {
 
 router.post('/', function (req, res) {
 		console.log('*** client/signup/index.js route - signup/ POST after submit -');
+		req.logout();
 		var newUserRole;
 		if (req.body.signupIsRestaurant && req.body.signupHasLunch) {newUserRole = 'supplier'} else {newUserRole = 'user'};
 		if (newUserRole === 'supplier') {
