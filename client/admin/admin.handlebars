@@ -1,0 +1,48 @@
+<h1>ADMIN</h1>
+
+<label>Neue Stadt erfassen: 
+<input type='text' name='cityName' id ='cityName'><input type='submit' name='submitBTN' id='submitBTN'></label>
+
+<div id='parent'>
+	{{#cities}}
+	<div>
+		<label><input type='checkbox' id='city{{_id}}' {{#if cityStatus}}checked{{/if}} onclick='changeStatus("{{_id}}")'>{{cityName}}</label>
+	</div>
+	{{/cities}}
+</div>
+
+<script type="text/javascript">
+	document.getElementById('submitBTN').addEventListener('click', function() {
+		var requestData = encodeURIComponent('cityName')+'='+encodeURIComponent(document.getElementById('cityName').value);
+		var request = new XMLHttpRequest();
+	  request.open("POST", "admin/city", true);
+	  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	  request.onload = function() {
+	    if (request.status == 200) {
+	    	console.log(request.statusText);
+
+	    } else {
+	    	console.log(request.status + ' ' +  request.statusText);
+	    }
+	  };
+	  request.send(requestData);
+	}, false);
+
+	function changeStatus(cityId) {
+		var newStatus = document.getElementById('city' + cityId).checked? true : false;
+		var requestData = encodeURIComponent('cityStatus')+'='+encodeURIComponent(newStatus) + '\&' +
+			encodeURIComponent('cityId')+'='+encodeURIComponent(cityId);
+		var request = new XMLHttpRequest();
+	  request.open("PUT", "admin/city", true);
+	  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	  request.onload = function() {
+	    if (request.status == 200) {
+	    	console.log(request.statusText);
+	    } else {
+	    	console.log(request.status + ' ' +  request.statusText);
+	    }
+	  };
+	  request.send(requestData);
+	};
+
+</script>

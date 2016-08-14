@@ -90,17 +90,18 @@ router.post('/remove', authentication.isLoggedIn, function(req, res) {
 router.get('/select', authentication.isLoggedIn, function (req, res) {
 	console.log('*** client/offfers/index.js route - offers/select - ');
 	var helpArray = [];
+	var selectedCity = req.user.selectedCity;
 	if (req.query.selectedCity){
-		LSUsers.findOneAndUpdate({_id: req.user._id}, { $set: { selectedCity: req.query.selectedCity }}, {new: true}, function(err, doc){
+		selectedCity = req.query.selectedCity;
+		LSUsers.findOneAndUpdate({_id: req.user._id}, { $set: { selectedCity: req.query.selectedCity }}, {new: true}, function(err, user){
     	if(err){ console.log("Something wrong when updating data!");} else {
-    		console.log(doc);
-    		req.user.selectedCity = req.query.selectedCity;
+    		console.log(user);
 				console.log('Changed selectedCity to ' + req.user.selectedCity);
     	}
     });
 	}
 	var supplierHelp;
-	Suppliers.find({ supplierCity: req.query.selectedCity, _id: { $nin: req.user.preferredSuppliers }})
+	Suppliers.find({ supplierCity: selectedCity, _id: { $nin: req.user.preferredSuppliers }})
 					.exec(function(err, supplier){
 		if (err || supplier.length === 0) {
 			console.log('Currently no suppliers available to choose from');
@@ -109,8 +110,8 @@ router.get('/select', authentication.isLoggedIn, function (req, res) {
 		}
 		var supplierSelection = {
 			userName: req.user.username, // CHANGE from JWT
-			selectedCity: req.user.selectedCity, // CHANGE from POST request
-			availableCities: useroffer.availableCities,
+			selectedCity: selectedCity, // CHANGE from POST request
+			availableCities: ['Düsseldorf', 'Köln'],
 			suppliers: supplierHelp
 		};
 		console.log(supplierSelection);
