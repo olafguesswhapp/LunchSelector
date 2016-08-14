@@ -14,12 +14,14 @@ router.get('/', authentication.isLoggedIn, function (req, res) {
 		Offers.find({ offerSupplier: { $in: req.user.preferredSuppliers }, offerDate: today})
 					.exec(function(err, currentOffers){
 			if (err || currentOffers.length === 0) {
-				console.log('Preferred Suppliers do not have any offers'); // ALARM create empty dishes?
+				console.log('Preferred Suppliers do not have any offers'); // FLASH MESSAGE you have not yet selected a preferred supplier
+				res.redirect('/offers/select');
 			} else {
 				Suppliers.find({ _id : { $in: req.user.preferredSuppliers }})
 						.exec(function(err, supplier){
 					if (err || supplier.length === 0) {
 						console.log('User has no preferredSupplier'); // Direct to supplier Selectio or MESSAGE
+						res.redirect('/offers/select');
 					} else {
 						var supplierOffers = {
 							userName: req.user.username, // CHANGE from JWT
@@ -68,15 +70,21 @@ router.post('/select/append', authentication.isLoggedIn, function(req, res) {
 
 router.post('/remove', authentication.isLoggedIn, function(req, res) {
 	console.log('*** client/offfers/index.js route - offers/remove - ');
-	console.log(req.body);
-	var indexToChange = useroffer.suppliers.findIndex(function(supplier) { return supplier.supplierId === req.body.supplierId})
-	if (indexToChange > -1) {
-		console.log('gefunden ' + indexToChange + ' ' + useroffer.suppliers[indexToChange].supplierName);
-		useroffer.suppliers[indexToChange].preferredSupplier = false;
-		res.json();
-	} else {
-		res.status(404).json(); 
-	}
+	var adjustedPreferredSuppliers = req.user.preferredSuppliers.filter(function(supplier){
+		return (JSON.stringify(supplier) !== JSON.stringify(req.body.supplierId));
+	});
+	req.user.preferredSuppliers = adjustedPreferredSuppliers;
+	LSUsers.findByIdAndUpdate( req.user._id,
+			    {$set: {'preferredSuppliers': adjustedPreferredSuppliers }},
+			    {safe: true, upsert: true, new : true}, function(err, user) {
+    if (err || user.length === 0) {
+    	console.log('adjustedPreferredSuppliers could not be modified');
+    	res.status(404).json(); 
+    } else {
+    	console.log(user);
+    	res.json();
+    }
+  });
 });
 
 router.get('/select', authentication.isLoggedIn, function (req, res) {
