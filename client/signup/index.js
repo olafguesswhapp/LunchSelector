@@ -37,6 +37,8 @@ router.post('/', function (req, res) {
 		if (req.body.signupIsRestaurant && req.body.signupHasLunch) {newUserRole = 'supplier'} else {newUserRole = 'user'};
 		if (newUserRole === 'supplier') {
 			var whoDelivers;
+			var supplierDoesDeliver;
+			if (req.body.hasOwnProperty('signupRestaurantDoesDeliver')){ supplierDoesDeliver = true} else {supplierDoesDeliver = false};
 			if (req.body.signupRestaurantDelivery === 'Andere') {
 				if (req.body.signupRestaurantOtherDelivery) {whoDelivers = req.body.signupRestaurantOtherDelivery} else (whoDelivers = 'Andere')
 			} else {whoDelivers = req.body.signupRestaurantDelivery}
@@ -49,7 +51,7 @@ router.post('/', function (req, res) {
 				supplierStreet: req.body.signupRestaurantStreet,
 				supplierZipCode: req.body.signupRestaurantPLZ,
 				supplierCity: req.body.signupRestaurantCity,
-				supplierDoesDeliver: req.body.signupRestaurantDoesDeliver,
+				supplierDoesDeliver: supplierDoesDeliver,
 				supplierDeliversWith: whoDelivers,
 				suppplierCreated: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
 			});

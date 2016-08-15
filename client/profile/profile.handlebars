@@ -1,12 +1,20 @@
-<h1>PROFIL</h1>
-<p>Dies ist Dein Profil</p>
-<p>Username: {{username}}</p>
+<h2>PROFIL {{username}} <form style='display: inline' role="form" action="/logout" method="GET">
+  <button type="submit">Abmelden</button></form></h2>
 <p>Name: {{name}}</p>
 <p>Rolle: {{role}}</p>
-<p>Default Stadt: {{selectedCity}}</p>
+<p>Meine favorisierte Stadt: {{selectedCity}}</p>
 <p>Meine Restaurants: {{#supplier}}{{this}}{{#if @last}}{{else}},{{/if}} {{/supplier}}</p>
 <p>Meine Favoriten: {{#preferredSuppliers}}{{this}}{{#if @last}}{{else}},{{/if}} {{/preferredSuppliers}}</p>
+<input type='submit' id='registerNewSupplierBTN' name='registerNewSupplierBTN' value='Mein Restaurant anmelden' onclick='showRegisterSupplierForm()'><br><br>
+<div id='registerNewSupplierFrame' style='border-style: solid; border-color: lightgray; padding: 10px; display: none'>
+	<form role="form" method="POST" name="registerSupplierForm" action="profile/supplier">
+		{{>registerSupplier}}
+	</form>
+</div>
 
-<form role="form" action="/logout" method="GET">
-  <button type="submit">Abmelden</button>
-</form>
+<script type="text/javascript">
+	function showRegisterSupplierForm (){
+		document.getElementById('registerNewSupplierBTN').style.display = 'none';
+		document.getElementById('registerNewSupplierFrame').style.display = 'block';
+	};
+</script>

@@ -1,0 +1,51 @@
+<label>Wie heisst das Restaurant: <input id="signupRestaurantName" type="text" name="signupRestaurantName" size='50' required></label><br>
+		<label>Art der Küche: <input id="signupRestaurantType" type="text" name="signupRestaurantType" size="50"></label><br>
+		<label>Wann gibt es Mittagsessen - von: <input id="signupRestaurantStart" type="time" name="signupRestaurantStart" value="12:00"> bis: <input id="signupRestaurantEnd" type="time" name="signupRestaurantEnd" value="14:30"></label><br>
+		<br>
+		<label>Strasse und Hausnr.: <input id="signupRestaurantStreet" type="text" name="signupRestaurantStreet" size='50'></label><br>
+		<label>PLZ und Stadt: <input id="signupRestaurantPLZ" type="text" name="signupRestaurantPLZ" size='5'> <input id="signupRestaurantCity" type="text" name="signupRestaurantCity" size='30'></label><br>
+		<br>
+		
+		<label><input id="signupRestaurantDoesDeliver" type="checkbox" name="signupRestaurantDoesDeliver">Liefert Ihr Mittagsessen ausser Haus (auch wenn es von Dritten geliefert wird)? </label><br>
+		<div id='sectionDelivery' style="display:block;">
+			<label>Wer liefert ausser Haus? <select id="signupRestaurantDelivery" name="signupRestaurantDelivery">
+			  <option value="Intern" selected="">Intern</option>
+			  <option value="Foodora">Foodora</option>
+			  <option value="Deliveroo">Deliveroo</option>
+			  <option value="Lieferheld">Lieferheld</option>
+				  <option value="Andere">Andere</option></select>
+			</label><br>
+			<label id='sectionOtherDelivery' style="display: block;">Andere: <input id="signupRestaurantOtherDelivery" type="text" name="signupRestaurantOtherDelivery" size="50"></label><br>
+		</div><br>
+	<input type='submit' id='signupRestaurantBtn' value='Jetzt registrieren' />
+
+	<script type="text/javascript">
+		var sectionDelivery = document.getElementById('sectionDelivery');
+		var signupRestaurantDoesDeliver = document.getElementById('signupRestaurantDoesDeliver');
+		var sectionOtherDelivery = document.getElementById('sectionOtherDelivery');
+		var signupRestaurantDelivery = document.getElementById('signupRestaurantDelivery');
+
+		// EXPAND DELIVERY-INPUT FORM IF USER HAS A RESTAURANT AND WANTS TO REGISTER IT
+		if (sectionDelivery) {
+			sectionDelivery.style.display = 'none';
+		}
+		signupRestaurantDoesDeliver.addEventListener('change',function() {
+	    if (signupRestaurantDoesDeliver.checked == true){
+	    	sectionDelivery.style.display = 'block';
+	    } else {
+	    	sectionDelivery.style.display = 'none';
+	    }
+		});
+
+		// EXPAND DELIVERY-OTHER-INPUT SECTION IF OPTION 'OTHER' WAS SELECTED
+		if (sectionOtherDelivery) {
+			sectionOtherDelivery.style.display = 'none';
+		}
+		signupRestaurantDelivery.addEventListener('change', function(){
+			if (signupRestaurantDelivery.value === 'Andere') {
+				sectionOtherDelivery.style.display = 'block';
+			} else {
+				sectionOtherDelivery.style.display = 'none';
+			}
+		});
+	</script>
