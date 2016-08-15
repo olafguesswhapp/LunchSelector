@@ -2,39 +2,45 @@
 
 var express = require('express');
 var router = express.Router();
-var moment = require('moment');
 var Offers = require('../../models/offers');
+var Suppliers = require('../../models/suppliers');
 var authentication = require('../../lib/authentication');
+var moment = require('moment');
 
 router.get('/', authentication.isLoggedInAsSupplier, function (req, res) {
 	console.log('*** client/supply/index.js route - /supply -');
 	var offerCategory = 1; // 1 = Lunch
 	var startDate = new Date();
-	startDate.setUTCHours(0,0,0,0);
 	var endDate = new Date();
+	var selectedSupplier;
+	startDate.setUTCHours(0,0,0,0);
 	endDate.setUTCHours(0,0,0,0);
   endDate.setDate(endDate.getDate() + 5);
-	displaySupplierOffers(req, res, startDate, endDate, offerCategory)	
+  if (req.query.selectedSupplier){selectedSupplier = req.query.selectedSupplier} else {selectedSupplier = 0}
+	displaySupplierOffers(req, res, startDate, endDate, offerCategory, selectedSupplier)	
 });
 
 router.post('/', authentication.isLoggedInAsSupplier, function(req, res) {
 	console.log('*** client/supply/index.js route POST - /supply -');
 	var offerCategory = 1; // 1 = Lunch
 	var startDate = new Date(req.body.startDate);
-	startDate.setUTCHours(0,0,0,0);
 	var endDate = new Date(startDate);
 	var endDate = new Date();
+	var selectedSupplier = parseInt(req.body.selectedSupplier, 10);
+	startDate.setUTCHours(0,0,0,0);
   endDate.setDate(endDate.getDate() + parseInt(req.body.endNumberDays));
-	displaySupplierOffers(req, res, startDate, endDate, offerCategory)	
+	displaySupplierOffers(req, res, startDate, endDate, offerCategory, selectedSupplier)	
 });
 
-function displaySupplierOffers(req, res, startDate, endDate, offerCategory) {
+function displaySupplierOffers(req, res, startDate, endDate, offerCategory, selectedSupplier) {
 	var context = {
 		startDate: moment(new Date(startDate)).format('YYYY-MM-DD'),
 		numberDays: Math.round((endDate- startDate)/(1000*60*60*24)),
-		'category1': []
+		'category1': [],
+		supplier: [],
+		selectedSupplier: parseInt(selectedSupplier, 10)
 	};
-	Offers.find({ 'offerSupplier': req.user.supplier[0],
+	Offers.find({ 'offerSupplier': req.user.supplier[selectedSupplier],
 							'offerDate': {'$gte': startDate, '$lte': endDate},
 							'offerCategory': 1})
 				.exec(function(err, offers){
@@ -63,14 +69,21 @@ function displaySupplierOffers(req, res, startDate, endDate, offerCategory) {
 				context[ 'category' + offerElement.offerCategory][helpIndex]['offers'].sort(function(a,b){
 					return (a.offerSortIndex - b.offerSortIndex);
 				});
-				// if (feIndex === offers.length - 1){
-					// console.log(context);
-				// res.render('../client/supply/supply', context);
-				// }
 			});
 		}
-		console.log(context);
-		res.render('../client/supply/supply', context);
+	}).then(function(){
+		Suppliers.find({ _id: {$in: req.user.supplier}})
+						.select('supplierName')
+						.exec(function(err, suppliers){
+			if (err || suppliers === null){
+				console.log('Something is wrong - cannot find the users suppliers');
+			} else {
+				context.supplier = suppliers.map(function(supplier){return supplier.supplierName});
+			}
+		}).then(function(){
+			console.log(context);
+			res.render('../client/supply/supply', context);
+		});
 	});
 };
 
@@ -91,7 +104,8 @@ router.post('/offer', authentication.isLoggedInAsSupplier, function (req, res){
 		default:
 			maxRange = 10;
 	}
-	Offers.find({offerDate: req.body.offerDate, offerCategory: 1, $and: [{'offerSortIndex': {$gte: minRange}}, {'offerSortIndex': {$lt: maxRange}}] })
+	Offers.find({ offerDate: req.body.offerDate, offerCategory: 1, offerSupplier: req.user.supplier[parseInt(req.body.selectedSupplier, 10)],
+		$and: [{'offerSortIndex': {$gte: minRange}}, {'offerSortIndex': {$lt: maxRange}}] })
 				.select('offerSortIndex')
 				.exec(function(err, offerIndex){
 		if (err || offerIndex.length === 0) {
@@ -112,7 +126,7 @@ router.post('/offer', authentication.isLoggedInAsSupplier, function (req, res){
 			offerName: req.body.offerName,
 			offerPrice: req.body.offerPrice,
 			offerSortIndex: proposedIndex,
-			offerSupplier: req.user.supplier[0]
+			offerSupplier: req.user.supplier[parseInt(req.body.selectedSupplier, 10)]
 		});
 		newSupplierOffer.save(function(err, newOffer){
 			if(err) {
