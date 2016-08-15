@@ -12,9 +12,11 @@ router.get('/', authentication.isLoggedIn, function (req, res) {
 		console.log('*** client/offfers/index.js route - offers/ - ');
 		var today = new Date(new Date().setUTCHours(0,0,0,0));
 		var helpArray = [];
-		Offers.find({ offerSupplier: { $in: req.user.preferredSuppliers }, offerDate: today})
+		Offers.find({ offerCategory: 1 , offerSupplier: { $in: req.user.preferredSuppliers }, offerDate: today})
+					.select('offerDate offerName offerPrice  offerSortIndex offerSupplier')
 					.exec(function(err, currentOffers){
-			if (err || currentOffers.length === 0) {
+			console.log(currentOffers);
+			if (err ) {
 				console.log('Preferred Suppliers do not have any offers'); // FLASH MESSAGE you have not yet selected a preferred supplier
 				res.redirect('/offers/select');
 			} else {
