@@ -4,6 +4,7 @@
 <p>Name: {{name}}</p>
 <p>Rolle: {{role}}</p>
 <p>Default Stadt: {{selectedCity}}</p>
+<p>Preferred Suppliers: {{#preferredSuppliers}}{{this}}{{#if @last}}{{else}},{{/if}} {{/preferredSuppliers}}</p>
 
 <form role="form" action="/logout" method="GET">
   <button type="submit">Abmelden</button>
