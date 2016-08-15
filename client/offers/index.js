@@ -5,6 +5,7 @@ var router = express.Router();
 var LSUsers = require('../../models/lsusers');
 var Suppliers = require('../../models/suppliers');
 var Offers = require('../../models/offers');
+var Cities = require('../../models/cities');
 var authentication = require('../../lib/authentication');
 
 router.get('/', authentication.isLoggedIn, function (req, res) {
@@ -91,6 +92,8 @@ router.get('/select', authentication.isLoggedIn, function (req, res) {
 	console.log('*** client/offfers/index.js route - offers/select - ');
 	var helpArray = [];
 	var selectedCity = req.user.selectedCity;
+	var availableCities;
+	var supplierHelp;
 	if (req.query.selectedCity){
 		selectedCity = req.query.selectedCity;
 		LSUsers.findOneAndUpdate({_id: req.user._id}, { $set: { selectedCity: req.query.selectedCity }}, {new: true}, function(err, user){
@@ -100,7 +103,14 @@ router.get('/select', authentication.isLoggedIn, function (req, res) {
     	}
     });
 	}
-	var supplierHelp;
+	Cities.find({cityStatus: true}, function(err, cities){
+		if (err || cities === null ){
+			console.log('No cities with status = true');
+			availableCities = ['no City'];
+		} else {
+			availableCities = cities.map(function(city){return city.cityName});
+		}
+	});
 	Suppliers.find({ supplierCity: selectedCity, _id: { $nin: req.user.preferredSuppliers }})
 					.exec(function(err, supplier){
 		if (err || supplier.length === 0) {
@@ -111,7 +121,7 @@ router.get('/select', authentication.isLoggedIn, function (req, res) {
 		var supplierSelection = {
 			userName: req.user.username, // CHANGE from JWT
 			selectedCity: selectedCity, // CHANGE from POST request
-			availableCities: ['Düsseldorf', 'Köln'],
+			availableCities: availableCities,
 			suppliers: supplierHelp
 		};
 		console.log(supplierSelection);
