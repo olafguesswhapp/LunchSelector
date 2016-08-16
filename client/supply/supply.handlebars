@@ -1,6 +1,6 @@
-<h2>Bitte gibt neue Angebote ein bzw. änder ein aktuelles Angebot</h2>
-<form action='/supply' method='GET'> {{!--  target="_blank"  --}}
-	<label>Für Dein Restaurant: 
+
+<form action='/supply' method='GET'>
+	<label><h3 style='display: inline;"'>Gib hier die Mittagsangebote ein für  </h3> 
 		<select id="selectedSupplier" required name="selectedSupplier" onchange='this.form.submit();'>
 		  {{#each supplier}}
 		  <option value='{{@index}}' {{#checkCity ../selectedSupplier @index 'selected' ''}}{{/checkCity}}>{{this}}</option>
@@ -21,10 +21,11 @@
 	<input type='submit' id='offerSubmit' value='Senden'/>
 	<span id='offerAlert' style='display:none;'>Danke, Tagesangebot wurde erfasst</span>
 </form>
+<br>
 {{#if category1}}
 	<form role='form' method='POST' name='reloadSite' action='supply'>
 		<input type='hidden' name='selectedSupplier' value='{{selectedSupplier}}'>
-		<h3>Die Angebote Deines Restaurants ab <input type='date' id='startDate' name='startDate'> für die nächsten <input type='number' name='endNumberDays' id='endNumberDays' min='1' max='14'> Tage. <input type='submit' name='offerUpdate' id='offerUpdate' value='Aktualisieren' style='display: none'></h3>
+		<h3>Die Mittagsangebote Deines Restaurants ab dem <input type='date' id='startDate' name='startDate'> für die nächsten <input type='number' name='endNumberDays' id='endNumberDays' min='1' max='14'> Tage: <input type='submit' name='offerUpdate' id='offerUpdate' value='Aktualisieren' style='display: none'></h3>
 	</form>
 	<div style='width: 100%;'>
 		
@@ -102,7 +103,7 @@
 		encodeURIComponent(document.getElementById('selectedSupplier').value) + '\&' +
 		encodeURIComponent('offerPrice') + '=' + 
 		encodeURIComponent(document.getElementById('offerPrice').value) + '\&' +
-		encodeURIComponent('offerCategory') + '=' + 1 + '\&' +
+		encodeURIComponent('offerCategory') + '=' + 1 + '\&' + // 1 = Lunch
 		encodeURIComponent('offerType') + '=' + 
 		encodeURIComponent(document.getElementById('offerType').value);
 		console.log(requestData);
