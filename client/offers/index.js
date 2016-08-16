@@ -15,7 +15,7 @@ router.get('/', authentication.isLoggedIn, function (req, res) {
 		Offers.find({ offerCategory: 1 , offerSupplier: { $in: req.user.preferredSuppliers }, offerDate: today})
 					.select('offerDate offerName offerPrice  offerSortIndex offerSupplier')
 					.exec(function(err, currentOffers){
-			if (err ) {
+			if (err) {
 				console.log('Preferred Suppliers do not have any offers'); // FLASH MESSAGE you have not yet selected a preferred supplier
 				res.redirect('/offers/select');
 			} else {
@@ -44,7 +44,7 @@ router.get('/', authentication.isLoggedIn, function (req, res) {
 								supplierCity: 				supplierElement.supplierCity,
 								offers: 							currentOffers.filter(function(offerElement){
 									return (JSON.stringify(offerElement.offerSupplier) === JSON.stringify(supplierElement._id))
-								}).sort(function(a,b){return (a.offerSortIndex - b.offerSortIndex)})
+								}).sort(sortBySortIndex)
 							}
 						});
 						supplierOffers.availableCities = helpArray.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
@@ -54,6 +54,10 @@ router.get('/', authentication.isLoggedIn, function (req, res) {
 			}
 		});
 });
+
+function sortBySortIndex (a, b){
+	return (a.offerSortIndex - b.offerSortIndex)
+};
 
 router.post('/select/append', authentication.isLoggedIn, function(req, res) {
 	console.log('*** client/offfers/index.js route - offers/select/append - ');
