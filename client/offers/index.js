@@ -115,22 +115,22 @@ router.get('/select', authentication.isLoggedIn, function (req, res) {
 		} else {
 			availableCities = cities.map(function(city){return city.cityName});
 		}
-	});
-	Suppliers.find({ supplierCity: selectedCity, _id: { $nin: req.user.preferredSuppliers }})
-					.exec(function(err, supplier){
-		if (err || supplier.length === 0) {
-			console.log('Currently no suppliers available to choose from');
-		} else {
-			supplierHelp = supplier;
-		}
-		var supplierSelection = {
-			userName: req.user.username, // CHANGE from JWT
-			selectedCity: selectedCity, // CHANGE from POST request
-			availableCities: availableCities,
-			suppliers: supplierHelp
-		};
-		console.log(supplierSelection);
-	  res.render('../client/offers/select', supplierSelection);
+	}).then(function(){
+		Suppliers.find({ supplierCity: selectedCity, _id: { $nin: req.user.preferredSuppliers }})
+						.exec(function(err, supplier){
+			if (err || supplier.length === 0) {
+				console.log('Currently no suppliers available to choose from');
+			} else {
+				supplierHelp = supplier;
+			}
+			var supplierSelection = {
+				selectedCity: selectedCity,
+				availableCities: availableCities,
+				suppliers: supplierHelp
+			};
+			console.log(supplierSelection);
+		  res.render('../client/offers/select', supplierSelection);
+		});
 	});
 });
 

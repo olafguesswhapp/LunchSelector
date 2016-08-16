@@ -1,6 +1,6 @@
-<h1>Übernehme eines dieser Restaurants aus {{selectedCity}} in Deine tägliche Preferred Liste</h1>
+<h3>Übernehme Restaurants aus {{selectedCity}} und deren Mittagsangebote in Deine Favoriten Liste</h3>
 <form action='/offers/select' method='GET'> {{!--  target="_blank"  --}}
-	<label>In einer anderen Stadt nach Lieblingsrestaurant suchen? 
+	<label>In einer anderen Stadt nach Restaurants suchen? 
 		<select id="selectedCity" required name="selectedCity" onchange='this.form.submit();'>
 		  {{#each availableCities}}
 		  <option value='{{this}}' {{#checkCity ../selectedCity this 'selected' ''}}{{/checkCity}}>{{this}}</option>
