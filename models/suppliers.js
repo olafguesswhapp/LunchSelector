@@ -11,6 +11,8 @@ var suppliersSchema = new Schema({
 	supplierStreet: String,
 	supplierZipCode: String,
 	supplierCity: String,
+	supplierSite: String,
+	supplierEmail: String,
 	supplierDoesDeliver: Boolean,
 	supplierDeliversWith: String,
 	suppplierCreated: Date,

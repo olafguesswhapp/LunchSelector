@@ -51,6 +51,8 @@ router.post('/', function (req, res) {
 				supplierStreet: req.body.signupRestaurantStreet,
 				supplierZipCode: req.body.signupRestaurantPLZ,
 				supplierCity: req.body.signupRestaurantCity,
+				supplierSite: req.body.signupRestaurantSite,
+				supplierEmail: req.body.signupRestaurantEmail,
 				supplierDoesDeliver: supplierDoesDeliver,
 				supplierDeliversWith: whoDelivers,
 				suppplierCreated: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
@@ -85,6 +87,29 @@ router.post('/', function (req, res) {
 							}
 						}
 					});
+				}
+			});
+		} else {
+			var newUserData = new LSUsers ({
+				username: req.body.signupEmail,
+				password: req.body.signupPassword,
+				name: req.body.signupName,
+				role: newUserRole,
+				created: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
+				gender: 0,
+				age: 0,
+				selectedCity: req.body.signupCity,
+				supplier: []
+			});
+			newUserData.save(function(err, newUser){
+				if(err) {
+					res.redirect(303, '/signup');
+				} else {
+					if (req.body.signupIsRestaurant && req.body.signupHasLunch) {
+						res.redirect(303, '/supply');	
+					} else {
+						res.redirect(303, '/offers');
+					}
 				}
 			});
 		}
