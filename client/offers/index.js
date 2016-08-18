@@ -47,7 +47,9 @@ router.get('/', authentication.isLoggedIn, function (req, res) {
 								}).sort(sortBySortIndex)
 							}
 						});
+						console.log(helpArray);
 						supplierOffers.availableCities = helpArray.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
+						console.log(supplierOffers);
 		    		res.render('../client/offers/offers', supplierOffers);
 					}
 				});

@@ -44,8 +44,10 @@ function displaySupplierOffers(req, res, startDate, endDate, offerCategory, sele
 							'offerDate': {'$gte': startDate, '$lte': endDate},
 							'offerCategory': 1})
 				.exec(function(err, offers){
-		if(err || offers.length<1){
-			console.log('No offer was found? Size of returned array ' + offers.length)
+		console.log(offers);
+		if(err){
+			console.log('No offer was found due to error ');
+			console.log(err);
 		} else {
 			offers.forEach(function(offerElement, feIndex){
 				var offerDate = moment(offerElement.offerDate).format('YYYY-MM-DD')
@@ -75,6 +77,7 @@ function displaySupplierOffers(req, res, startDate, endDate, offerCategory, sele
 		Suppliers.find({ _id: {$in: req.user.supplier}})
 						.select('supplierName')
 						.exec(function(err, suppliers){
+			console.log(suppliers);
 			if (err || suppliers === null){
 				console.log('Something is wrong - cannot find the users suppliers');
 			} else {
