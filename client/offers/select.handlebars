@@ -18,7 +18,7 @@
 			<div style='float: right;'>
 				<span style='float: right; background-color: black;color: white;width: 30px;text-align: center;border-radius: 6px;' onclick="appendSupplier('{{_id}}')" > + </span>	
 			</div>
-			<div id='offer{{@index}}' style='width: 200px; display:none; position:absolute; background-color: black; color: white; padding: 8px;'><h4>{{supplierName}}</h4>{{#offers}}<span style='float: left;'>{{dish}}</span><span style='float: right;'>{{price}}</span><br><br>{{/offers}}</div>
+			<div id='offer{{@index}}' style='width: 200px; display:none; position:absolute; background-color: black; color: white; padding: 8px;'><h4>{{supplierName}}</h4>{{#offers}}<span style='float: left;'>{{offerName}}</span><span style='float: right;'>{{offerPrice}}</span><br><br>{{/offers}}</div>
 			<script type="text/javascript">
 				function openOffers{{@index}}(){
 					var open = document.getElementById('offer{{@index}}');

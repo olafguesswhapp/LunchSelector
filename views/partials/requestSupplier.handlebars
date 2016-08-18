@@ -1,4 +1,4 @@
-<h3>Fehlt Dir ein Restaurant das Du hier gerne aufgeführt haben möchtest? <a href="http://localhost:3000/offers/select">Hast Du schon in der Auswahl nach dem Restaurant gesucht?</a> Wenn Du es dort nicht gefunden hast bitte trag hier Namen und andere Informationen ein - wir kümmern uns darum!</h3>
+<h3>Fehlt Dir ein Restaurant das Du hier gerne aufgeführt haben möchtest?<br>{{#if currentlyOnOffers}}<a href="http://localhost:3000/offers/select">Hast Du schon in der Auswahl nach dem Restaurant gesucht?</a> Wenn Du es dort nicht gefunden hast {{/if}}Bitte trag hier Namen und andere Informationen ein - wir kümmern uns darum!</h3>
 
 <form role="form" method="POST" name="requestData" action="supply/request2">
 	<input type="hidden" name="userId" value="{{userId}}">

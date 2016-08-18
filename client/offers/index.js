@@ -26,8 +26,9 @@ router.get('/', authentication.isLoggedIn, function (req, res) {
 						res.redirect('/offers/select');
 					} else {
 						var supplierOffers = {
-							userName: req.user.username, // CHANGE from JWT
-							selectedCity: req.user.selectedCity, // CHANGE from POST request
+							userName: req.user.username,
+							selectedCity: req.user.selectedCity,
+							currentlyOnOffers: true,
 							suppliers: []
 						};
 						supplierOffers.suppliers = supplier.map(function(supplierElement){
@@ -97,10 +98,8 @@ router.post('/remove', authentication.isLoggedIn, function(req, res) {
 
 router.get('/select', authentication.isLoggedIn, function (req, res) {
 	console.log('*** client/offfers/index.js route - offers/select - ');
-	var helpArray = [];
 	var selectedCity = req.user.selectedCity;
 	var availableCities;
-	var supplierHelp;
 	if (req.query.selectedCity){
 		selectedCity = req.query.selectedCity;
 		LSUsers.findOneAndUpdate({_id: req.user._id}, { $set: { selectedCity: req.query.selectedCity }}, {new: true}, function(err, user){
@@ -120,6 +119,8 @@ router.get('/select', authentication.isLoggedIn, function (req, res) {
 	}).then(function(){
 		Suppliers.find({ supplierCity: selectedCity, _id: { $nin: req.user.preferredSuppliers1 }})
 						.exec(function(err, supplier){
+			var supplierHelp; // needed in case no supplier found
+			var today = new Date(new Date().setUTCHours(0,0,0,0));
 			if (err || supplier.length === 0) {
 				console.log('Currently no suppliers available to choose from');
 			} else {
@@ -128,10 +129,31 @@ router.get('/select', authentication.isLoggedIn, function (req, res) {
 			var supplierSelection = {
 				selectedCity: selectedCity,
 				availableCities: availableCities,
+				currentlyOnOffers: false,
 				suppliers: supplierHelp
 			};
-			console.log(supplierSelection);
-		  res.render('../client/offers/select', supplierSelection);
+			supplierSelection.suppliers.forEach(function(supplierElement, supplierIndex){
+				Offers.find({ offerCategory: 1 , offerSupplier: supplierElement._id, offerDate: today})
+							.select('offerDate offerName offerPrice  offerSortIndex offerSupplier')
+							.exec(function(err, currentOffers){
+					if (err) {
+						console.log('Something went wrong');
+					} else {
+						supplierElement.offers = currentOffers.map(function(offer){
+							return {
+								offerName: offer.offerName,
+								offerPrice: offer.offerPrice,
+								offerSortIndex: offer.offerSortIndex
+							}
+						}).sort(sortBySortIndex);
+					}
+					console.log(supplierIndex + ' von ' + (supplierSelection.suppliers.length -1));
+					if (supplierSelection.suppliers.length - 1 === supplierIndex){
+						console.log(supplierSelection);
+						res.render('../client/offers/select', supplierSelection);
+					}
+				});
+			});
 		});
 	});
 });
