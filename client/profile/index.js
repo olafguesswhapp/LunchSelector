@@ -10,7 +10,7 @@ var moment = require('moment');
 router.get('/', authentication.isLoggedIn, function (req, res) {
 		console.log('*** client/profile/index.js');
 		var preferredSuppliers;
-		Suppliers.find({_id: { $in: req.user.preferredSuppliers }}, function(err, suppliers){
+		Suppliers.find({_id: { $in: req.user.preferredSuppliers1 }}, function(err, suppliers){
 			if (err || suppliers.length === 0){
 				console.log('No suppliers found');
 			} else {

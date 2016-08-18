@@ -12,14 +12,14 @@ router.get('/', authentication.isLoggedIn, function (req, res) {
 		console.log('*** client/offfers/index.js route - offers/ - ');
 		var today = new Date(new Date().setUTCHours(0,0,0,0));
 		var helpArray = [];
-		Offers.find({ offerCategory: 1 , offerSupplier: { $in: req.user.preferredSuppliers }, offerDate: today})
+		Offers.find({ offerCategory: 1 , offerSupplier: { $in: req.user.preferredSuppliers1 }, offerDate: today})
 					.select('offerDate offerName offerPrice  offerSortIndex offerSupplier')
 					.exec(function(err, currentOffers){
 			if (err) {
 				console.log('Preferred Suppliers do not have any offers'); // FLASH MESSAGE you have not yet selected a preferred supplier
 				res.redirect('/offers/select');
 			} else {
-				Suppliers.find({ _id : { $in: req.user.preferredSuppliers }})
+				Suppliers.find({ _id : { $in: req.user.preferredSuppliers1 }})
 						.exec(function(err, supplier){
 					if (err || supplier.length === 0) {
 						console.log('User has no preferredSupplier'); // Direct to supplier Selectio or MESSAGE
@@ -63,7 +63,7 @@ router.post('/select/append', authentication.isLoggedIn, function(req, res) {
 	console.log('*** client/offfers/index.js route - offers/select/append - ');
 	console.log(req.body);
 	LSUsers.findByIdAndUpdate( req.user._id,
-			    {$push: {'preferredSuppliers': req.body.supplierId }},
+			    {$push: {'preferredSuppliers1': req.body.supplierId }},
 			    {safe: true, upsert: true, new : true}, function(err, user) {
     if (err || user.length === 0) {
     	console.log('Could not be appended');
@@ -76,12 +76,12 @@ router.post('/select/append', authentication.isLoggedIn, function(req, res) {
 
 router.post('/remove', authentication.isLoggedIn, function(req, res) {
 	console.log('*** client/offfers/index.js route - offers/remove - ');
-	var adjustedPreferredSuppliers = req.user.preferredSuppliers.filter(function(supplier){
+	var adjustedPreferredSuppliers = req.user.preferredSuppliers1.filter(function(supplier){
 		return (JSON.stringify(supplier) !== JSON.stringify(req.body.supplierId));
 	});
-	req.user.preferredSuppliers = adjustedPreferredSuppliers;
+	req.user.preferredSuppliers1 = adjustedPreferredSuppliers;
 	LSUsers.findByIdAndUpdate( req.user._id,
-			    {$set: {'preferredSuppliers': adjustedPreferredSuppliers }},
+			    {$set: {'preferredSuppliers1': adjustedPreferredSuppliers }},
 			    {safe: true, upsert: true, new : true}, function(err, user) {
     if (err || user.length === 0) {
     	console.log('adjustedPreferredSuppliers could not be modified');
@@ -116,7 +116,7 @@ router.get('/select', authentication.isLoggedIn, function (req, res) {
 			availableCities = cities.map(function(city){return city.cityName});
 		}
 	}).then(function(){
-		Suppliers.find({ supplierCity: selectedCity, _id: { $nin: req.user.preferredSuppliers }})
+		Suppliers.find({ supplierCity: selectedCity, _id: { $nin: req.user.preferredSuppliers1 }})
 						.exec(function(err, supplier){
 			if (err || supplier.length === 0) {
 				console.log('Currently no suppliers available to choose from');

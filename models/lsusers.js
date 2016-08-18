@@ -14,7 +14,7 @@ var LSUsersSchema = new Schema({
 	gender: Number,
 	age: Number,
 	selectedCity: String,
-	preferredSuppliers: [{ type: Schema.Types.ObjectId, ref: 'Suppliers' }],
+	preferredSuppliers1: [{ type: Schema.Types.ObjectId, ref: 'Suppliers' }],
 	supplier: [{ type: Schema.Types.ObjectId, ref: 'Suppliers' }]
 });
 
