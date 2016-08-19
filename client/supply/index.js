@@ -4,6 +4,7 @@ var express = require('express');
 var router = express.Router();
 var Offers = require('../../models/offers');
 var Suppliers = require('../../models/suppliers');
+var Proposals = require('../../models/proposals');
 var authentication = require('../../lib/authentication');
 var moment = require('moment');
 
@@ -167,5 +168,19 @@ function deleteOffer(req, res) {
 function recordProposal(req, res) {
 	console.log('*** client/supply/index.js route - supply/request - ');
 	console.log(req.body);
-  res.json('Danke für die Anfrage.')
+	var newProposal = new Proposals ({
+		proposalInfo: req.body.requestInfo,
+		proposalUpdate: req.body.requestUpdate,
+		proposalRevealToSupplier: req.body.requestPersonal,
+		proposalBy: req.user._id,
+		proposalCreated: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
+		proposalStatus: 'recorded'
+	});
+	newProposal.save(function(err, newProp){
+		if(err) {
+			res.redirect(303, '/offers');
+		} else {
+			res.json('Danke für die Anfrage.')
+		}
+	});
 };
