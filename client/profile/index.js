@@ -10,11 +10,39 @@ var moment = require('moment');
 router.get('/', authentication.isLoggedIn, displayProfile);
 router.get('/logout', logoutUser);
 router.post('/supplier', authentication.isLoggedIn, addSupplier);
+router.get('/supplier/:supplierName', authentication.isLoggedInAsSupplier, function(req, res){
+	console.log('*** client/profile/index.js route - /profile/supplier/supplierName -');
+	console.log(req.params.supplierName);
+	Suppliers.findOne({ supplierName: req.params.supplierName})
+					.exec(function(err, supplier){
+		if (err) {
+			console.log('Something went wrong');
+			res.redirect('/profile');
+		} else {
+			var context = {
+				supplierName: supplier.supplierName,
+				supplierDescription: supplier.supplierDescription,
+				supplierType: supplier.supplierType,
+				supplierStart: supplier.supplierStart,
+				supplierEnd: supplier.supplierEnd,
+				supplierStreet: supplier.supplierStreet,
+				supplierZipCode: supplier.supplierZipCode,
+				supplierCity: supplier.supplierCity,
+				supplierSite: supplier.supplierSite,
+				supplierEmail: supplier.supplierEmail,
+				supplierDoesDeliver: supplier.supplierDoesDeliver,
+				supplierDeliversWith: supplier.supplierDeliversWith
+			};
+			console.log(context);
+			res.render('../client/profile/supplier', context);
+		}
+	});
+});
 
 module.exports = router;
 
 function displayProfile(req, res) {
-	console.log('*** client/profile/index.js');
+	console.log('*** client/profile/index.js route - /profile -');
 	var preferredSuppliers;
 	Suppliers.find({_id: { $in: req.user.preferredSuppliers1 }}, function(err, suppliers){
 		if (err || suppliers.length === 0){

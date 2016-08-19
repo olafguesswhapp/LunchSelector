@@ -3,7 +3,7 @@
 <p>Name: {{name}}</p>
 <p>Rolle: {{role}}</p>
 <p>Meine favorisierte Stadt: {{selectedCity}}</p>
-<p>Meine Restaurants: {{#supplier}}{{this}}{{#if @last}}{{else}},{{/if}} {{/supplier}}</p>
+<p>Meine Restaurants: {{#supplier}}<a href='/profile/supplier/{{this}}'>{{this}}</a>{{#if @last}}{{else}},{{/if}} {{/supplier}}</p>
 <p>Meine Favoriten: {{#preferredSuppliers}}{{this}}{{#if @last}}{{else}},{{/if}} {{/preferredSuppliers}}</p>
 <input type='submit' id='registerNewSupplierBTN' name='registerNewSupplierBTN' value='Mein Restaurant anmelden' onclick='showRegisterSupplierForm()'><br><br>
 <div id='registerNewSupplierFrame' style='border-style: solid; border-color: lightgray; padding: 10px; display: none'>
