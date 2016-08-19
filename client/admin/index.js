@@ -3,6 +3,7 @@
 var express = require('express');
 var router = express.Router();
 var Cities = require('../../models/cities');
+var Proposals = require('../../models/proposals');
 var authentication = require('../../lib/authentication');
 
 router.get('/', authentication.isLoggedInAsAdmin, displayAdmin);
@@ -13,15 +14,24 @@ module.exports = router;
 
 function displayAdmin (req, res) {
   console.log('*** client/admin/index.js route - /admin - ');
+  var context;
   Cities.find().exec(function(err, city){
-    var context = { cities: []};
+    context = { cities: []};
     if (err || city.length === 0) {
       context.cities = [{ cityName: 'no cities recorded yet', cityStatus: false }];
     } else {
       context.cities = city;
     }
-    console.log(context);
-    res.render('../client/admin/admin', context);
+  }).then(function(){
+    Proposals.find({ proposalStatus: { $ne: 'completed'}})
+            .populate('proposalBy', 'username')
+            .exec(function(err, proposal){
+      if (err) { console.log('Something went wrong')} else {
+        context.proposals = proposal;
+      }
+      console.log(context);
+      res.render('../client/admin/admin', context);
+    });
   });
 };
 

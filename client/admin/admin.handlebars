@@ -10,6 +10,13 @@
 	</div>
 	{{/cities}}
 </div>
+<br>
+<div>
+	<h3>Offene Anfragen:</h3>
+	{{#proposals}}
+		<p>"{{proposalInfo}}" von: {{proposalBy.username}} am: {{proposalCreated}} status: {{proposalStatus}}</p>
+	{{/proposals}}
+</div>
 
 <script type="text/javascript">
 	document.getElementById('submitBTN').addEventListener('click', function() {
