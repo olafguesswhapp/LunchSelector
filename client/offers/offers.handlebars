@@ -9,7 +9,7 @@
 
 <div id='offersParent' style="width: 100%; margin: 0 0; text-align: center">
 	{{#suppliers}}
-	<div id='supplierCard{{@index}}' style='width: 280px; height: 150px; border-radius: 5px;border-width: 1px;border-color: grey;border-style: solid;padding: 10px;margin: 10px; text-align: left; display: {{#checkCity ../selectedCity supplierCity 'inline-table' 'none'}}{{/checkCity}};' >
+	<div id='supplierCard{{@index}}' style='width: 280px; height: 150px; border-radius: 5px;border-width: 1px;border-color: grey;border-style: solid;padding: 10px;margin: 10px; text-align: left; display: {{#checkVar ../selectedCity supplierCity 'inline-table' 'none'}}{{/checkVar}};' >
 		<div style='height: 100%;'>
 			<div style='height: 30%; background-color: aliceblue;'>
 				<span>{{supplierStart}} - {{supplierEnd}} {{#restaurantOpen supplierStart supplierEnd}}{{/restaurantOpen}}</span>

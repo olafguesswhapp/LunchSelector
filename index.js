@@ -43,8 +43,8 @@ var exphbs  = require('express-handlebars')
         var currentTime = d.getHours() + ':' + d.getMinutes();
         if (timeOpen<currentTime && currentTime<timeClose) {return 'open';} else {return 'closed';}
       },
-      checkCity: function(selectedCity, dataSetCity, ifTrue, ifFalse) {
-        if (selectedCity === dataSetCity) {
+      checkVar: function(varA, varB, ifTrue, ifFalse) {
+        if (varA === varB) {
           return ifTrue;
         } else {
           return ifFalse;

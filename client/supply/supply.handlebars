@@ -3,7 +3,7 @@
 	<label><h3 style='display: inline;"'>Gib hier die Mittagsangebote ein für  </h3> 
 		<select id="selectedSupplier" required name="selectedSupplier" onchange='this.form.submit();'>
 		  {{#each supplier}}
-		  <option value='{{@index}}' {{#checkCity ../selectedSupplier @index 'selected' ''}}{{/checkCity}}>{{this}}</option>
+		  <option value='{{@index}}' {{#checkVar ../selectedSupplier @index 'selected' ''}}{{/checkVar}}>{{this}}</option>
 		  {{/each}}
 	  </select>
 	</label>
