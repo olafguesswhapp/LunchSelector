@@ -4,12 +4,17 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 
-router.get('/', function (req, res) {
+router.get('/', renderLandingPage);
+router.post('/login', processLogin);
+
+module.exports = router;
+
+function renderLandingPage(req, res) {
   console.log('*** index.js route - / - ');
   res.render('../client/landingpage/landingpage', {layout: 'landingpage'});
-})
+};
 
-router.post('/login', function(req, res) {
+function processLogin(req, res) {
   console.log('*** index.js route - /login/ - ');
   passport.authenticate('local', function(err, user, info) {
     console.log(err);
@@ -32,6 +37,4 @@ router.post('/login', function(req, res) {
       }
     });
   })(req, res);
-})
-
-module.exports = router;
+};

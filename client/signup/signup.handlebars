@@ -14,9 +14,12 @@
   	</label><br>
   <p id="FieldAltertPWUnconfirmed" style="display: none;">
   	Warnung: Die Bestätigung des Passwortes stimmt nicht. Bitte bestätigen Sie dieses erneut</p><br>
-	<label>Für welche Stadt möchtest Du die Mittagsessen Deiner Lieblings-Restaurants täglich erhalten? <select id="signupCity" required name="signupCity">
-		  <option value="Düsseldorf" selected>Düsseldorf</option>
-		  <option value="Köln">Köln</option></select>
+	<label>Für welche Stadt möchtest Du die Mittagsessen Deiner Lieblings-Restaurants täglich erhalten?
+	<select id="signupCity" required name="signupCity">
+		{{#locals.availableCities}}
+		  <option value="{{this}}">{{this}}</option>
+		{{/locals.availableCities}}
+	</select>
 	</label><br>
 	<br>
 	<label><input id="signupIsRestaurant" type="checkbox" name="signupIsRestaurant">Betreibst Du auch ein Restaurant und möchtest die tägliche Mittagskarte anzeigen lassen?</label><br>

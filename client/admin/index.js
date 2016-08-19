@@ -5,7 +5,13 @@ var router = express.Router();
 var Cities = require('../../models/cities');
 var authentication = require('../../lib/authentication');
 
-router.get('/', authentication.isLoggedInAsAdmin, function (req, res) {
+router.get('/', authentication.isLoggedInAsAdmin, displayAdmin);
+router.post('/city', authentication.isLoggedInAsAdmin, recordCity);
+router.put('/city', authentication.isLoggedInAsAdmin, setCityStatus);
+
+module.exports = router;
+
+function displayAdmin (req, res) {
   console.log('*** client/admin/index.js route - /admin - ');
   Cities.find().exec(function(err, city){
     var context = { cities: []};
@@ -17,9 +23,9 @@ router.get('/', authentication.isLoggedInAsAdmin, function (req, res) {
     console.log(context);
     res.render('../client/admin/admin', context);
   });
-});
+};
 
-router.post('/city', authentication.isLoggedInAsAdmin, function(req, res){
+function recordCity(req, res){
   console.log('*** client/admin/index.js route POST - /admin/city - ');
   Cities.findOne({ cityName: req.body.cityName}, function(err, city){
     if (err || city != null) {
@@ -41,9 +47,9 @@ router.post('/city', authentication.isLoggedInAsAdmin, function(req, res){
       });
     }
   });
-});
+};
 
-router.put('/city', authentication.isLoggedInAsAdmin, function(req, res) {
+function setCityStatus(req, res) {
   console.log('*** client/admin/index.js route PUT - /admin/city - ');
   console.log(req.body);
   if (req.body){
@@ -61,6 +67,4 @@ router.put('/city', authentication.isLoggedInAsAdmin, function(req, res) {
   } else {
     res.status(404).json();
   }
-});
-
-module.exports = router;
+};

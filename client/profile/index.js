@@ -7,44 +7,50 @@ var LSUsers = require('../../models/lsusers');
 var authentication = require('../../lib/authentication');
 var moment = require('moment');
 
-router.get('/', authentication.isLoggedIn, function (req, res) {
-		console.log('*** client/profile/index.js');
-		var preferredSuppliers;
-		Suppliers.find({_id: { $in: req.user.preferredSuppliers1 }}, function(err, suppliers){
-			if (err || suppliers.length === 0){
-				console.log('No suppliers found');
-			} else {
-				preferredSuppliers = suppliers.map(function(supplier){return supplier.supplierName})
-			}
-		}).then(function(){
-			Suppliers.find({ _id: { $in: req.user.supplier }})
-							.select( 'supplierName')
-							.exec(function(err, suppliers){
-				if (err){
-					console.log('This user is not in charge of any supplier');
-				} else {
-					var context = {
-						username: req.user.username,
-						name: req.user.name,
-						role: req.user.role,
-						selectedCity: req.user.selectedCity,
-						preferredSuppliers: preferredSuppliers,
-						supplier: suppliers.map(function(supplier){return supplier.supplierName})
-					};
-					console.log(context);
-			    res.render('../client/profile/profile', context);
-				}
-			});
-		});
-});
+router.get('/', authentication.isLoggedIn, displayProfile);
+router.get('/logout', logoutUser);
+router.post('/supplier', authentication.isLoggedIn, addSupplier);
 
-router.get('/logout', function(req, res){
+module.exports = router;
+
+function displayProfile(req, res) {
+	console.log('*** client/profile/index.js');
+	var preferredSuppliers;
+	Suppliers.find({_id: { $in: req.user.preferredSuppliers1 }}, function(err, suppliers){
+		if (err || suppliers.length === 0){
+			console.log('No suppliers found');
+		} else {
+			preferredSuppliers = suppliers.map(function(supplier){return supplier.supplierName})
+		}
+	}).then(function(){
+		Suppliers.find({ _id: { $in: req.user.supplier }})
+						.select( 'supplierName')
+						.exec(function(err, suppliers){
+			if (err){
+				console.log('This user is not in charge of any supplier');
+			} else {
+				var context = {
+					username: req.user.username,
+					name: req.user.name,
+					role: req.user.role,
+					selectedCity: req.user.selectedCity,
+					preferredSuppliers: preferredSuppliers,
+					supplier: suppliers.map(function(supplier){return supplier.supplierName})
+				};
+				console.log(context);
+		    res.render('../client/profile/profile', context);
+			}
+		});
+	});
+};
+
+function logoutUser(req, res) {
 	console.log('*** client/profile/index.js route - /logout -');
 	req.logout();
 	res.redirect('/');
-});
+};
 
-router.post('/supplier', authentication.isLoggedIn, function(req, res){
+function addSupplier(req, res) {
 	console.log('*** client/profile/index.js route POST - /profile/supplier -');
 	var supplierDoesDeliver;
 	var whoDelivers;
@@ -82,6 +88,4 @@ router.post('/supplier', authentication.isLoggedIn, function(req, res){
 			});
 		}
 	});
-});
-
-module.exports = router;
+};

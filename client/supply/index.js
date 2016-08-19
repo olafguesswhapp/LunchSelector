@@ -7,7 +7,15 @@ var Suppliers = require('../../models/suppliers');
 var authentication = require('../../lib/authentication');
 var moment = require('moment');
 
-router.get('/', authentication.isLoggedInAsSupplier, function (req, res) {
+router.get('/', authentication.isLoggedInAsSupplier, suppliersSiteGet);
+router.post('/', authentication.isLoggedInAsSupplier, suppliersSitePost);
+router.post('/offer', authentication.isLoggedInAsSupplier, recordNewOffer);
+router.delete('/offer', authentication.isLoggedInAsSupplier, deleteOffer);
+router.post('/request', authentication.isLoggedIn, recordProposal);
+
+module.exports = router;
+
+function suppliersSiteGet(req, res) {
 	console.log('*** client/supply/index.js route - /supply -');
 	var offerCategory = 1; // 1 = Lunch
 	var startDate = new Date();
@@ -17,10 +25,10 @@ router.get('/', authentication.isLoggedInAsSupplier, function (req, res) {
 	endDate.setUTCHours(0,0,0,0);
   endDate.setDate(endDate.getDate() + 5);
   if (req.query.selectedSupplier){selectedSupplier = req.query.selectedSupplier} else {selectedSupplier = 0}
-	displaySupplierOffers(req, res, startDate, endDate, offerCategory, selectedSupplier)	
-});
+	displaySupplierOffers(req, res, startDate, endDate, offerCategory, selectedSupplier);
+};
 
-router.post('/', authentication.isLoggedInAsSupplier, function(req, res) {
+function suppliersSitePost(req, res) {
 	console.log('*** client/supply/index.js route POST - /supply -');
 	var offerCategory = 1; // 1 = Lunch
 	var startDate = new Date(req.body.startDate);
@@ -29,8 +37,8 @@ router.post('/', authentication.isLoggedInAsSupplier, function(req, res) {
 	var selectedSupplier = parseInt(req.body.selectedSupplier, 10);
 	startDate.setUTCHours(0,0,0,0);
   endDate.setDate(endDate.getDate() + parseInt(req.body.endNumberDays));
-	displaySupplierOffers(req, res, startDate, endDate, offerCategory, selectedSupplier)	
-});
+	displaySupplierOffers(req, res, startDate, endDate, offerCategory, selectedSupplier);
+};
 
 function displaySupplierOffers(req, res, startDate, endDate, offerCategory, selectedSupplier) {
 	var context = {
@@ -90,7 +98,7 @@ function displaySupplierOffers(req, res, startDate, endDate, offerCategory, sele
 	});
 };
 
-router.post('/offer', authentication.isLoggedInAsSupplier, function (req, res){
+function recordNewOffer(req, res) {
 	console.log('*** client/supply/index.js route POST - /supply/offer -');
 	var proposedIndex, maxRange;
 	var minRange = parseInt(req.body.offerType, 10);
@@ -139,9 +147,9 @@ router.post('/offer', authentication.isLoggedInAsSupplier, function (req, res){
 			}
 		});
 	});
-});
+};
 
-router.delete('/offer', authentication.isLoggedInAsSupplier, function(req, res) {
+function deleteOffer(req, res) {
 	console.log('*** client/supply/index.js route DELETE - /supply/offer -');
 	Offers.findByIdAndRemove(req.body.offerId, function(err, offerRemoved){
 		if (err){
@@ -154,18 +162,10 @@ router.delete('/offer', authentication.isLoggedInAsSupplier, function(req, res) 
 			res.json('Danke für die Anfrage.')
 		}
 	});
-});
+};
 
-router.post('/request', authentication.isLoggedIn, function (req, res) {
+function recordProposal(req, res) {
 	console.log('*** client/supply/index.js route - supply/request - ');
 	console.log(req.body);
   res.json('Danke für die Anfrage.')
-});
-
-router.post('/request2', authentication.isLoggedIn, function (req, res) {
-	console.log('*** client/supply/index.js route - supply/request2 - ');
-	console.log(req.body);
-  res.json('Danke für die Anfrage2.')
-});
-
-module.exports = router;
+};
