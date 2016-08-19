@@ -1,16 +1,32 @@
-<h2>{{supplierName}}</h2>
-<p>Beschreibung: {{supplierDescription}}</p>
-<p>Essen: {{supplierType}}</p>
-<p>Geöffnet von: {{supplierStart}} bis {{supplierEnd}}</p>
-<p>Adresse: {{supplierStreet}}</p>
-<p>{{supplierZipCode}} {{supplierCity}}</p>
-<p>{{supplierSite}}</p>
-<p>{{supplierEmail}}</p>
-{{#if supplierDoesDeliver}}
-<p>Essen wir geliefert durch {{supplierDeliversWith}}</p>
-{{/if}}
+<h3>Daten von {{supplierName}}:</h3>
+<form role='form' method='PUT' name='updateSupplier' action='profile/supplier'>
+	<label>Name: <input type='text' name='supplierName' id='supplierName' value='{{supplierName}}'></label><br><br>
+	<label>Beschreibung: <input type='text' name='supplierDescription' id='supplierDescription' value='{{supplierDescription}}'></label><br>
+	<label>Essen: <input type='text' name='supplierType' id='supplierType' value='{{supplierType}}'></label><br>
+	<label>Geöffnet von: <input type='time' name='supplierStart' id='supplierStart' value='{{supplierStart}}'></label>
+	<label>bis <input type='time' name='supplierEnd' id='supplierEnd' value='{{supplierEnd}}'></label><br>
+	<label>Adresse: <input type='text' name='supplierStreet' id='supplierStreet' value='{{supplierStreet}}'>
+	<input type='text' name='supplierZipCode' id='supplierZipCode' value='{{supplierZipCode}}'>
+	<input type='text' name='supplierCity' id='supplierCity' value='{{supplierCity}}'></label><br>
+	<label>Webseite: <input type='url' name='supplierSite' id='supplierSite' value='{{supplierSite}}'></label><br>
+	<label>Email: <input type='email' name='supplierEmail' id='supplierEmail' value='{{supplierEmail}}'></label><br>
+	<label>Telefon: <input type='tel' name='supplierPhone' id='supplierPhone' value='{{supplierPhone}}'></label><br><br>
+	<label>Liefert Essen: <input type='checkbox' name='supplierDoesDeliver' id='supplierDoesDeliver'
+	{{#if supplierDoesDeliver}}checked='checked' value='true'{{else}}value='false'{{/if}}><br>
+		{{#if supplierDoesDeliver}}
+		<label>Lieferung durch: <select id='signupRestaurantDelivery' name='signupRestaurantDelivery'>
+		  <option value='Intern' {{#checkVar supplierDeliversWith 'Intern' 'selected' ''}}{{/checkVar}}>Intern</option>
+		  <option value='Foodora' {{#checkVar supplierDeliversWith 'Foodora' 'selected' ''}}{{/checkVar}}>Foodora</option>
+		  <option value='Deliveroo' {{#checkVar supplierDeliversWith 'Deliveroo' 'selected' ''}}{{/checkVar}}>Deliveroo</option>
+		  <option value='Lieferheld' {{#checkVar supplierDeliversWith 'Lieferheld' 'selected' ''}}{{/checkVar}}>Lieferheld</option>
+			<option value='Andere' {{#checkVar supplierDeliversWith 'Andere' 'selected' ''}}{{/checkVar}}>Andere</option></select>
+		</label><br>
+		{{#if (checkVar supplierDeliversWith 'Andere' true false)}}
+			<label id='sectionOtherDelivery' style="display: block;">Andere: <input id="signupRestaurantOtherDelivery" type="text" name="signupRestaurantOtherDelivery" size="50"></label><br>
+			<label>Lieferung durch: <input type='text' name='supplierDeliversWith' id='supplierDeliversWith' value='{{supplierDeliversWith}}'></label>
+		{{/if}}
+	{{/if}}<br><br>
+	<input type='submit' name='submitUpdate' id='submitUpdate' value='Daten aktualisieren'>
+</form>
 
 
-<script type="text/javascript">
-	
-</script>

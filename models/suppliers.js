@@ -13,6 +13,7 @@ var suppliersSchema = new Schema({
 	supplierCity: String,
 	supplierSite: String,
 	supplierEmail: String,
+	supplierPhone: String,
 	supplierDoesDeliver: Boolean,
 	supplierDeliversWith: String,
 	suppplierCreated: Date,
