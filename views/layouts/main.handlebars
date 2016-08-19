@@ -13,6 +13,11 @@
 			<ul>
 				<li><a href="http://localhost:3000/profile">Profil</a></li>
 			</ul>
+			{{#if (checkRole role 'admin')}}
+			<ul>
+				<li><a href="http://localhost:3000/admin">Admin</a></li>
+			</ul>
+			{{/if}}
 		</div>
 		<div style="width: 30%; display: inline-block">
 			<ul>
@@ -21,9 +26,11 @@
 			</ul>
 		</div>
 		<div style="width: 30%; display: inline-block">
+			{{#if (checkRole role 'supplier')}}
 			<ul>
 				<li><a href="http://localhost:3000/supply">Angebot vom Restaurant	</a></li>
 			</ul>
+			{{/if}}
 		</div>
 		<br/>
 		{{{body}}}

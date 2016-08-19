@@ -49,6 +49,9 @@ var exphbs  = require('express-handlebars')
         } else {
           return ifFalse;
         }
+      },
+      checkRole: function(roleA, roleB) {
+        return (roleA === roleB);
       }
     }
 });	
@@ -69,6 +72,10 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 auth.init();
+app.use(function(req, res, next){
+  if (req.user){res.locals.role = req.user.role;} else {res.locals.role = ''}
+  return next();
+});
 
 // app.all('*', function(req, res, next){
 //   console.log(req.url);
