@@ -1,5 +1,6 @@
 <h3>Daten von {{supplierName}}:</h3>
-<form role='form' method='PUT' name='updateSupplier' action='profile/supplier'>
+<form role='form' method='POST' name='updateSupplier' action='/profile/supplier/update'>
+	<input type='hidden' name='supplierId' id='supplierId' value='{{supplierId}}'>
 	<label>Name: <input type='text' name='supplierName' id='supplierName' value='{{supplierName}}'></label><br><br>
 	<label>Beschreibung: <input type='text' name='supplierDescription' id='supplierDescription' value='{{supplierDescription}}'></label><br>
 	<label>Essen: <input type='text' name='supplierType' id='supplierType' value='{{supplierType}}'></label><br>
@@ -12,8 +13,8 @@
 	<label>Email: <input type='email' name='supplierEmail' id='supplierEmail' value='{{supplierEmail}}'></label><br>
 	<label>Telefon: <input type='tel' name='supplierPhone' id='supplierPhone' value='{{supplierPhone}}'></label><br><br>
 	<label>Liefert Essen: <input type='checkbox' name='supplierDoesDeliver' id='supplierDoesDeliver'
-	{{#if supplierDoesDeliver}}checked='checked' value='true'{{else}}value='false'{{/if}}><br>
-		{{#if supplierDoesDeliver}}
+	{{#if supplierDoesDeliver}}checked='checked' {{else}}value='false'{{/if}}><br>
+	<div id='sectionDelivery' style="display:{{#if supplierDoesDeliver}}block{{else}}none{{/if}};">
 		<label>Lieferung durch: <select id='signupRestaurantDelivery' name='signupRestaurantDelivery'>
 		  <option value='Intern' {{#checkVar supplierDeliversWith 'Intern' 'selected' ''}}{{/checkVar}}>Intern</option>
 		  <option value='Foodora' {{#checkVar supplierDeliversWith 'Foodora' 'selected' ''}}{{/checkVar}}>Foodora</option>
@@ -21,12 +22,30 @@
 		  <option value='Lieferheld' {{#checkVar supplierDeliversWith 'Lieferheld' 'selected' ''}}{{/checkVar}}>Lieferheld</option>
 			<option value='Andere' {{#checkVar supplierDeliversWith 'Andere' 'selected' ''}}{{/checkVar}}>Andere</option></select>
 		</label><br>
-		{{#if (checkVar supplierDeliversWith 'Andere' true false)}}
-			<label id='sectionOtherDelivery' style="display: block;">Andere: <input id="signupRestaurantOtherDelivery" type="text" name="signupRestaurantOtherDelivery" size="50"></label><br>
-			<label>Lieferung durch: <input type='text' name='supplierDeliversWith' id='supplierDeliversWith' value='{{supplierDeliversWith}}'></label>
-		{{/if}}
-	{{/if}}<br><br>
+		<label id='sectionOtherDelivery' style="display:{{#checkVar supplierDeliversWith 'Andere' 'block' 'none'}}{{/checkVar}}">Andere: <input id="signupRestaurantOtherDelivery" type="text" name="signupRestaurantOtherDelivery" value={{supplierOtherDelivery}} size="50"></label><br>
+	</div><br>
 	<input type='submit' name='submitUpdate' id='submitUpdate' value='Daten aktualisieren'>
 </form>
 
+<script type="text/javascript">
+		var sectionDelivery = document.getElementById('sectionDelivery');
+		var supplierDoesDeliver = document.getElementById('supplierDoesDeliver');
+		var sectionOtherDelivery = document.getElementById('sectionOtherDelivery');
+		var signupRestaurantDelivery = document.getElementById('signupRestaurantDelivery');
 
+		supplierDoesDeliver.addEventListener('change',function() {
+	    if (supplierDoesDeliver.checked == true){
+	    	sectionDelivery.style.display = 'block';
+	    } else {
+	    	sectionDelivery.style.display = 'none';
+	    }
+		});
+
+		signupRestaurantDelivery.addEventListener('change', function(){
+			if (signupRestaurantDelivery.value === 'Andere') {
+				sectionOtherDelivery.style.display = 'block';
+			} else {
+				sectionOtherDelivery.style.display = 'none';
+			}
+		});
+	</script>

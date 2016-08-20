@@ -56,7 +56,7 @@ function processSignUp(req, res) {
 		var supplierDoesDeliver;
 		if (req.body.hasOwnProperty('signupRestaurantDoesDeliver')){ supplierDoesDeliver = true} else {supplierDoesDeliver = false};
 		if (req.body.signupRestaurantDelivery === 'Andere') {
-			if (req.body.signupRestaurantOtherDelivery) {whoDelivers = req.body.signupRestaurantOtherDelivery} else (whoDelivers = 'Andere')
+			if (req.body.signupRestaurantOtherDelivery) {whoDelivers = req.body.signupRestaurantOtherDelivery} else {whoDelivers = 'Andere'}
 		} else {whoDelivers = req.body.signupRestaurantDelivery}
 		var newSupplierData = new Suppliers ({
 			supplierName: req.body.signupRestaurantName,

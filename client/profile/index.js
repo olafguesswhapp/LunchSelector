@@ -10,7 +10,44 @@ var moment = require('moment');
 router.get('/', authentication.isLoggedIn, displayProfile);
 router.get('/logout', logoutUser);
 router.post('/supplier', authentication.isLoggedIn, addSupplier);
-router.get('/supplier/:supplierName', authentication.isLoggedInAsSupplier, function(req, res){
+router.get('/supplier/:supplierName', authentication.isLoggedInAsSupplier, supplierEdit);
+router.post('/supplier/update', authentication.isLoggedInAsSupplier, processSupplierEdit);
+
+function processSupplierEdit(req, res){
+	console.log('*** client/profile/index.js route POST - /profile/supplier/update -');
+	console.log(req.body);
+	var whoDelivers;
+	var supplierDoesDeliver;
+	if (req.body.hasOwnProperty('supplierDoesDeliver')){ supplierDoesDeliver = true} else {supplierDoesDeliver = false};
+	if (req.body.signupRestaurantDelivery === 'Andere') {
+		if (req.body.signupRestaurantOtherDelivery) {
+			whoDelivers = req.body.signupRestaurantOtherDelivery
+		} else {whoDelivers = 'Andere'}
+	} else {whoDelivers = req.body.signupRestaurantDelivery}
+	Suppliers.findByIdAndUpdate(req.body.supplierId,
+					{$set: {
+						supplierName: req.body.supplierName,
+						supplierDescription: req.body.supplierDescription,
+						supplierType: req.body.supplierType,
+						supplierStart: req.body.supplierStart,
+						supplierEnd: req.body.supplierEnd,
+						supplierStreet: req.body.supplierStreet,
+						supplierZipCode: req.body.supplierZipCode,
+						supplierCity: req.body.supplierCity,
+						supplierSite: req.body.supplierSite,
+						supplierEmail: req.body.supplierEmail,
+						supplierPhone: req.body.supplierPhone,
+						supplierDoesDeliver: supplierDoesDeliver,
+						supplierDeliversWith: whoDelivers
+					}},
+					{safe: true, upsert: true, new : true}, function(err, newSupplier){
+		console.log('updated supplier: ');
+		console.log(newSupplier);
+	});
+	res.redirect('/profile/supplier/' + req.body.supplierName);
+};
+
+function supplierEdit(req, res) {
 	console.log('*** client/profile/index.js route - /profile/supplier/supplierName -');
 	console.log(req.params.supplierName);
 	Suppliers.findOne({ supplierName: req.params.supplierName})
@@ -19,7 +56,17 @@ router.get('/supplier/:supplierName', authentication.isLoggedInAsSupplier, funct
 			console.log('Something went wrong');
 			res.redirect('/profile');
 		} else {
+			var supplierOtherDelivery;
+			var supplierDeliversWith;
+			if (supplier.supplierDoesDeliver===true && ['Intern', 'Foodora', 'Deliveroo', 'Lieferheld'].indexOf(supplier.supplierDeliversWith)<0) {
+				supplierOtherDelivery = supplier.supplierDeliversWith;
+				supplierDeliversWith = 'Andere';
+			} else {
+				supplierOtherDelivery = '';
+				supplierDeliversWith = supplier.supplierDeliversWith;
+			}
 			var context = {
+				supplierId: supplier._id,
 				supplierName: supplier.supplierName,
 				supplierDescription: supplier.supplierDescription,
 				supplierType: supplier.supplierType,
@@ -30,14 +77,16 @@ router.get('/supplier/:supplierName', authentication.isLoggedInAsSupplier, funct
 				supplierCity: supplier.supplierCity,
 				supplierSite: supplier.supplierSite,
 				supplierEmail: supplier.supplierEmail,
+				supplierPhone: supplier.supplierPhone,
 				supplierDoesDeliver: supplier.supplierDoesDeliver,
-				supplierDeliversWith: supplier.supplierDeliversWith
+				supplierDeliversWith: supplierDeliversWith,
+				supplierOtherDelivery: supplierOtherDelivery
 			};
 			console.log(context);
 			res.render('../client/profile/supplier', context);
 		}
 	});
-});
+};
 
 module.exports = router;
 
