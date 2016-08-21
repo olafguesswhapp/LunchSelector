@@ -9,7 +9,7 @@ var ProposalsSchema = new Schema({
 	proposalBy: { type: Schema.Types.ObjectId, required: true, ref: 'LSUsers'},
 	proposalCreated: Date,
 	proposalStatus: String,
-	proposalAssignedTo: { type: Schema.Types.ObjectId, required: true, ref: 'LSUsers'}
+	proposalAssignedTo: { type: Schema.Types.ObjectId, ref: 'LSUsers'}
 });
 
 var Proposals = mongoose.model('Proposals', ProposalsSchema, 'proposals');

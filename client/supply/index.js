@@ -178,6 +178,7 @@ function recordProposal(req, res) {
 	});
 	newProposal.save(function(err, newProp){
 		if(err) {
+			console.log(err);
 			res.redirect(303, '/offers');
 		} else {
 			res.json('Danke für die Anfrage.')
