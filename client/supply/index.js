@@ -167,7 +167,6 @@ function deleteOffer(req, res) {
 
 function recordProposal(req, res) {
 	console.log('*** client/supply/index.js route - supply/request - ');
-	console.log(req.body);
 	var newProposal = new Proposals ({
 		proposalInfo: req.body.requestInfo,
 		proposalUpdate: req.body.requestUpdate,

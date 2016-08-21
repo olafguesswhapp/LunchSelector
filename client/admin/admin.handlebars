@@ -21,7 +21,19 @@
 			<option value='rejected' {{#checkVar proposalStatus 'rejected' 'selected' ''}}{{/checkVar}}>Abgelehnt</option>
 		</select></p>
 	{{/proposals}}
-</div>
+</div><br>
+<div>
+	<h3>Letzte Restaurant-Anmeldungen:</h3>
+	{{#suppliers}}
+		<p>{{supplierName}} {{supplierType}} {{supplierCity}}</p>
+	{{/suppliers}}
+</div><br>
+<div>
+	<h3>Letzte User-Anmeldungen:</h3>
+	{{#users}}
+		<p>{{name}} {{username}} {{role}} {{gender}} {{age}} {{created}}</p>
+	{{/users}}
+</div><br>
 
 <script type="text/javascript">
 

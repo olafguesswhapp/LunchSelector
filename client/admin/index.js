@@ -2,6 +2,8 @@
 
 var express = require('express');
 var router = express.Router();
+var LSUsers = require('../../models/lsusers');
+var Suppliers = require('../../models/suppliers');
 var Cities = require('../../models/cities');
 var Proposals = require('../../models/proposals');
 var authentication = require('../../lib/authentication');
@@ -9,25 +11,7 @@ var authentication = require('../../lib/authentication');
 router.get('/', authentication.isLoggedInAsAdmin, displayAdmin);
 router.post('/city', authentication.isLoggedInAsAdmin, recordCity);
 router.put('/city', authentication.isLoggedInAsAdmin, setCityStatus);
-router.put('/proposal', authentication.isLoggedInAsAdmin, function(req, res) {
-  console.log('*** client/admin/index.js route PUT - /admin/proposal - ');
-  console.log(req.body);
-  if (req.body){
-    Proposals.findByIdAndUpdate( req.body.proposalId,
-            {$set: {'proposalStatus': req.body.proposalStatus }},
-            {safe: true, upsert: true, new : true}, function(err, proposal) {
-      if (err || !proposal) {
-        console.log('Proposal could not be modified');
-        res.status(404).json();
-      } else {
-        console.log(proposal);
-        res.json();
-      }
-    });
-  } else {
-    res.status(404).json();
-  }
-});
+router.put('/proposal', authentication.isLoggedInAsAdmin, setProposalStatus);
 
 module.exports = router;
 
@@ -41,6 +25,7 @@ function displayAdmin (req, res) {
     } else {
       context.cities = city;
     }
+    return context;
   }).then(function(){
     Proposals.find({ proposalStatus: { $ne: 'completed'}})
             .populate('proposalBy', 'username')
@@ -48,11 +33,30 @@ function displayAdmin (req, res) {
       if (err) { console.log('Something went wrong')} else {
         context.proposals = proposal;
       }
-      console.log(context);
-      res.render('../client/admin/admin', context);
+      LSUsers.find()
+          .select('username name gender age role selectedCity created')
+          .limit(5)
+          .sort({ 'created': 'desc' })
+          .exec(function(err, users){
+        if (err) {
+          console.log('Something went wrong');
+        } else {
+          context.users = users;
+        }
+        Suppliers.find()
+                .select('supplierName supplierType supplierCity')
+                .limit(5)
+                .sort({ 'suppplierCreated': 'desc'})
+                .exec(function(err, suppliers){
+          if (err) {
+            console.log('Something went wrong');
+          } else {
+            context.suppliers = suppliers;
+          }
+          res.render('../client/admin/admin', context);
+        });
+      });
     });
-  }).then(function(){
-    console.log('SPÄTER');
   });
 };
 
@@ -72,7 +76,6 @@ function recordCity(req, res){
         if(err) {
           res.status(500).json();
         } else {
-          console.log(newCity);
           res.json(newCity._id);
         }
       });
@@ -82,7 +85,6 @@ function recordCity(req, res){
 
 function setCityStatus(req, res) {
   console.log('*** client/admin/index.js route PUT - /admin/city - ');
-  console.log(req.body);
   if (req.body){
     Cities.findByIdAndUpdate( req.body.cityId,
             {$set: {'cityStatus': req.body.cityStatus }},
@@ -91,7 +93,24 @@ function setCityStatus(req, res) {
         console.log('City could not be modified');
         res.status(404).json();
       } else {
-        console.log(city);
+        res.json();
+      }
+    });
+  } else {
+    res.status(404).json();
+  }
+};
+
+function setProposalStatus(req, res) {
+  console.log('*** client/admin/index.js route PUT - /admin/proposal - ');
+  if (req.body){
+    Proposals.findByIdAndUpdate( req.body.proposalId,
+            {$set: {'proposalStatus': req.body.proposalStatus }},
+            {safe: true, upsert: true, new : true}, function(err, proposal) {
+      if (err || !proposal) {
+        console.log('Proposal could not be modified');
+        res.status(404).json();
+      } else {
         res.json();
       }
     });
