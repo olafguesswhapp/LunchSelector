@@ -53,7 +53,6 @@ function displaySupplierOffers(req, res, startDate, endDate, offerCategory, sele
 							'offerDate': {'$gte': startDate, '$lte': endDate},
 							'offerCategory': 1})
 				.exec(function(err, offers){
-		console.log(offers);
 		if(err){
 			console.log('No offer was found due to error ');
 			console.log(err);
@@ -86,14 +85,12 @@ function displaySupplierOffers(req, res, startDate, endDate, offerCategory, sele
 		Suppliers.find({ _id: {$in: req.user.supplier}})
 						.select('supplierName')
 						.exec(function(err, suppliers){
-			console.log(suppliers);
 			if (err || suppliers === null){
 				console.log('Something is wrong - cannot find the users suppliers');
 			} else {
 				context.supplier = suppliers.map(function(supplier){return supplier.supplierName});
 			}
 		}).then(function(){
-			console.log(context);
 			res.render('../client/supply/supply', context);
 		});
 	});

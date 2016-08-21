@@ -25,14 +25,12 @@ function displaySignUp(req, res) {
 				availableCities : city.map(function(cityElement){ return cityElement.cityName })
 			};
 		}
-		console.log(context);
 		res.render('../client/signup/signup', {layout: 'landingpage', locals: context});
 	});
 };
 
 function verifiyEmail(req, res) {
 	console.log('*** client/signup/index.js route - signup/verify - ');
-	console.log(req.body);
 	LSUsers.findOne({'username' : req.body.signupEmail})
 				.select('username')
 				.exec(function(err, user){
@@ -80,8 +78,6 @@ function processSignUp(req, res) {
 				console.log(err);
 				res.redirect(303, '/supply');	
 			} else {
-				console.log('this is the new supplier');
-				console.log(newSupplier);
 				var newUserData = new LSUsers ({
 					username: req.body.signupEmail,
 					password: req.body.signupPassword,

@@ -55,9 +55,7 @@ function displayOffers(req, res) {
 							}).sort(sortBySortIndex)
 						}
 					});
-					console.log(helpArray);
 					supplierOffers.availableCities = helpArray.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
-					console.log(supplierOffers);
 	    		res.render('../client/offers/offers', supplierOffers);
 				}
 			});
@@ -71,7 +69,6 @@ function sortBySortIndex (a, b){
 
 function addSupplierToPreferred(req, res) {
 	console.log('*** client/offfers/index.js route - offers/select/append - ');
-	console.log(req.body);
 	LSUsers.findByIdAndUpdate( req.user._id,
 			    {$push: {'preferredSuppliers1': req.body.supplierId }},
 			    {safe: true, upsert: true, new : true}, function(err, user) {
@@ -97,7 +94,6 @@ function removeSupplierFromPreferred(req, res) {
     	console.log('adjustedPreferredSuppliers could not be modified');
     	res.status(404).json(); 
     } else {
-    	console.log(user);
     	res.json();
     }
   });
@@ -160,7 +156,6 @@ function displaySupplierSelection(req, res) {
 							}
 							console.log(supplierIndex + ' von ' + (supplierSelection.suppliers.length -1));
 							if (supplierSelection.suppliers.length - 1 === supplierIndex){
-								console.log(supplierSelection);
 								res.render('../client/offers/select', supplierSelection);
 							}
 						});

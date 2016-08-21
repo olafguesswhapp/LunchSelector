@@ -13,9 +13,10 @@ router.post('/supplier', authentication.isLoggedIn, addSupplier);
 router.get('/supplier/:supplierName', authentication.isLoggedInAsSupplier, supplierEdit);
 router.post('/supplier/update', authentication.isLoggedInAsSupplier, processSupplierEdit);
 
+module.exports = router;
+
 function processSupplierEdit(req, res){
 	console.log('*** client/profile/index.js route POST - /profile/supplier/update -');
-	console.log(req.body);
 	var whoDelivers;
 	var supplierDoesDeliver;
 	if (req.body.hasOwnProperty('supplierDoesDeliver')){ supplierDoesDeliver = true} else {supplierDoesDeliver = false};
@@ -41,8 +42,6 @@ function processSupplierEdit(req, res){
 						supplierDeliversWith: whoDelivers
 					}},
 					{safe: true, upsert: true, new : true}, function(err, newSupplier){
-		console.log('updated supplier: ');
-		console.log(newSupplier);
 	});
 	res.redirect('/profile/supplier/' + req.body.supplierName);
 };
@@ -82,13 +81,10 @@ function supplierEdit(req, res) {
 				supplierDeliversWith: supplierDeliversWith,
 				supplierOtherDelivery: supplierOtherDelivery
 			};
-			console.log(context);
 			res.render('../client/profile/supplier', context);
 		}
 	});
 };
-
-module.exports = router;
 
 function displayProfile(req, res) {
 	console.log('*** client/profile/index.js route - /profile -');
@@ -114,7 +110,6 @@ function displayProfile(req, res) {
 					preferredSuppliers: preferredSuppliers,
 					supplier: suppliers.map(function(supplier){return supplier.supplierName})
 				};
-				console.log(context);
 		    res.render('../client/profile/profile', context);
 			}
 		});
@@ -160,7 +155,6 @@ function addSupplier(req, res) {
 			LSUsers.findByIdAndUpdate( req.user._id,
 						{$set: {'supplier': req.user.supplier, 'role': newRole }},
 						{safe: true, upsert: true, new : true}, function(err, user) {
-				console.log(user);
 				res.redirect(303, '/profile');
 			});
 		}
