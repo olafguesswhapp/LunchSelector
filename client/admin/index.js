@@ -32,6 +32,8 @@ function displayAdmin (req, res) {
       console.log(context);
       res.render('../client/admin/admin', context);
     });
+  }).then(function(){
+    console.log('SPÄTER');
   });
 };
 

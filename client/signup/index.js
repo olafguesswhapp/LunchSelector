@@ -69,6 +69,7 @@ function processSignUp(req, res) {
 			supplierCity: req.body.signupRestaurantCity,
 			supplierSite: req.body.signupRestaurantSite,
 			supplierEmail: req.body.signupRestaurantEmail,
+			supplierPhone: req.body.signupRestaurantPhone,
 			supplierDoesDeliver: supplierDoesDeliver,
 			supplierDeliversWith: whoDelivers,
 			suppplierCreated: moment(new Date()).format('YYYY-MM-DDTHH:mm'),

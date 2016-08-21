@@ -130,6 +130,7 @@ function displaySupplierSelection(req, res) {
 			var today = new Date(new Date().setUTCHours(0,0,0,0));
 			if (err || supplier.length === 0) {
 				console.log('Currently no suppliers available to choose from');
+				supplierHelp = [];
 			} else {
 				supplierHelp = supplier;
 			}
@@ -139,28 +140,32 @@ function displaySupplierSelection(req, res) {
 				currentlyOnOffers: false,
 				suppliers: supplierHelp
 			};
-			supplierSelection.suppliers.forEach(function(supplierElement, supplierIndex){
-				Offers.find({ offerCategory: 1 , offerSupplier: supplierElement._id, offerDate: today})
-							.select('offerDate offerName offerPrice  offerSortIndex offerSupplier')
-							.exec(function(err, currentOffers){
-					if (err) {
-						console.log('Something went wrong');
-					} else {
-						supplierElement.offers = currentOffers.map(function(offer){
-							return {
-								offerName: offer.offerName,
-								offerPrice: offer.offerPrice,
-								offerSortIndex: offer.offerSortIndex
+			if (supplierSelection.suppliers.length === 0) {
+					res.render('../client/offers/select', supplierSelection);
+				} else {
+					supplierSelection.suppliers.forEach(function(supplierElement, supplierIndex){
+						Offers.find({ offerCategory: 1 , offerSupplier: supplierElement._id, offerDate: today})
+								.select('offerDate offerName offerPrice  offerSortIndex offerSupplier')
+								.exec(function(err, currentOffers){
+							if (err) {
+								console.log('Something went wrong');
+							} else {
+								supplierElement.offers = currentOffers.map(function(offer){
+									return {
+										offerName: offer.offerName,
+										offerPrice: offer.offerPrice,
+										offerSortIndex: offer.offerSortIndex
+									}
+								}).sort(sortBySortIndex);
 							}
-						}).sort(sortBySortIndex);
-					}
-					console.log(supplierIndex + ' von ' + (supplierSelection.suppliers.length -1));
-					if (supplierSelection.suppliers.length - 1 === supplierIndex){
-						console.log(supplierSelection);
-						res.render('../client/offers/select', supplierSelection);
-					}
-				});
-			});
+							console.log(supplierIndex + ' von ' + (supplierSelection.suppliers.length -1));
+							if (supplierSelection.suppliers.length - 1 === supplierIndex){
+								console.log(supplierSelection);
+								res.render('../client/offers/select', supplierSelection);
+							}
+						});
+					});
+				}
 		});
 	});
 };
