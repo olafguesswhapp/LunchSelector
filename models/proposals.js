@@ -8,7 +8,8 @@ var ProposalsSchema = new Schema({
 	proposalRevealToSupplier: Boolean,
 	proposalBy: { type: Schema.Types.ObjectId, required: true, ref: 'LSUsers'},
 	proposalCreated: Date,
-	proposalStatus: String
+	proposalStatus: String,
+	proposalAssignedTo: { type: Schema.Types.ObjectId, required: true, ref: 'LSUsers'}
 });
 
 var Proposals = mongoose.model('Proposals', ProposalsSchema, 'proposals');

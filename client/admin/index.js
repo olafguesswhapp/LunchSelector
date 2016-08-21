@@ -9,6 +9,25 @@ var authentication = require('../../lib/authentication');
 router.get('/', authentication.isLoggedInAsAdmin, displayAdmin);
 router.post('/city', authentication.isLoggedInAsAdmin, recordCity);
 router.put('/city', authentication.isLoggedInAsAdmin, setCityStatus);
+router.put('/proposal', authentication.isLoggedInAsAdmin, function(req, res) {
+  console.log('*** client/admin/index.js route PUT - /admin/proposal - ');
+  console.log(req.body);
+  if (req.body){
+    Proposals.findByIdAndUpdate( req.body.proposalId,
+            {$set: {'proposalStatus': req.body.proposalStatus }},
+            {safe: true, upsert: true, new : true}, function(err, proposal) {
+      if (err || !proposal) {
+        console.log('Proposal could not be modified');
+        res.status(404).json();
+      } else {
+        console.log(proposal);
+        res.json();
+      }
+    });
+  } else {
+    res.status(404).json();
+  }
+});
 
 module.exports = router;
 
@@ -68,7 +87,7 @@ function setCityStatus(req, res) {
     Cities.findByIdAndUpdate( req.body.cityId,
             {$set: {'cityStatus': req.body.cityStatus }},
             {safe: true, upsert: true, new : true}, function(err, city) {
-      if (err || city.length === 0) {
+      if (err || !city) {
         console.log('City could not be modified');
         res.status(404).json();
       } else {

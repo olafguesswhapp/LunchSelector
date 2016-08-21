@@ -6,7 +6,7 @@
 <div id='parent'>
 	{{#cities}}
 	<div>
-		<label><input type='checkbox' id='city{{_id}}' {{#if cityStatus}}checked{{/if}} onclick='changeStatus("{{_id}}")'>{{cityName}}</label>
+		<label><input type='checkbox' id='city{{_id}}' {{#if cityStatus}}checked{{/if}} onclick='changeCityStatus("{{_id}}")'>{{cityName}}</label>
 	</div>
 	{{/cities}}
 </div>
@@ -14,11 +14,33 @@
 <div>
 	<h3>Offene Anfragen:</h3>
 	{{#proposals}}
-		<p>"{{proposalInfo}}" von: {{proposalBy.username}} am: {{proposalCreated}} status: {{proposalStatus}}</p>
+		<p>"{{proposalInfo}}" von: {{proposalBy.username}} am: {{proposalCreated}} status: <select id='{{_id}}' onchange='changeStatus(this)'>
+			<option value='recorded' {{#checkVar proposalStatus 'recorded' 'selected' ''}}{{/checkVar}}>Eingereicht</option>
+			<option value='assigned' {{#checkVar proposalStatus 'assigned' 'selected' ''}}{{/checkVar}}>In Bearbeitung</option>
+			<option value='completed' {{#checkVar proposalStatus 'completed' 'selected' ''}}{{/checkVar}}>Erledigt</option>
+			<option value='rejected' {{#checkVar proposalStatus 'rejected' 'selected' ''}}{{/checkVar}}>Abgelehnt</option>
+		</select></p>
 	{{/proposals}}
 </div>
 
 <script type="text/javascript">
+
+	function changeStatus(event){
+		var requestData = encodeURIComponent('proposalId')+'='+encodeURIComponent(event.id) + '\&' +
+			encodeURIComponent('proposalStatus')+'='+encodeURIComponent(event.value);
+		var request = new XMLHttpRequest();
+	  request.open("PUT", "admin/proposal", true);
+	  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	  request.onload = function() {
+	    if (request.status == 200) {
+	    	console.log(request.statusText);
+	    } else {
+	    	console.log(request.status + ' ' +  request.statusText);
+	    }
+	  };
+	  request.send(requestData);
+	};
+
 	document.getElementById('submitBTN').addEventListener('click', function() {
 		var requestData = encodeURIComponent('cityName')+'='+encodeURIComponent(document.getElementById('cityName').value);
 		var request = new XMLHttpRequest();
@@ -35,7 +57,7 @@
 	  request.send(requestData);
 	}, false);
 
-	function changeStatus(cityId) {
+	function changeCityStatus(cityId) {
 		var newStatus = document.getElementById('city' + cityId).checked? true : false;
 		var requestData = encodeURIComponent('cityStatus')+'='+encodeURIComponent(newStatus) + '\&' +
 			encodeURIComponent('cityId')+'='+encodeURIComponent(cityId);
