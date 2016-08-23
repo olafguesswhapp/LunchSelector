@@ -16,7 +16,7 @@
 				<span>{{supplierName}}, {{supplierDescription}}, {{supplierStreet}}, <a target="_blank" href="http://{{supplierSite}}">{{supplierSite}}</a>  <span onmouseover='openOffers{{@index}}()' onmouseout='closeOffers{{@index}}()'>&#9776;</span></span>
 			</div>
 			<div style='float: right;'>
-				<span style='float: right; background-color: black;color: white;width: 30px;text-align: center;border-radius: 6px;' onclick="appendSupplier('{{_id}}')" > + </span>	
+				<span style='float: right; background-color: black;color: white;width: 30px;text-align: center;border-radius: 6px;' onclick="appendSupplier('{{_id}}', '{{supplierName}}')" > + </span>	
 			</div>
 			<div id='offer{{@index}}' style='width: 200px; display:none; position:absolute; background-color: black; color: white; padding: 8px;'><h4>{{supplierName}}</h4>{{#offers}}<span style='float: left;'>{{offerName}}</span><span style='float: right;'>{{offerPrice}}</span><br><br>{{/offers}}</div>
 			<script type="text/javascript">
@@ -35,12 +35,13 @@
 {{else}}
 	<div>Bitte helf uns weitere Restaurants für unsere Liste zu gewinnen und trage Deine Vorschläge unten ein</div>
 {{/if}}
+	<div id='appendSupplierSuccessMessage' style='display: none;'><h3 id='successMessage'></h3></div>
 
 {{> requestSupplier}}
 
 <script type='text/javascript'>
 
-	function appendSupplier(supplierId){
+	function appendSupplier(supplierId, supplierName){
 		var requestData = encodeURIComponent('supplierId')+'='+encodeURIComponent(supplierId);
 		var request = new XMLHttpRequest();
 	  request.open("POST", "select/append", true);
@@ -49,6 +50,9 @@
 	    if (request.status == 200) {
 	    	console.log(request.statusText);
 	    	document.getElementById('supplier'+supplierId).style.display = 'none';
+	    	document.getElementById('successMessage').innerHTML = 'Restaurant ' +  supplierName + ' ist Deiner Favoriten-Liste hinzugefügt'; 
+	    	document.getElementById('appendSupplierSuccessMessage').style.display = 'block';
+	    	setInterval(function(){document.getElementById('appendSupplierSuccessMessage').style.display = 'none'}, 3000);
 	    } else {
 	    	console.log(request.status + ' ' +  request.statusText);
 	    }
