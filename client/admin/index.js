@@ -103,18 +103,23 @@ function setCityStatus(req, res) {
 
 function setProposalStatus(req, res) {
   console.log('*** client/admin/index.js route PUT - /admin/proposal - ');
-  if (req.body){
-    Proposals.findByIdAndUpdate( req.body.proposalId,
-            {$set: {'proposalStatus': req.body.proposalStatus }},
-            {safe: true, upsert: true, new : true}, function(err, proposal) {
-      if (err || !proposal) {
-        console.log('Proposal could not be modified');
-        res.status(404).json();
-      } else {
-        res.json();
-      }
-    });
-  } else {
+  if (['recorded', 'assigned', 'completed', 'rejected'].indexOf(req.body.proposalStatus) < 0) {
+    console.log('Request new status ' + req.body.proposalStatus + ' is unknown and not allowed to be saved to db');
     res.status(404).json();
+  } else {
+    if (req.body){
+      Proposals.findByIdAndUpdate( req.body.proposalId,
+              {$set: {'proposalStatus': req.body.proposalStatus }},
+              {safe: true, upsert: true, new : true}, function(err, proposal) {
+        if (err || !proposal) {
+          console.log('Proposal could not be modified');
+          res.status(404).json();
+        } else {
+          res.json();
+        }
+      });
+    } else {
+      res.status(404).json();
+    }
   }
 };
