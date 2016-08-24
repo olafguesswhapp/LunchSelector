@@ -106,8 +106,10 @@ function displaySupplierSelection(req, res) {
 	if (req.query.selectedCity){
 		selectedCity = req.query.selectedCity;
 		LSUsers.findOneAndUpdate({_id: req.user._id}, { $set: { selectedCity: req.query.selectedCity }}, {new: true}, function(err, user){
-    	if(err){ console.log("Something wrong when updating data!");} else {
-    		console.log(user);
+    	if(err){
+    		console.log("Something wrong when updating selectedCity data!");
+    		console.log(err);
+    	} else {
 				console.log('Changed selectedCity to ' + req.user.selectedCity);
     	}
     });
@@ -144,7 +146,8 @@ function displaySupplierSelection(req, res) {
 								.select('offerDate offerName offerPrice  offerSortIndex offerSupplier')
 								.exec(function(err, currentOffers){
 							if (err) {
-								console.log('Something went wrong');
+								console.log('Err while searching offers of supplier ' + supplierElement._id + ' with date ' + today );
+								console.log(err);
 							} else {
 								supplierElement.offers = currentOffers.map(function(offer){
 									return {
