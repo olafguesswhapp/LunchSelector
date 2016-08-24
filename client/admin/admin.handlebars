@@ -37,6 +37,11 @@
 
 <script type="text/javascript">
 
+	var helpCities = [];
+	{{#cities}}
+		helpCities.push('{{cityName}}');
+	{{/cities}}
+
 	function changeStatus(event){
 		var requestData = encodeURIComponent('proposalId')+'='+encodeURIComponent(event.id) + '\&' +
 			encodeURIComponent('proposalStatus')+'='+encodeURIComponent(event.value);
@@ -53,20 +58,31 @@
 	  request.send(requestData);
 	};
 
-	document.getElementById('submitBTN').addEventListener('click', function() {
-		var requestData = encodeURIComponent('cityName')+'='+encodeURIComponent(document.getElementById('cityName').value);
-		var request = new XMLHttpRequest();
-	  request.open("POST", "admin/city", true);
-	  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	  request.onload = function() {
-	    if (request.status == 200) {
-	    	console.log(request.statusText);
+	function findInArray (array, value) {
+    for(var i = 0; i < array.length; i += 1) {
+    	if(array[i] === value) {
+    		return i;
+    	}
+    }
+    return -1;
+  };
 
-	    } else {
-	    	console.log(request.status + ' ' +  request.statusText);
-	    }
-	  };
-	  request.send(requestData);
+	document.getElementById('submitBTN').addEventListener('click', function() {
+		if ( findInArray(helpCities, document.getElementById('cityName').value) < 0 ) {
+			var requestData = encodeURIComponent('cityName')+'='+encodeURIComponent(document.getElementById('cityName').value);
+			var request = new XMLHttpRequest();
+		  request.open("POST", "admin/city", true);
+		  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		  request.onload = function() {
+		    if (request.status == 200) {
+		    	console.log(request.statusText);
+
+		    } else {
+		    	console.log(request.status + ' ' +  request.statusText);
+		    }
+		  };
+		  request.send(requestData);
+		} 
 	}, false);
 
 	function changeCityStatus(cityId) {
