@@ -86,20 +86,22 @@
 	}, false);
 
 	function changeCityStatus(cityId) {
-		var newStatus = document.getElementById('city' + cityId).checked? true : false;
-		var requestData = encodeURIComponent('cityStatus')+'='+encodeURIComponent(newStatus) + '\&' +
-			encodeURIComponent('cityId')+'='+encodeURIComponent(cityId);
-		var request = new XMLHttpRequest();
-	  request.open("PUT", "admin/city", true);
-	  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	  request.onload = function() {
-	    if (request.status == 200) {
-	    	console.log(request.statusText);
-	    } else {
-	    	console.log(request.status + ' ' +  request.statusText);
-	    }
-	  };
-	  request.send(requestData);
+		if (document.getElementById('city' + cityId)){
+			var newStatus = document.getElementById('city' + cityId).checked? true : false;
+			var requestData = encodeURIComponent('cityStatus')+'='+encodeURIComponent(newStatus) + '\&' +
+				encodeURIComponent('cityId')+'='+encodeURIComponent(cityId);
+			var request = new XMLHttpRequest();
+		  request.open("PUT", "admin/city", true);
+		  request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		  request.onload = function() {
+		    if (request.status == 200) {
+		    	console.log(request.statusText);
+		    } else {
+		    	console.log(request.status + ' ' +  request.statusText);
+		    }
+		  };
+		  request.send(requestData);
+		}
 	};
 
 </script>
