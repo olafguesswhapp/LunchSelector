@@ -69,16 +69,26 @@ function sortBySortIndex (a, b){
 
 function addSupplierToPreferred(req, res) {
 	console.log('*** client/offfers/index.js route - offers/select/append - ');
-	LSUsers.findByIdAndUpdate( req.user._id,
-			    {$push: {'preferredSuppliers1': req.body.supplierId }},
-			    {safe: true, upsert: true, new : true}, function(err, user) {
-    if (err || user.length === 0) {
-    	console.log('Could not be appended');
-    	res.status(404).json(); 
-    } else {
-    	res.json();
-    }
-  });
+	Suppliers.findById(req.body.supplierId, function(err, supplier){
+		if (err || !supplier || supplier.lenth === 0) {
+			console.log('this supplier might not exist');
+			console.log(err);
+			console.log(supplier);
+			res.status(404).json(); 
+		} else {
+			LSUsers.findByIdAndUpdate( req.user._id,
+					    {$push: {'preferredSuppliers1': req.body.supplierId }},
+					    {safe: true, upsert: true, new : true}, function(err, user) {
+		    if (err || user.length === 0) {
+		    	console.log('Could not be appended');
+		    	console.log(err);
+		    	res.status(404).json(); 
+		    } else {
+		    	res.json();
+		    }
+		  });
+		}
+	});
 };
 
 function removeSupplierFromPreferred(req, res) {
