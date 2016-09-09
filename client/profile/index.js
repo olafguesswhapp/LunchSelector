@@ -53,6 +53,7 @@ function supplierEdit(req, res) {
 					.exec(function(err, supplier){
 		if (err) {
 			console.log('Something went wrong');
+			console.log(err);
 			res.redirect('/profile');
 		} else {
 			var supplierOtherDelivery;

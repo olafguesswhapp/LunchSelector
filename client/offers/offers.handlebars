@@ -1,50 +1,58 @@
-<h1 style="display: inline-block">Das gibt es heute: </h1>
-<ul style="list-style-type: none; display: inline-block; vertical-align: middle">
-	{{#each availableCities}}
-	<li style="float: left; padding: 5px;" onclick="switchFilter('{{this}}')"> {{this}} </li>
-	{{/each}}
-	<li style="float: left; padding: 5px;"></li>
-	<li style="float: left; padding: 5px;" onclick="shareWithFriends()">Freund einladen</li>
-</ul>
+<div class='row'>
+	<ul class='subNav'>
+		<li class='subNav-listItem'>
+			<a href='#' onclick="shareWithFriends(); return false;">
+			<img src='/images/icon-mail.png' alt='Send to Friend'> Auswahl an Freunde senden</a>
+		</li>
+		<li class='subNav-listItem'></li>
+		<li class='subNav-listItem'>Restaurants aus
+			<select id="selectedCity" required name="selectedCity" onchange='switchFilter(value);'>
+			  {{#each availableCities}}
+			  <option value='{{this}}' {{#checkVar ../selectedCity this 'selected' ''}}{{/checkVar}}>{{this}}</option>
+			  {{/each}}
+			</select>
+		</li>
+	</ul>
 
-<div id='offersParent' style="width: 100%; margin: 0 0; text-align: center">
-	{{#suppliers}}
-	<div id='supplierCard{{@index}}' style='width: 280px; height: 150px; border-radius: 5px;border-width: 1px;border-color: grey;border-style: solid;padding: 10px;margin: 10px; text-align: left; display: {{#checkVar ../selectedCity supplierCity 'inline-table' 'none'}}{{/checkVar}};' >
-		<div style='height: 100%;'>
-			<div style='height: 30%; background-color: aliceblue;'>
-				<span>{{supplierStart}} - {{supplierEnd}} {{#restaurantOpen supplierStart supplierEnd}}{{/restaurantOpen}}</span>
-				<span style='float: right;' onclick='removeSupplier({{@index}});'>x</span>
-				<h3 style='margin-top: 2px;'>{{supplierName}}</h3>
-			</div>
-			{{!-- Content to swith up and down --}}
-			<div id="oben{{@index}}" style="display: inline-table; width: 100%; height: 70%; background-color: lightgray;" onclick='switchVisible({{@index}});'>
-				{{#offers}}
-				<div style="width: 83%; display: inline-block;">{{offerName}}</div>
-				<div style="width: 15%; display: inline-block; text-align: right;">{{offerPrice}}</div>
-				{{/offers}}
-			</div>
-			<div id='bottom{{@index}}' style='display: none; width: 100%; height: 70%; background-color: lightgray;' onclick='switchVisible({{@index}});'>
-				<div>{{supplierStreet}}</div>
-				<div>{{supplierZipCode}} {{supplierCity}}</div>
-				<div>{{supplierTefl}}</div>
-				<div>{{supplierSite}}</div>
-				<div>{{supplierEmail}}</div>
-			</div>
-			<div id='alert{{@index}}' style='display: none; width: 100%; height: 70;'>
-				<div>Sol {{supplierName}} wirklich aus Deiner Favoriten-Liste genommen werden?</div>
-				<br>
-				<div style='width: 45%; margin: auto;'>
-					<span><button onclick='removeConfirmed({{@index}}, "{{supplierId}}")'>Ja</button></span>
-					<span style='float: right;'><button onclick='doNotRemoveSupplier({{@index}})'>Nein</button></span>
+	<div id='offersParent' class='center'> {{!-- width: 100%; margin: 0 0; text-align: center --}}
+		{{#suppliers}}
+		<div id='supplierCard{{@index}}' class='card' style='display: {{#checkVar ../selectedCity supplierCity 'inline-table' 'none'}}{{/checkVar}};'>
+			<div class='card-container'>
+				<div class='card-title'>
+					<span>{{supplierStart}} - {{supplierEnd}} {{#restaurantOpen supplierStart supplierEnd}}{{/restaurantOpen}}</span>
+					<a href='#' class='floatRight' onclick='removeSupplier({{@index}});return false;'><img src='/images/icon-detach.png'></a>
+					<h3 class='marginTop2'>{{supplierName}}</h3>
+				</div>
+				<div id="oben{{@index}}" class='card-frontSide' onclick='switchVisible({{@index}});'>
+					{{#offers}}
+					<div class='card-frontSide-left'>{{offerName}}</div>
+					<div class='card-frontSide-right'>{{offerPrice}}</div>
+					{{/offers}}
+				</div>
+				<div id='bottom{{@index}}' class='card-backSide' onclick='switchVisible({{@index}});'>
+					<div>{{supplierStreet}}</div>
+					<div>{{supplierZipCode}} {{supplierCity}}</div>
+					<div>{{supplierTefl}}</div>
+					<div><a href='{{supplierSite}}' target='_blank'>{{supplierSite}}</a></div>
+					<div>{{supplierEmail}}</div>
+				</div>
+				<div id='alert{{@index}}' class='card-alert'>
+					<div>Bitte bestätige, dass {{supplierName}} aus Deiner Favoriten-Liste genommen werden soll?</div>
+					<br>
+					<div style='width: 45%; margin: auto;'>
+						<span><button onclick='removeConfirmed({{@index}}, "{{supplierId}}")'>Ja</button></span>
+						<span style='float: right;'><button onclick='doNotRemoveSupplier({{@index}})'>Nein</button></span>
+					</div>
 				</div>
 			</div>
 		</div>
-
+		{{/suppliers}}
 	</div>
-	{{/suppliers}}
-</div>
+	
+	<br>
 
-{{> requestSupplier}}
+	{{> requestSupplier}}
+</div>
 
 <script type="text/javascript">
 

@@ -18,7 +18,7 @@
 	  <option value='10' selected>Hauptspeise</option>
 	  <option value='100'>Nachtisch</option>
 </select>
-	<input type='submit' id='offerSubmit' value='Senden'/>
+	<input class='btn' type='submit' id='offerSubmit' value='Senden'/>
 	<span id='offerAlert' style='display:none;'>Danke, Tagesangebot wurde erfasst</span>
 </form>
 <br>
@@ -44,7 +44,7 @@
 				{{#each offers}}
 					<div id='{{offerId}}'>
 						<span style='width:85.71%; float: left;'>{{offerName}}</span>
-						<span style='width:14.29%; float: right;'>{{offerPrice}}<a href='#' onclick='deleteOffer("{{offerId}}", "offers{{../date}}"); return false;' style='float: right;'>[ - ]</a></span>
+						<span style='width:14.29%; float: right;'>{{offerPrice}}<a href='#' class='floatRight' onclick='deleteOffer("{{offerId}}", "offers{{../date}}"); return false;'><img src='/images/icon-detach.png'></a> </span>
 					</div>
 				{{/each}}
 			</div>

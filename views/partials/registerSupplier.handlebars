@@ -1,26 +1,46 @@
-<label>Wie heisst das Restaurant: <input id="signupRestaurantName" type="text" name="signupRestaurantName" size='50' required></label><br>
-		<label>Art der Küche: <input id="signupRestaurantType" type="text" name="signupRestaurantType" size="50"></label><br>
-		<label>Wann gibt es Mittagsessen - von: <input id="signupRestaurantStart" type="time" name="signupRestaurantStart" value="12:00"> bis: <input id="signupRestaurantEnd" type="time" name="signupRestaurantEnd" value="14:30"></label><br>
-		<br>
-		<label>Strasse und Hausnr.: <input id="signupRestaurantStreet" type="text" name="signupRestaurantStreet" size='50'></label><br>
-		<label>PLZ und Stadt: <input id="signupRestaurantPLZ" type="text" name="signupRestaurantPLZ" size='5'> <input id="signupRestaurantCity" type="text" name="signupRestaurantCity" size='30'></label><br>
-		<label>Website: <input id="signupRestaurantSite" type="url" name="signupRestaurantSite" size='50'></label><br>
-		<label>Email: <input id="signupRestaurantEmail" type="email" name="signupRestaurantEmail" size='50'></label><br>
-		<label>Tefl.: <input id="signupRestaurantPhone" type="tel" name="signupRestaurantPhone" size='50'></label>
-		<br>
-		
-		<label><input id="signupRestaurantDoesDeliver" type="checkbox" name="signupRestaurantDoesDeliver">Liefert Ihr Mittagsessen ausser Haus (auch wenn es von Dritten geliefert wird)? </label><br>
+{{!-- <label for='signupRestaurantName'>Wie heisst das Restaurant:</label> --}}
+<input id='signupRestaurantName' type="text" name="signupRestaurantName" required class='form-input' placeholder='Name des Restaurants' />
+<br><br>
+{{!-- <label for='signupRestaurantType'>Art der Küche:</label> --}}
+<input id='signupRestaurantType' type="text" name="signupRestaurantType" class='form-input' placeholder='Art der Küche' />
+<br><br>
+<label>Mittagsessen gibt es von <input id="signupRestaurantStart" type="time" name="signupRestaurantStart" value="12:00" class='form-input-time' />  bis <input id="signupRestaurantEnd" type="time" name="signupRestaurantEnd" value="14:30" class='form-input-time' /></label>
+<br><br>
+{{!-- <label for='signupRestaurantStreet'>Strasse und Haus-Nr.:</label> --}}
+<input id='signupRestaurantStreet' type="text" name="signupRestaurantStreet" class='form-input' placeholder='Strasse und Haus-Nr.'>
+<br><br>
+{{!-- <label for='signupRestaurantPLZ'>PLZ und Stadt:</label><br> --}}
+<input id='signupRestaurantPLZ' type="text" name="signupRestaurantPLZ" size='5' class='form-input-plz plac' placeholder='PLZ'>
+<input id="signupRestaurantCity" type="text" name="signupRestaurantCity" class='form-input-city' placeholder='Stadt'>
+<br><br>
+{{!-- <label for='signupRestaurantSite'>Website:</label> --}}
+<input id='signupRestaurantSite' type="url" name="signupRestaurantSite" class='form-input' placeholder='Webseiten URL'>
+<br><br>
+{{!-- <label for='signupRestaurantEmail'>Restaurant-Email:</label> --}}
+<input id='signupRestaurantEmail' type="email" name="signupRestaurantEmail" class='form-input' placeholder='Restaurant-Email'>
+<br><br>
+{{!-- <label for='signupRestaurantPhone'>Tefl.:</label> --}}
+<input id='signupRestaurantPhone' type="tel" name="signupRestaurantPhone" class='form-input' placeholder='Tefl. Nr.'>
+<br><br>
+<label><input id="signupRestaurantDoesDeliver" type="checkbox" name="signupRestaurantDoesDeliver">Liefert Ihr Mittagsessen ausser Haus (auch wenn es von Dritten geliefert wird)? </label><br>
 		<div id='sectionDelivery' style="display:block;">
-			<label>Wer liefert ausser Haus? <select id="signupRestaurantDelivery" name="signupRestaurantDelivery">
+			<br>
+			<div class='form-input form-div'>Wer liefert ausser Haus?
+			<select id='signupRestaurantDelivery' name="signupRestaurantDelivery">
 			  <option value="Intern" selected="">Intern</option>
 			  <option value="Foodora">Foodora</option>
 			  <option value="Deliveroo">Deliveroo</option>
 			  <option value="Lieferheld">Lieferheld</option>
-				<option value="Andere">Andere</option></select>
-			</label><br>
-			<label id='sectionOtherDelivery' style="display: block;">Andere: <input id="signupRestaurantOtherDelivery" type="text" name="signupRestaurantOtherDelivery" size="50"></label><br>
-		</div><br>
-	<input type='submit' id='signupRestaurantBtn' value='Jetzt registrieren' />
+				<option value="Andere">Andere</option></select></div>
+			<br><br>
+			<div id='sectionOtherDelivery'>
+				<label for='signupRestaurantOtherDelivery' style="display: block;">Andere:</label>
+				<input id='signupRestaurantOtherDelivery' type="text" name="signupRestaurantOtherDelivery" class='form-input' placeholder='Durch wen wird geliefert?'>
+				<br>
+			</div>
+		</div>
+		<br>
+	<input class='btn' type='submit' id='signupRestaurantBtn' value='Jetzt registrieren' />
 
 	<script type="text/javascript">
 		var sectionDelivery = document.getElementById('sectionDelivery');

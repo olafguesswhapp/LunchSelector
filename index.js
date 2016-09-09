@@ -41,7 +41,7 @@ var exphbs  = require('express-handlebars')
       restaurantOpen: function(timeOpen, timeClose) {
         var d = new Date();
         var currentTime = d.getHours() + ':' + d.getMinutes();
-        if (timeOpen<currentTime && currentTime<timeClose) {return 'open';} else {return 'closed';}
+        if (timeOpen<currentTime && currentTime<timeClose) {return 'geöffnet';} else {return 'geschlossen';}
       },
       checkVar: function(varA, varB, ifTrue, ifFalse) {
         if (varA === varB) {
@@ -57,6 +57,12 @@ var exphbs  = require('express-handlebars')
 });	
 app.engine('handlebars', exphbs.engine);
 app.set('view engine', 'handlebars');
+
+if (app.get('env') == 'development') {
+    app.set('port', process.env.PORT || 3000);
+} else if (app.get('env') == 'production') {
+    app.set('port', process.env.PORT || 61099); // Uberspace
+}
 
 // MIDDLEWARE
 app.use(cookieParser(credentials.cookieSecret));

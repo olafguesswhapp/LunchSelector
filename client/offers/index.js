@@ -50,12 +50,16 @@ function displayOffers(req, res) {
 							supplierStreet: 			supplierElement.supplierStreet,
 							supplierZipCode: 			supplierElement.supplierZipCode,
 							supplierCity: 				supplierElement.supplierCity,
+							supplierSite: 				supplierElement.supplierSite,
+							supplierEmail: 				supplierElement.supplierEmail,
+							supplierPhone: 				supplierElement.supplierPhone ,
 							offers: 							currentOffers.filter(function(offerElement){
 								return (JSON.stringify(offerElement.offerSupplier) === JSON.stringify(supplierElement._id))
 							}).sort(sortBySortIndex)
 						}
 					});
 					supplierOffers.availableCities = helpArray.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
+					console.log(supplierOffers);
 	    		res.render('../client/offers/offers', supplierOffers);
 				}
 			});

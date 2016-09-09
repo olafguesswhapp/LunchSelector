@@ -25,7 +25,7 @@ function displaySignUp(req, res) {
 				availableCities : city.map(function(cityElement){ return cityElement.cityName })
 			};
 		}
-		res.render('../client/signup/signup', {layout: 'landingpage', locals: context});
+		res.render('../client/signup/signup', {layout: 'register', locals: context});
 	});
 };
 

@@ -1,11 +1,11 @@
 <h3>Übernehme Restaurants aus {{selectedCity}} und deren Mittagsangebote in Deine Favoriten Liste</h3>
-<form action='/offers/select' method='GET'> {{!--  target="_blank"  --}}
+<form action='/offers/select' method='GET'>
 	<label>In einer anderen Stadt nach Restaurants suchen? 
 		<select id="selectedCity" required name="selectedCity" onchange='this.form.submit();'>
 		  {{#each availableCities}}
 		  <option value='{{this}}' {{#checkVar ../selectedCity this 'selected' ''}}{{/checkVar}}>{{this}}</option>
 		  {{/each}}
-	  </select>
+		</select>
 	</label>
 </form>
 <br><br>
@@ -23,10 +23,11 @@
 		</div>
 	{{/suppliers}}
 {{else}}
-	<div>Bitte helf uns weitere Restaurants für unsere Liste zu gewinnen und trage Deine Vorschläge unten ein</div>
+	<span>Bitte helf uns weitere Restaurants für unsere Liste zu gewinnen und trage Deine Vorschläge unten ein</span>
+	<br><br>
 {{/if}}
 	<div id='appendSupplierSuccessMessage' style='display: none;'><h3 id='successMessage'></h3></div>
-
+<br>
 {{> requestSupplier}}
 
 <script type='text/javascript'>

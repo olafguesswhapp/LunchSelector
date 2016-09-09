@@ -5,41 +5,38 @@
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
 	<meta name="generator" content="Sublime Text 2" />
 	<title>Tiffin</title>
+	<link rel='stylesheet' href="/css/styles.css" type='text/css' media='all' />
 </head>
 <body>
-	<div style="width: 80%; margin: 0 auto">
-		<h1><a href="http://localhost:3000/">Tiffin</a></h1>
-		<div style="width: 30%; display: inline-block">
-			<ul>
-				<li><a href="http://localhost:3000/profile">Profil</a></li>
-			</ul>
-			{{#if (checkRole role 'admin')}}
-			<ul>
-				<li><a href="http://localhost:3000/admin">Admin</a></li>
-			</ul>
-			{{/if}}
-		</div>
-		<div style="width: 30%; display: inline-block">
-			<ul>
-				<li><a href="http://localhost:3000/offers">Was gibt es heute?</a></li>
-				<li><a href="http://localhost:3000/offers/select">Wähle Restaurants</a></li>
-			</ul>
-		</div>
-		<div style="width: 30%; display: inline-block">
-			{{#if (checkRole role 'supplier')}}
-			<ul>
-				<li><a href="http://localhost:3000/supply">Angebot vom Restaurant	</a></li>
-			</ul>
-			{{/if}}
-			{{#if (checkRole role 'admin')}}
-			<ul>
-				<li><a href="http://localhost:3000/supply">Angebot vom Restaurant	</a></li>
-			</ul>
-			{{/if}}
-		</div>
-		<br/>
-		{{{body}}}
-	</div>
-	
+	<header class='main-header'>
+		<section class='header-left'>
+			<a href="http://localhost:3000/"><img src='/images/logo-header.png'></a>	
+		</section>
+		<section class='header-right'>
+			<a href="http://localhost:3000/offers">Was gibt es heute?</a>
+		</section>
+		<section class='header-right'>
+			<a href="http://localhost:3000/offers/select">Restaurants</a>
+		</section>
+		{{#if (checkRole role 'supplier')}}
+			<section class='header-right'>
+				<a href="http://localhost:3000/supply">Meine Angebote</a>
+			</section>
+		{{/if}}
+		{{#if (checkRole role 'admin')}}
+			<section class='header-right'>
+				<a href="http://localhost:3000/supply">Meine Angebote</a>
+			</section>
+		{{/if}}
+		<section class='header-right'>
+			<a href="http://localhost:3000/profile"><img src='/images/icon-profile.png' alt='Dein Profil'></a>
+		</section>
+		{{#if (checkRole role 'admin')}}
+			<section class='header-right'>
+				<a href="http://localhost:3000/admin"><img src='/images/icon-admin.png' alt='Admim'></a>
+			</section>
+		{{/if}}
+	</header>
+	{{{body}}}
 </body>
 </html>
