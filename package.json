@@ -4,7 +4,7 @@
   "description": "Application to aggregate daily lunch offers from favorite Restaurants",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "NODE_ENV=production node ./index.js",
     "dev": "nodemon index.js"
   },
   "keywords": [],
