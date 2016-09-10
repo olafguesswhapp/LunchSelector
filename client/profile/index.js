@@ -120,6 +120,8 @@ function displayProfile(req, res) {
 function logoutUser(req, res) {
 	console.log('*** client/profile/index.js route - /logout -');
 	req.logout();
+	req.session.destroy();
+	console.log(req.user);
 	res.redirect('/');
 };
 

@@ -8,4 +8,5 @@ module.exports = function(app) {
 	app.use('/admin',				require('./client/admin'));
 	app.use('/', 						require('./client/landingpage'));
 	app.use('/login', 			require('./client/landingpage'));
+	app.use('/legal',				require('./client/legal'));
 }
