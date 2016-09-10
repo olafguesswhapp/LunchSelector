@@ -102,6 +102,6 @@ app.all('/*', function(req, res) {
 // });
 
 // IN ORDER TO RUN ON HTTP instead of https
-var server = app.listen(3000, function () {
+var server = app.listen(app.get('port'), function () {
   console.log('Server running at http://localhost:' + server.address().port + ' in ' + app.get('env') )
 })

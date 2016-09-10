@@ -10,30 +10,30 @@
 <body>
 	<header class='main-header'>
 		<section class='header-left'>
-			<a href="http://localhost:3000/"><img src='/images/logo-header.png'></a>	
+			<a href="http://www.mytiffin.de"><img src='/images/logo-header.png'></a>	
 		</section>
 		<section class='header-right'>
-			<a href="http://localhost:3000/offers">Was gibt es heute?</a>
+			<a href="/offers">Was gibt es heute?</a>
 		</section>
 		<section class='header-right'>
-			<a href="http://localhost:3000/offers/select">Restaurants</a>
+			<a href="/offers/select">Restaurants</a>
 		</section>
 		{{#if (checkRole role 'supplier')}}
 			<section class='header-right'>
-				<a href="http://localhost:3000/supply">Meine Angebote</a>
+				<a href="/supply">Meine Angebote</a>
 			</section>
 		{{/if}}
 		{{#if (checkRole role 'admin')}}
 			<section class='header-right'>
-				<a href="http://localhost:3000/supply">Meine Angebote</a>
+				<a href="/supply">Meine Angebote</a>
 			</section>
 		{{/if}}
 		<section class='header-right'>
-			<a href="http://localhost:3000/profile"><img src='/images/icon-profile.png' alt='Dein Profil'></a>
+			<a href="/profile"><img src='/images/icon-profile.png' alt='Dein Profil'></a>
 		</section>
 		{{#if (checkRole role 'admin')}}
 			<section class='header-right'>
-				<a href="http://localhost:3000/admin"><img src='/images/icon-admin.png' alt='Admim'></a>
+				<a href="/admin"><img src='/images/icon-admin.png' alt='Admim'></a>
 			</section>
 		{{/if}}
 	</header>
