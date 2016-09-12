@@ -1,5 +1,5 @@
 html {
-  font-family: sans-serif;
+  font-family: 'Josefin Sans';
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
 }
@@ -13,6 +13,7 @@ body {
 	background-size: 100px;
 	background-repeat: repeat-x repeat-y;
 	color: white;
+	font-family: 'Josefin Sans';
 }
 a {
 	text-decoration: none;
@@ -80,6 +81,10 @@ img {
   .col-3{ width: 50%; }
   .col-4{ width: 60%; }
   .col-9{ width: 92%; }
+
+  .feature {
+  	font-size: 22px;
+  }
 
 .subNav {
 	list-style-type: none;
@@ -219,11 +224,12 @@ img {
 		}
 .form-control{
   padding: 6px 12px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.42857143;
   color: #ffec00;
   background-color: #909091;
   border-style: none;
+  font-family: inherit;
 }
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
   color:    black;
@@ -241,7 +247,8 @@ img {
 }
 .btn {
   padding: 6px 12px;
-  font-size: 14px;
+  font-family: inherit;
+  font-size: 16px;
   font-weight: normal;
   line-height: 1.42857143;
   text-align: center;

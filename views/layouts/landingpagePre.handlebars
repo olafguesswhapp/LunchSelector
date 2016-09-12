@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="generator" content="Sublime Text 2" />
+	<title>Tiffin</title>
+	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Josefin+Sans" />
+	<link rel='stylesheet' href="/css/styles.css" type='text/css' media='all' />
+	{{> googleanalytics}}
+</head>
+<body>
+	<header class='main-header'>
+		<section class='header-left'>
+			<a href='/'><img src='/images/logo-header.png'></a>	
+		</section>
+		<section class='header-right'>
+			<form role="form" action="/prospect" method="POST">
+			  <input class='form-control' type="email" required id="fieldUsername" name="username" placeholder='Email'>
+			  <button class='btn' type="submit">mich für die Test-Phase anmelden</button>
+			</form>
+		</section>
+	</header>
+	{{{body}}}
+	{{> footer}}
+</body>
+<script type="text/javascript">document.getElementById('fieldUsername').focus();</script>
+</html>

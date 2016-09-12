@@ -3,15 +3,23 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+var Prospects = require('../../models/prospects');
 
-router.get('/', renderLandingPage);
+router.get('/', renderPreLaunch);
 router.post('/login', processLogin);
+router.get('/soon', renderLandingPage);
+router.post('/prospect', registerProspect);
 
 module.exports = router;
 
-function renderLandingPage(req, res) {
+function renderPreLaunch(req, res) {
   console.log('*** index.js route - / - ');
-  res.render('../client/landingpage/landingpage', {layout: 'landingpage'});
+  res.render('../client/landingpage/landingpagePre', {layout: 'landingpagePre'});
+};
+
+function renderLandingPage(req, res) {
+  console.log('*** index.js route - / soon ');
+  res.render('../client/landingpage/landingpageSoon', {layout: 'landingpage'});
 };
 
 function processLogin(req, res) {
@@ -37,4 +45,32 @@ function processLogin(req, res) {
       }
     });
   })(req, res);
+};
+
+function registerProspect(req, res) {
+  console.log('*** index.js route - /prospect - ');
+  if (req.body.username) {
+    Prospects.findOne({ prospectEmail: req.body.username }, function(err, prospect){
+      if (err || prospect == null) {
+        var newProspect = new Prospects({
+          prospectEmail: req.body.username,
+          authToken: 'testing2',
+          isAuthenticated: false,
+          prospectChecked: false,
+          hasOptedIn: false,
+          created: new Date()
+        });
+        newProspect.save(function(error, newUser){
+          if(error) {
+            console.log(error);
+            return res.redirect('/');
+          } else {
+            return res.redirect('/');
+          }
+        });
+      } else {
+        return res.redirect('/');
+      }
+    });
+  }
 };

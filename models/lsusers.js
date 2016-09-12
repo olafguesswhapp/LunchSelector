@@ -15,7 +15,9 @@ var LSUsersSchema = new Schema({
 	age: Number,
 	selectedCity: String,
 	preferredSuppliers1: [{ type: Schema.Types.ObjectId, ref: 'Suppliers' }],
-	supplier: [{ type: Schema.Types.ObjectId, ref: 'Suppliers' }]
+	supplier: [{ type: Schema.Types.ObjectId, ref: 'Suppliers' }],
+	// resetPasswordToken: String,
+ //  resetPasswordExpires: Date
 });
 
 // make sure username (email) is unique
