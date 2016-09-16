@@ -97,9 +97,9 @@ img {
 		display: inline-table;
 		min-height: 1px; 
 		width: 33.33%;
-		padding: 25px;
+		padding: 5%;
   }
-  .col-1{ width: 15%; }
+  .col-1{ width: 60%; }
   .col-2{ width: 25%; }
   .col-3{ width: 50%; }
   .col-4{ width: 60%; }
@@ -246,6 +246,7 @@ img {
 		  line-height: 1.42857143;
 		}
 .form-control{
+  width: 226px;
   padding: 6px 12px;
   font-size: 16px;
   line-height: 1.42857143;
@@ -269,6 +270,7 @@ img {
   color:    black;
 }
 .btn {
+  width: 250px;
   padding: 6px 12px;
   font-family: inherit;
   font-size: 16px;
@@ -315,6 +317,7 @@ img {
 }
 
 @media screen and (min-width: 480px) {
+	 .col-1{ width: 15%; }
 	 .img-deco {
 		max-height: 80px;
 	}
