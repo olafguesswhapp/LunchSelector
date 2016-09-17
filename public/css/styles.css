@@ -382,7 +382,7 @@ img {
 		}
 
 
-@media screen and (min-width: 480px) {
+@media screen and (min-width: 851px) {
 	 .col-1{ width: 15%; }
 	 .img-deco {
 		max-height: 80px;
