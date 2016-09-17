@@ -5,27 +5,47 @@
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
 	<meta name="generator" content="Sublime Text 2" />
 	<title>Tiffin</title>
+	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Josefin+Sans" />
 	<link rel='stylesheet' href="/css/styles.css" type='text/css' media='all' />
 	{{> googleanalytics}}
 </head>
 <body>
-	<header class='main-header'>
-		<section class='header-left'>
-			<a href='/'><img src='/images/logo-header.png'></a>	
-		</section>
-		<section class='header-right'>
-			<form role="form" action="/login" method="POST">
-			  <input class='form-control' type="email" required id="fieldUsername" name="username" placeholder='Email'>
-			  <input class='form-control' type="password" required id="fieldPassword" name="password" placeholder='Passwort'>
-			  <button class='btn' type="submit">Einloggen</button>
-			</form>
-		</section>
-		<section class='header-right'>
-			<a href="/signup"><button class='btn lila' type='submit' name='register'>Neu Annmelden</button></a>
-		</section>
+	<div class='container'>
+		<header class='header'>
+			<section class='logo'>
+				<a href='/'><img class='logo__image' src='/images/logo-header.png'></a>	
+			</section>
+			<section class='right nonmobile'>
+				<form role="form" action="/login" method="POST">
+				  <input class='form-control' type="email" required id="fieldUsername" name="username" placeholder='Email'>
+				  <input class='form-control' type="password" required id="fieldPassword" name="password" placeholder='Passwort'>
+				  <button class='btn' type="submit">Einloggen</button>
+				</form>
+			</section>
+			<section class='right nonmobile'>
+				<a href="/signup"><button class='btn lila' type='submit' name='register'>Neu Annmelden</button></a>
+			</section>
+			<section class='right mobileonly'>
+				<button class='btn' onclick='showLoginForm()'>Einloggen</button>
+			</section>
 	</header>
+	<div class='row logindropdown' id='dropdown'>
+		<div class='center'>
+			<form role="form" action="/login" method="POST">
+			  <input class='form-control form_fixed' type="email" required id="fieldUsername" name="username" placeholder='Email'>
+			  <input class='form-control form_fixed' type="password" required id="fieldPassword" name="password" placeholder='Passwort'>
+			  <button class='btn form_fixed' type="submit">Einloggen</button>
+			</form>
+		</div>
+	</div>
 	{{{body}}}
-	{{> footer}}
+	{{> footer}}	
+	</div>
 </body>
-<script type="text/javascript">document.getElementById('fieldUsername').focus();</script>
+<script type="text/javascript">
+	document.getElementById('fieldUsername').focus();
+	function showLoginForm() {
+		document.getElementById('dropdown').classList.toggle('show');
+	};
+</script>
 </html>

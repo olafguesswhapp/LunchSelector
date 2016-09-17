@@ -9,31 +9,31 @@
 	{{> googleanalytics}}
 </head>
 <body>
-	<header class='main-header'>
-		<section class='header-left'>
-			<a href='/'><img src='/images/logo-header.png'></a>	
+	<header class='header'>
+		<section class='logo'>
+			<a href='/'><img class='logo__image' src='/images/logo-header.png'></a>	
 		</section>
-		<section class='header-right'>
+		<section class='right'>
 			<a href="/offers">Was gibt es heute?</a>
 		</section>
-		<section class='header-right'>
+		<section class='right'>
 			<a href="/offers/select">Restaurants</a>
 		</section>
 		{{#if (checkRole role 'supplier')}}
-			<section class='header-right'>
+			<section class='right'>
 				<a href="/supply">Meine Angebote</a>
 			</section>
 		{{/if}}
 		{{#if (checkRole role 'admin')}}
-			<section class='header-right'>
+			<section class='right'>
 				<a href="/supply">Meine Angebote</a>
 			</section>
 		{{/if}}
-		<section class='header-right'>
+		<section class='right'>
 			<a href="/profile"><img src='/images/icon-profile.png' alt='Dein Profil'></a>
 		</section>
 		{{#if (checkRole role 'admin')}}
-			<section class='header-right'>
+			<section class='right'>
 				<a href="/admin"><img src='/images/icon-admin.png' alt='Admim'></a>
 			</section>
 		{{/if}}
