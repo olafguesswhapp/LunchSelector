@@ -138,8 +138,7 @@ function initAdmin (req, res) {
 		created: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
 		gender: 0,
 		age: 0,
-		selectedCity: 'Düsseldorf',
-		supplier: ''
+		selectedCity: 'Düsseldorf'
 	});
 	newUserData.save(function(err, newUser){
 		if(err) {
