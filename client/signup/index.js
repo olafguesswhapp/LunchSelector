@@ -11,6 +11,7 @@ var Cities = require('../../models/cities');
 var moment = require('moment');
 
 router.get('/', displaySignUp);
+router.get('/startdb', initAdmin);
 router.post('/', processSignUp);
 router.post('/verify', verifiyEmail);
 
@@ -126,4 +127,25 @@ function processSignUp(req, res) {
 			}
 		});
 	}
+};
+
+function initAdmin (req, res) {
+	var newUserData = new LSUsers ({
+		username: 'olaf@guesswhapp.de',
+		password: '123',
+		name: 'Olaf',
+		role: 'admin',
+		created: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
+		gender: 0,
+		age: 0,
+		selectedCity: 'Düsseldorf',
+		supplier: ''
+	});
+	newUserData.save(function(err, newUser){
+		if(err) {
+			res.redirect(303, '/signup');
+		} else {
+			res.redirect(303, '/');
+		}
+	});
 };
