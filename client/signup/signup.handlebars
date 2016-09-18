@@ -1,39 +1,36 @@
-<div class='row center'>
-	<div class='col-4 form-frame'>
-		<span>Hallo! Danke für Dein Interesse. Nach der Registrierung kannst Du loslegen</span>
-		<br><br>
-		<form role="form" method="POST" name="signupForm" action="signup">
-			{{!-- <label for='signupName'>Wie heisst Du:</label> --}}
-			<input id='signupName' type="text" required name="signupName" class='form-input' placeholder='Name'>
+<div class='row'>
+	<form role="form" method="POST" name="signupForm" action="signup">
+		<div class='col-3'>
+			<h2 class='yellowtext'>Hallo!</h2>
+			<span>Danke für Dein Interesse.<br>Nach der Registrierung kannst Du loslegen</span>
+			<br><br>
+			<input id='signupName' type="text" required name="signupName" class='form-input form-input-standard' placeholder='Name'>
 		  <br><br>
-			{{!-- <label for='signupEmail'>Deine Email:</label> --}}
-			<input id='signupEmail' type="email" required name="signupEmail" class='form-input' placeholder='Email'>
+			<input id='signupEmail' type="email" required name="signupEmail" class='form-input form-input-standard' placeholder='Email'>
 			<span id='emailAlert' style='display=none'></span>
 			<br><br>
-			{{!-- <label for='signupPassword'>Bitte ein Passwort eingeben:</label> --}}
-			<input type="password" required id='signupPassword' name="signupPassword" class='form-input' placeholder='Passwort' />
-			{{!-- <br><br> --}}
-		  {{!-- <label for='signupPassword2'>Bitte das Passwort bestätigen:</label> --}}
-		  <input type="password" required id='signupPassword2' name="signupPassword2" onchange="return checkForm(this);" class='form-input' placeholder='Passwort bestätigen' />
+			<input type="password" required id='signupPassword' name="signupPassword" class='form-input form-input-standard' placeholder='Passwort' />
+		  <input type="password" required id='signupPassword2' name="signupPassword2" onchange="return checkForm(this);" class='form-input form-input-standard' placeholder='Passwort bestätigen' />
 		  <br>
 		  <p id="FieldAltertPWUnconfirmed" style="display: none;">
 		  	Warnung: Die Bestätigung des Passwortes stimmt nicht. Bitte bestätige dieses erneut</p><br>
-			<div class='form-input form-div'>Meine präferierte Stadt ist <select id='signupCity' required name="signupCity">
+			<div type='text' class='form-input form-input-standard form-input-div'>Meine präferierte Stadt ist <select id='signupCity' required name="signupCity" class='form-input-select'>
 				{{#locals.availableCities}}
 				  <option value="{{this}}">{{this}}</option>
 				{{/locals.availableCities}}
 			</select></div>
 			<br><br>
-			<label><input id="signupIsRestaurant" type="checkbox" name="signupIsRestaurant">Betreibst Du auch ein Restaurant?</label><br>
-			<label><input id="signupHasLunch" type="checkbox" name="signupHasLunch">Bietet das Restaurant eine täglich sich ändernde Mittagskarte an? </label><br>
+			<label class='yellowtext'><input id="signupIsRestaurant" type="checkbox" name="signupIsRestaurant">Betreibst Du auch ein Restaurant?</label><br>
+			<label class='yellowtext'><input id="signupHasLunch" type="checkbox" name="signupHasLunch">Bietet das Restaurant eine täglich sich ändernde Mittagskarte an? </label><br>
 			<br>
 			<input class='btn' type='submit' id='signupUserBtn' value='Jetzt registrieren' style="display: none" />
-
+		</div>
+		<div class='col-3'>
 			<div id='sectionRestaurant' style="display:block;">
 				{{>registerSupplier}}
 			</div>
-		</form>
-	</div>
+		</div>
+	</form>
 </div>
 
 <script type="text/javascript">
