@@ -143,6 +143,7 @@ function initAdmin (req, res) {
 	});
 	newUserData.save(function(err, newUser){
 		if(err) {
+			console.log(err);
 			res.redirect(303, '/signup');
 		} else {
 			res.redirect(303, '/');
