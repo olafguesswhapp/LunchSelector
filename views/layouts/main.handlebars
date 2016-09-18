@@ -5,40 +5,78 @@
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
 	<meta name="generator" content="Sublime Text 2" />
 	<title>Tiffin</title>
+	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Josefin+Sans" />
 	<link rel='stylesheet' href="/css/styles.css" type='text/css' media='all' />
 	{{> googleanalytics}}
 </head>
 <body>
-	<header class='header'>
-		<section class='logo'>
-			<a href='/'><img class='logo__image' src='/images/logo-header.png'></a>	
-		</section>
-		<section class='right'>
-			<a href="/offers">Was gibt es heute?</a>
-		</section>
-		<section class='right'>
-			<a href="/offers/select">Restaurants</a>
-		</section>
-		{{#if (checkRole role 'supplier')}}
-			<section class='right'>
-				<a href="/supply">Meine Angebote</a>
+	<div class='container'>
+		<header class='header'>
+			<section class='logo'>
+				<a href='/'><img class='logo__image' src='/images/logo-header.png'></a>	
 			</section>
-		{{/if}}
-		{{#if (checkRole role 'admin')}}
-			<section class='right'>
-				<a href="/supply">Meine Angebote</a>
+			<section class='right nonmobile'>
+				<a href="/offers">Was gibt es heute?</a>
 			</section>
-		{{/if}}
-		<section class='right'>
-			<a href="/profile"><img src='/images/icon-profile.png' alt='Dein Profil'></a>
-		</section>
-		{{#if (checkRole role 'admin')}}
-			<section class='right'>
-				<a href="/admin"><img src='/images/icon-admin.png' alt='Admim'></a>
+			<section class='right nonmobile'>
+				<a href="/offers/select">Restaurants</a>
 			</section>
-		{{/if}}
-	</header>
-	{{{body}}}
-	{{> footer}}
+			{{#if (checkRole role 'supplier')}}
+				<section class='right nonmobile'>
+					<a href="/supply">Meine Angebote</a>
+				</section>
+			{{/if}}
+			{{#if (checkRole role 'admin')}}
+				<section class='right nonmobile'>
+					<a href="/supply">Meine Angebote</a>
+				</section>
+			{{/if}}
+			<section class='right nonmobile'>
+				<a href="/profile"><img src='/images/icon-profile.png' alt='Dein Profil'></a>
+			</section>
+			{{#if (checkRole role 'admin')}}
+				<section class='right nonmobile'>
+					<a href="/admin"><img src='/images/icon-admin.png' alt='Admim'></a>
+				</section>
+			{{/if}}
+			<section class='right mobileonly'>
+				<div class='navburger' onclick='displayNavigation();'>
+					<img src='/images/icon-navigation.png' alt='Navigation'>
+				</div>
+			</section>
+			<section class='right mobileonly'>
+			</section>
+		</header>
+
+		<div class='row mobilenavigation topborder bottomborder' id='mobilenavigation'>
+			<ul class='mobilenavigation-ul'>
+				<li class='mobilenavigation-li'><a href="/offers">Was gibt es heute?</a></li>
+				<li class='mobilenavigation-li'><a href="/offers/select">Restaurants</a></li>
+				{{#if (checkRole role 'supplier')}}
+					<li class='mobilenavigation-li'><a href="/supply">Meine Angebote</a></li>
+				{{/if}}
+				{{#if (checkRole role 'admin')}}
+					<li class='mobilenavigation-li'><a href="/supply">Meine Angebote</a></li>
+				{{/if}}
+				<li class='mobilenavigation-li'><a href="/profile">Mein Profil</a></li>
+				{{#if (checkRole role 'admin')}}
+					<li class='mobilenavigation-li'><a href="/admin">Admin</a></li>
+				{{/if}}
+			</ul>
+		</div>
+
+		{{{body}}}
+		{{> footer}}
+	</div>
 </body>
+<script type="text/javascript">
+	function displayNavigation() {
+		// if (document.getElementById('mobilenavigation').style.display == 'none') {
+		// 	document.getElementById('mobilenavigation').style.display = 'block';
+		// } else {
+		// 	document.getElementById('mobilenavigation').style.display = 'none';
+		// }
+		document.getElementById('mobilenavigation').classList.toggle('shownav');
+	};
+</script>
 </html>

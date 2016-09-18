@@ -108,6 +108,16 @@ img {
 		.logo__image {
 			vertical-align: middle;
 		}
+		.navburger {
+			border-style: solid;
+	    border-color: white;
+	    border-width: thin;
+	    padding-top: 6px;
+	    padding-left: 8px;
+	    padding-right: 8px;
+	    padding-bottom: 2px;
+	    border-radius: 4px;
+		}
 /* ---------------------------------------------- */
 /*		#HERO SECTION     */
 /* ---------------------------------------------- */
@@ -130,7 +140,7 @@ img {
 	max-width: 200px;
 }
 /* ---------------------------------------------- */
-/*		#MOBILELOGIN SECTION     */
+/*		#MOBILE SECTION     */
 /* ---------------------------------------------- */
 .logindropdown {
 	display: none;
@@ -142,6 +152,23 @@ img {
 .show {
 	display: block;
 }
+.mobilenavigation {
+	display: none;
+	background-color: rgba(0, 151, 166, 0.6);
+	height: auto;
+}
+	.mobilenavigation-ul {
+		margin-top: 10px;
+    margin-bottom: 0px;
+    list-style: none;
+	}
+		.mobilenavigation-li {
+			padding-bottom: 10px;
+		}
+.shownav {
+	display: block;
+}
+
 /* ---------------------------------------------- */
 /*		#INPUT SECTION     */
 /* ---------------------------------------------- */
@@ -276,6 +303,11 @@ img {
 	border-top-width: thin;
 	border-top-color: white;
 }
+.bottomborder {
+	border-bottom-style: solid;
+	border-bottom-width: thin;
+	border-bottom-color: white;
+}
 /* ---------------------------------------------- */
 /*		#TO BE RESOLVED     */
 /* ---------------------------------------------- */
@@ -286,7 +318,6 @@ img {
 	.marginTop2 {
 		margin-top: 2px;
 	}
-
 
   .feature {
   	font-size: 22px;
