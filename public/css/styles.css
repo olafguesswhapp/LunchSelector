@@ -108,15 +108,25 @@ img {
 		.logo__image {
 			vertical-align: middle;
 		}
-		.navburger {
-			border-style: solid;
-	    border-color: white;
-	    border-width: thin;
-	    padding-top: 6px;
-	    padding-left: 8px;
-	    padding-right: 8px;
-	    padding-bottom: 2px;
-	    border-radius: 4px;
+	.navburger {
+		border-style: solid;
+    border-color: white;
+    border-width: thin;
+    padding-top: 6px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-bottom: 2px;
+    border-radius: 4px;
+	}
+		.navburger:hover {
+			background-color: #ffec00;
+		}
+	.nav-link {
+		font-size: 18px;
+	}
+		.nav-link img:hover {
+			background-color: rgba(255,236,0,0.3);
+    	border-radius: 5%;
 		}
 /* ---------------------------------------------- */
 /*		#HERO SECTION     */
@@ -139,6 +149,28 @@ img {
 .img-title {
 	max-width: 200px;
 }
+/* ---------------------------------------------- */
+/*		#SUBNAVIGATION SECTION     */
+/* ---------------------------------------------- */
+.subNav {
+	list-style-type: none;
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0;
+	padding-top: 20px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+}
+	.subNav-listItem {
+		float: left;
+		padding-right: 22px;
+	}
+/* ---------------------------------------------- */
+/*		#CARDS SECTION     */
+/* ---------------------------------------------- */
+
+
+
 /* ---------------------------------------------- */
 /*		#MOBILE SECTION     */
 /* ---------------------------------------------- */
@@ -290,12 +322,18 @@ img {
 .right {
 	margin-top: auto;
 	margin-bottom: auto;
-	padding-right: 4px;
+	padding-left: 20px;
+}
+.widthfull {
+	width: 100%;
 }
 .lila {
 	background-color: #0097a6;
 }
 .yellowtext {
+	color: #ffec00;
+}
+.yellow-hover:hover {
 	color: #ffec00;
 }
 .topborder {
@@ -307,6 +345,13 @@ img {
 	border-bottom-style: solid;
 	border-bottom-width: thin;
 	border-bottom-color: white;
+}
+.neutralselect {
+  background-color: transparent;
+  border-style: none;
+  color: white;
+  font-family: inherit;
+  font-size: 16px;
 }
 /* ---------------------------------------------- */
 /*		#TO BE RESOLVED     */
@@ -322,16 +367,6 @@ img {
   .feature {
   	font-size: 22px;
   }
-
-.subNav {
-	list-style-type: none;
-	display: inline-block;
-	vertical-align: middle;
-}
-	.subNav-listItem {
-		float: left;
-		padding: 5px;
-	}
 
 .card {
 	width: 280px;

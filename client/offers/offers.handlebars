@@ -1,20 +1,20 @@
 <div class='row'>
 	<ul class='subNav'>
 		<li class='subNav-listItem'>
-			<a href='#' onclick="shareWithFriends(); return false;">
-			<img src='/images/icon-mail.png' alt='Send to Friend'> Auswahl an Freunde senden</a>
+			<a class='yellow-hover' href='#' onclick="shareWithFriends(); return false;">
+			<img src='/images/icon-mail.png' alt='Send to Friend'> Versenden</a>
 		</li>
-		<li class='subNav-listItem'></li>
 		<li class='subNav-listItem'>Restaurants aus
-			<select id="selectedCity" required name="selectedCity" onchange='switchFilter(value);'>
+			<select id="selectedCity" class='neutralselect yellow-hover' required name="selectedCity" onchange='switchFilter(value);'>
 			  {{#each availableCities}}
 			  <option value='{{this}}' {{#checkVar ../selectedCity this 'selected' ''}}{{/checkVar}}>{{this}}</option>
 			  {{/each}}
 			</select>
 		</li>
 	</ul>
-
-	<div id='offersParent' class='center'> {{!-- width: 100%; margin: 0 0; text-align: center --}}
+</div>
+<div class='row'>
+	<div id='offersParent' class='center'>
 		{{#suppliers}}
 		<div id='supplierCard{{@index}}' class='card' style='display: {{#checkVar ../selectedCity supplierCity 'inline-table' 'none'}}{{/checkVar}};'>
 			<div class='card-container'>
@@ -48,8 +48,8 @@
 		</div>
 		{{/suppliers}}
 	</div>
-	
-	<br>
+</div>
+<div class='row'>
 
 	{{> requestSupplier}}
 </div>
