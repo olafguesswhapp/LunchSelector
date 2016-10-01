@@ -108,6 +108,7 @@
 	};
 
 	function switchVisible(index) {
+		document.getElementById('alert' + index).style.display = 'none';
     if (document.getElementById('oben' + index)) {
       if (document.getElementById('oben' + index).style.display == 'none') {
         document.getElementById('oben' + index).style.display = 'inline-table';
