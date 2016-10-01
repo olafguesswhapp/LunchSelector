@@ -9,6 +9,7 @@ router.get('/', renderPreLaunch);
 router.post('/login', processLogin);
 router.get('/soon', renderLandingPage);
 router.post('/prospect', registerProspect);
+router.get('/toon', renderTest);
 
 module.exports = router;
 
@@ -73,4 +74,9 @@ function registerProspect(req, res) {
       }
     });
   }
+};
+
+function renderTest(req, res) {
+  console.log('*** index.js route - / test ');
+  res.render('../client/landingpage/test', {layout: 'landingpage'});
 };

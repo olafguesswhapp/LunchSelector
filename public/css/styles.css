@@ -10,7 +10,7 @@ html {
 
 body {
 	background-image: url(/images/background2.png);
-	background-size: 100px;
+	background-size: 446px 204px;
 	background-repeat: repeat-x repeat-y;
 	margin: 0;
 	color: white;
@@ -23,6 +23,10 @@ a {
 h1 {
   margin: .67em 0;
   font-size: 2em;
+}
+h3 {
+	margin-top: 0px;
+	margin-bottom: 10px;
 }
 img {
   border: 0;
@@ -370,21 +374,22 @@ img {
 
 .card {
 	width: 280px;
-	height: 150px;
-	margin: 10px;
+	height: 200px;
+	padding: 10px;
 	text-align: left;
-	border-radius: 5px;
-	border-width: 1px;
-	border-color: #f9a700;
-	border-style: solid;
 }
 	.card-container {
 		height: 100%;
-		font-size: 14px;
+		font-size: 16px; /* CHECK */
+		line-height: 20px;
 		font-weight: lighter;
 		color: white;
+		border-radius: 5px;
+		border-width: 1px;
+		border-color: #6dbc8e; /* #f9a700; */
+		border-style: solid;
 	}
-		.card-title {
+		.card-header {
 			box-sizing: border-box;
 			height: 30%;
 			padding-top: 5px;
@@ -392,8 +397,14 @@ img {
 			padding-right: 10px;
 			border-top-left-radius: 5px;
 			border-top-right-radius: 5px;
-			background-color: #f9a700;
+			background-color: rgba(109, 188, 142, 0.7); /* #6dbc8e #f9a700; */
+			color: black;
 		}
+			.card-header-title {
+				margin-top: 5px;
+				margin-bottom: 5px;
+		    font-size: 20px;
+			}
 		.card-frontSide {
 			display: inline-table;
 			box-sizing: border-box;
@@ -422,14 +433,14 @@ img {
 			box-sizing: border-box;
 			width: 100%;
 			height: 70%;
-			background-color: black;
-			padding-top: 5px;
+			padding-top: 10px;
 			padding-left: 10px;
 			padding-right: 10px;
-			padding-bottom: 5px;
+			padding-bottom: 10px;
 			border-bottom-left-radius: 5px;
 			border-bottom-right-radius: 5px;
-			background-color: black;
+			color: #6dbc8e;
+			background-color: rgba(0,0,0,0.5);
 		}
 		.card-alert {
 			display: none;

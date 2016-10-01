@@ -16,26 +16,32 @@
 <div class='row'>
 	<div id='offersParent' class='center'>
 		{{#suppliers}}
+		{{!-- Card --}}
 		<div id='supplierCard{{@index}}' class='card' style='display: {{#checkVar ../selectedCity supplierCity 'inline-table' 'none'}}{{/checkVar}};'>
 			<div class='card-container'>
-				<div class='card-title'>
+				{{!-- Card-Header --}}
+				<div class='card-header'>
+					
+					<h3 class='card-header-title'><a href='#' onclick='switchVisible({{@index}})'><img src='/images/icon-turn.png'></a> {{supplierName}}<a href='#' class='floatRight' onclick='removeSupplier({{@index}});return false;'><img src='/images/icon-detachB.png'></a></h3>
+					
 					<span>{{supplierStart}} - {{supplierEnd}} {{#restaurantOpen supplierStart supplierEnd}}{{/restaurantOpen}}</span>
-					<a href='#' class='floatRight' onclick='removeSupplier({{@index}});return false;'><img src='/images/icon-detach.png'></a>
-					<h3 class='marginTop2'>{{supplierName}}</h3>
 				</div>
+				{{!-- Card Front Side --}}
 				<div id="oben{{@index}}" class='card-frontSide' onclick='switchVisible({{@index}});'>
 					{{#offers}}
 					<div class='card-frontSide-left'>{{offerName}}</div>
 					<div class='card-frontSide-right'>{{offerPrice}}</div>
 					{{/offers}}
 				</div>
+				{{!-- Card Back Side --}}
 				<div id='bottom{{@index}}' class='card-backSide' onclick='switchVisible({{@index}});'>
 					<div>{{supplierStreet}}</div>
 					<div>{{supplierZipCode}} {{supplierCity}}</div>
-					<div>{{supplierTefl}}</div>
+					<div>{{supplierPhone}}</div>
 					<div><a href='{{supplierSite}}' target='_blank'>{{supplierSite}}</a></div>
-					<div>{{supplierEmail}}</div>
+					<div><span onclick='noDefault();'><a href='mailto:{{supplierEmail}}' onclick='noDefault(this);'></span><img src='/images/icon-mail-small.png'> </a>{{supplierEmail}}</div>
 				</div>
+				{{!-- Card Alert --}}
 				<div id='alert{{@index}}' class='card-alert'>
 					<div>Bitte bestätige, dass {{supplierName}} aus Deiner Favoriten-Liste genommen werden soll?</div>
 					<br>
@@ -55,6 +61,11 @@
 </div>
 
 <script type="text/javascript">
+
+	function noDefault(evt) {
+		evt.preventDefault();
+		console.log('Test');
+	}
 
 	function setCity() {
 		console.log('start with this city {{selectedCity}}');

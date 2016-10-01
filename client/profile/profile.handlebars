@@ -1,15 +1,23 @@
-<h2>PROFIL {{username}} <form style='display: inline' role="form" action="profile/logout" method="GET">
-  <button type="submit">Abmelden</button></form></h2>
-<p>Name: {{name}}</p>
-<p>Rolle: {{role}}</p>
-<p>Meine favorisierte Stadt: {{selectedCity}}</p>
-<p>Meine Restaurants: {{#supplier}}<a href='/profile/supplier/{{this}}'>{{this}}</a>{{#if @last}}{{else}},{{/if}} {{/supplier}}</p>
-<p>Meine Favoriten: {{#preferredSuppliers}}{{this}}{{#if @last}}{{else}},{{/if}} {{/preferredSuppliers}}</p>
-<input type='submit' id='registerNewSupplierBTN' name='registerNewSupplierBTN' value='Mein Restaurant anmelden' onclick='showRegisterSupplierForm()'><br><br>
-<div id='registerNewSupplierFrame' style='border-style: solid; border-color: lightgray; padding: 10px; display: none'>
-	<form role="form" method="POST" name="registerSupplierForm" action="profile/supplier">
-		{{>registerSupplier}}
-	</form>
+<div class='row'>
+	<h2>PROFIL {{username}} <form style='display: inline' role="form" action="profile/logout" method="GET">
+  	<button type="submit">Abmelden</button></form></h2>
+</div>
+<div class='row'>
+	<p>Name: {{name}}</p>
+	<p>Rolle: {{role}}</p>
+	<p>Meine favorisierte Stadt: {{selectedCity}}</p>
+	<p>Meine Restaurants: {{#supplier}}<a href='/profile/supplier/{{this}}'>{{this}}</a>{{#if @last}}{{else}},{{/if}} {{/supplier}}</p>
+	<p>Meine Favoriten: {{#preferredSuppliers}}{{this}}{{#if @last}}{{else}},{{/if}} {{/preferredSuppliers}}</p>
+</div>
+
+<div class='row'>
+	<input type='submit' id='registerNewSupplierBTN' name='registerNewSupplierBTN' value='Mein Restaurant anmelden' onclick='showRegisterSupplierForm()'>
+	<div class='col-3' id='registerNewSupplierFrame' style='display: none'>
+		<h3 class='yellowtext'>Neues Restaurant anmelden:</h3><br>
+		<form role="form" method="POST" name="registerSupplierForm" action="profile/supplier">
+			{{>registerSupplier}}
+		</form>
+	</div>
 </div>
 
 <script type="text/javascript">

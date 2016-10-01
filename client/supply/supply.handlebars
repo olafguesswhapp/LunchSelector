@@ -1,34 +1,37 @@
-
-<form action='/supply' method='GET'>
-	<label><h3 style='display: inline;"'>Gib hier die Mittagsangebote ein für  </h3> 
-		<select id="selectedSupplier" required name="selectedSupplier" onchange='this.form.submit();'>
-		  {{#each supplier}}
-		  <option value='{{@index}}' {{#checkVar ../selectedSupplier @index 'selected' ''}}{{/checkVar}}>{{this}}</option>
-		  {{/each}}
-	  </select>
-	</label>
-</form>
-<br>
-<form role='form' method='POST' name='offerInput' action='supply/offer'>
-	<label>Datum: <input type='date' id='offerDate' name='offerDate'></label>
-	<label>Speise: <input type='text' id='offerName' name='offerName'></label>
-	<label>Preis: <input type='number' min='0.01' step='0.01' max='100' id='offerPrice' name='offerPrice'></label>
-	<select name='offerType' id='offerType'>
-	  <option value='0'>Vorspeise</option> 
-	  <option value='10' selected>Hauptspeise</option>
-	  <option value='100'>Nachtisch</option>
-</select>
-	<input class='btn' type='submit' id='offerSubmit' value='Senden'/>
-	<span id='offerAlert' style='display:none;'>Danke, Tagesangebot wurde erfasst</span>
-</form>
+<div class='row'>
+	<form action='/supply' method='GET'>
+		<label><h3 style='display: inline;"'>Mittagsangebote für  </h3> 
+			<select id="selectedSupplier" class='neutralselect yellow-hover' required name="selectedSupplier" onchange='this.form.submit();'>
+			  {{#each supplier}}
+			  <option value='{{@index}}' {{#checkVar ../selectedSupplier @index 'selected' ''}}{{/checkVar}}>{{this}}</option>
+			  {{/each}}
+		  </select>
+		</label>
+	</form>
+</div>
+<div class='row'>
+	<form role='form' method='POST' name='offerInput' action='supply/offer'>
+		<label>Datum: <input type='date' id='offerDate' name='offerDate'></label>
+		<label>Speise: <input type='text' id='offerName' name='offerName'></label>
+		<label>Preis: <input type='number' min='0.01' step='0.01' max='100' id='offerPrice' name='offerPrice'></label>
+		<select name='offerType' class='neutralselect yellow-hover' id='offerType'>
+		  <option value='0'>Vorspeise</option> 
+		  <option value='10' selected>Hauptspeise</option>
+		  <option value='100'>Nachtisch</option>
+	</select>
+		<input class='btn' type='submit' id='offerSubmit' value='Senden'/>
+		<span id='offerAlert' style='display:none;'>Danke, Tagesangebot wurde erfasst</span>
+	</form>
+</div>
 <br>
 {{#if category1}}
-	<form role='form' method='POST' name='reloadSite' action='supply'>
-		<input type='hidden' name='selectedSupplier' value='{{selectedSupplier}}'>
-		<h3>Die Mittagsangebote Deines Restaurants ab dem <input type='date' id='startDate' name='startDate'> für die nächsten <input type='number' name='endNumberDays' id='endNumberDays' min='1' max='14'> Tage: <input type='submit' name='offerUpdate' id='offerUpdate' value='Aktualisieren' style='display: none'></h3>
-	</form>
-	<div style='width: 100%;'>
-		
+	<div class='row'>
+		<form role='form' method='POST' name='reloadSite' action='supply'>
+			<input type='hidden' name='selectedSupplier' value='{{selectedSupplier}}'>
+			<h3>Die Mittagsangebote Deines Restaurants ab dem <input type='date' id='startDate' name='startDate'> für die nächsten <input type='number' name='endNumberDays' id='endNumberDays' min='1' max='14'> Tage: <input type='submit' name='offerUpdate' id='offerUpdate' value='Aktualisieren' style='display: none'></h3>
+		</form>
+	</div>
+	<div  class='row'>
 		<div>
 			<span smin='0' max='14' tyle='width:30%; float: left;'>Datum</span>
 			<span style='width:60%; float: left;'>Speise</span>

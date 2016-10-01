@@ -1,34 +1,42 @@
-<h3>Übernehme Restaurants aus {{selectedCity}} und deren Mittagsangebote in Deine Favoriten Liste</h3>
-<form action='/offers/select' method='GET'>
-	<label>In einer anderen Stadt nach Restaurants suchen? 
-		<select id="selectedCity" required name="selectedCity" onchange='this.form.submit();'>
-		  {{#each availableCities}}
-		  <option value='{{this}}' {{#checkVar ../selectedCity this 'selected' ''}}{{/checkVar}}>{{this}}</option>
-		  {{/each}}
-		</select>
-	</label>
-</form>
-<br><br>
-{{#if suppliers}}
-	{{#suppliers}}
-		<div id='supplier{{_id}}'>
-			<div style='float: left'>
-				<span>{{supplierName}}, {{supplierDescription}}, {{supplierStreet}}, <a target="_blank" href="http://{{supplierSite}}">{{supplierSite}}</a>  <span onmouseover='openOffers("{{@index}}")' onmouseout='closeOffers("{{@index}}")'>&#9776;</span></span>
+<div class='row'>
+	<ul class='subNav'>
+		<li class='subNav-listItem'>
+			<form action='/offers/select' method='GET'>
+				<label>Restaurants aus 
+					<select id="selectedCity" class='neutralselect yellow-hover' required name="selectedCity" onchange='this.form.submit();'>
+					  {{#each availableCities}}
+					  <option value='{{this}}' {{#checkVar ../selectedCity this 'selected' ''}}{{/checkVar}}>{{this}}</option>
+					  {{/each}}
+					</select>
+				</label>
+			</form>
+		</li>
+	</ul>
+</div>
+<div class='row'>
+	{{#if suppliers}}
+		{{#suppliers}}
+			<div id='supplier{{_id}}'>
+				<div style='float: left'>
+					<span>{{supplierName}}, {{supplierDescription}}, {{supplierStreet}}, <a target="_blank" href="http://{{supplierSite}}">{{supplierSite}}</a>  <span onmouseover='openOffers("{{@index}}")' onmouseout='closeOffers("{{@index}}")'>&#9776;</span></span>
+				</div>
+				<div style='float: right;'>
+					<span style='float: right; background-color: black;color: white;width: 30px;text-align: center;border-radius: 6px;' onclick="appendSupplier('{{_id}}', '{{supplierName}}')" > + </span>	
+				</div>
+				<div id='offer{{@index}}' style='width: 200px; display:none; position:absolute; background-color: black; color: white; padding: 8px;'><h4>{{supplierName}}</h4>{{#offers}}<span style='float: left;'>{{offerName}}</span><span style='float: right;'>{{offerPrice}}</span><br><br>{{/offers}}</div>
+				<div style="clear:both;"></div><br>
 			</div>
-			<div style='float: right;'>
-				<span style='float: right; background-color: black;color: white;width: 30px;text-align: center;border-radius: 6px;' onclick="appendSupplier('{{_id}}', '{{supplierName}}')" > + </span>	
-			</div>
-			<div id='offer{{@index}}' style='width: 200px; display:none; position:absolute; background-color: black; color: white; padding: 8px;'><h4>{{supplierName}}</h4>{{#offers}}<span style='float: left;'>{{offerName}}</span><span style='float: right;'>{{offerPrice}}</span><br><br>{{/offers}}</div>
-			<div style="clear:both;"></div><br>
-		</div>
-	{{/suppliers}}
-{{else}}
-	<span>Bitte helf uns weitere Restaurants für unsere Liste zu gewinnen und trage Deine Vorschläge unten ein</span>
-	<br><br>
-{{/if}}
-	<div id='appendSupplierSuccessMessage' style='display: none;'><h3 id='successMessage'></h3></div>
-<br>
-{{> requestSupplier}}
+		{{/suppliers}}
+	{{else}}
+		<span>Bitte helf uns weitere Restaurants für unsere Liste zu gewinnen und trage Deine Vorschläge unten ein</span>
+		<br><br>
+	{{/if}}
+		<div id='appendSupplierSuccessMessage' style='display: none;'><h3 id='successMessage'></h3></div>
+</div>
+
+<div class='row'>
+	{{> requestSupplier}}
+</div>
 
 <script type='text/javascript'>
 
