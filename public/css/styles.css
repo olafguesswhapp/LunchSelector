@@ -163,7 +163,7 @@ img {
 	margin: 0;
 	padding-top: 20px;
 	padding-bottom: 10px;
-	padding-left: 10px;
+	padding-left: 0px;
 }
 	.subNav-listItem {
 		float: left;
@@ -173,7 +173,92 @@ img {
 /*		#CARDS SECTION     */
 /* ---------------------------------------------- */
 
-
+.card {
+	width: 280px;
+	height: 200px;
+	padding: 10px;
+	text-align: left;
+}
+	.card-container {
+		height: 100%;
+		font-size: 16px; /* CHECK */
+		line-height: 20px;
+		font-weight: lighter;
+		color: white;
+		border-radius: 5px;
+		border-width: 1px;
+		border-color: #6dbc8e; /* #f9a700; */
+		border-style: solid;
+	}
+		.card-header {
+			box-sizing: border-box;
+			height: 30%;
+			padding-top: 5px;
+			padding-left: 10px;
+			padding-right: 10px;
+			border-top-left-radius: 5px;
+			border-top-right-radius: 5px;
+			background-color: rgba(109, 188, 142, 0.7); /* #6dbc8e #f9a700; */
+			color: black;
+		}
+			.card-header-title {
+				margin-top: 5px;
+				margin-bottom: 5px;
+		    font-size: 20px;
+			}
+		.card-frontSide {
+			display: inline-table;
+			box-sizing: border-box;
+			width: 100%;
+			height: 70%;
+			padding-bottom: 10px;
+			border-bottom-left-radius: 5px;
+			border-bottom-right-radius: 5px;
+			background-color: black;
+			color: #6dbc8e;
+		}
+			.card-frontSide-left {
+				width: 77%;
+				display: inline-block;
+				padding-left: 10px;
+				padding-top: 5px;
+			}
+			.card-frontSide-right {
+				width: 15%;
+				display: inline-block;
+				text-align: right;
+				padding-top: 5px;
+				padding-right: 10px;
+			}
+		.card-backSide {
+			display: none;
+			box-sizing: border-box;
+			width: 100%;
+			height: 70%;
+			padding-top: 10px;
+			padding-left: 10px;
+			padding-right: 10px;
+			padding-bottom: 10px;
+			border-bottom-left-radius: 5px;
+			border-bottom-right-radius: 5px;
+			color: #6dbc8e;
+			background-color: rgba(0,0,0,0.5);
+		}
+		.card-alert {
+			display: none;
+			box-sizing: border-box;
+			width: 100%;
+			height: 70%;
+			text-align: center;
+			background-color: black;
+			padding-top: 5px;
+			padding-left: 10px;
+			padding-right: 10px;
+			padding-bottom: 5px;
+			border-bottom-left-radius: 5px;
+			border-bottom-right-radius: 5px;
+			background-color: black;
+		}
 
 /* ---------------------------------------------- */
 /*		#MOBILE SECTION     */
@@ -372,91 +457,6 @@ img {
   	font-size: 22px;
   }
 
-.card {
-	width: 280px;
-	height: 200px;
-	padding: 10px;
-	text-align: left;
-}
-	.card-container {
-		height: 100%;
-		font-size: 16px; /* CHECK */
-		line-height: 20px;
-		font-weight: lighter;
-		color: white;
-		border-radius: 5px;
-		border-width: 1px;
-		border-color: #6dbc8e; /* #f9a700; */
-		border-style: solid;
-	}
-		.card-header {
-			box-sizing: border-box;
-			height: 30%;
-			padding-top: 5px;
-			padding-left: 10px;
-			padding-right: 10px;
-			border-top-left-radius: 5px;
-			border-top-right-radius: 5px;
-			background-color: rgba(109, 188, 142, 0.7); /* #6dbc8e #f9a700; */
-			color: black;
-		}
-			.card-header-title {
-				margin-top: 5px;
-				margin-bottom: 5px;
-		    font-size: 20px;
-			}
-		.card-frontSide {
-			display: inline-table;
-			box-sizing: border-box;
-			width: 100%;
-			height: 70%;
-			padding-bottom: 10px;
-			border-bottom-left-radius: 5px;
-			border-bottom-right-radius: 5px;
-			background-color: black;
-		}
-			.card-frontSide-left {
-				width: 77%;
-				display: inline-block;
-				padding-left: 10px;
-				padding-top: 5px;
-			}
-			.card-frontSide-right {
-				width: 15%;
-				display: inline-block;
-				text-align: right;
-				padding-top: 5px;
-				padding-right: 10px;
-			}
-		.card-backSide {
-			display: none;
-			box-sizing: border-box;
-			width: 100%;
-			height: 70%;
-			padding-top: 10px;
-			padding-left: 10px;
-			padding-right: 10px;
-			padding-bottom: 10px;
-			border-bottom-left-radius: 5px;
-			border-bottom-right-radius: 5px;
-			color: #6dbc8e;
-			background-color: rgba(0,0,0,0.5);
-		}
-		.card-alert {
-			display: none;
-			box-sizing: border-box;
-			width: 100%;
-			height: 70%;
-			text-align: center;
-			background-color: black;
-			padding-top: 5px;
-			padding-left: 10px;
-			padding-right: 10px;
-			padding-bottom: 5px;
-			border-bottom-left-radius: 5px;
-			border-bottom-right-radius: 5px;
-			background-color: black;
-		}
 
 .form-frame {
 	text-align: left;
