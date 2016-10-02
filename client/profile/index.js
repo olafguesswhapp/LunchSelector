@@ -8,12 +8,18 @@ var authentication = require('../../lib/authentication');
 var moment = require('moment');
 
 router.get('/', authentication.isLoggedIn, displayProfile);
+router.post('/update', authentication.isLoggedIn, processProfileUpdate);
 router.get('/logout', logoutUser);
 router.post('/supplier', authentication.isLoggedIn, addSupplier);
 router.get('/supplier/:supplierName', authentication.isLoggedInAsSupplier, supplierEdit);
 router.post('/supplier/update', authentication.isLoggedInAsSupplier, processSupplierEdit);
 
 module.exports = router;
+
+function processProfileUpdate(req, res){
+	console.log('*** client/profile/index.js route POST - /profile/update -');
+	res.redirect('/profile');
+};
 
 function processSupplierEdit(req, res){
 	console.log('*** client/profile/index.js route POST - /profile/supplier/update -');

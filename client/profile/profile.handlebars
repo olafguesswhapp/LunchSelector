@@ -1,10 +1,16 @@
 <div class='row'>
-	<h3>{{username}} <form style='display: inline' role="form" action="profile/logout" method="GET">
-  	<button class='btn' type="submit">Abmelden</button></form></h3>
+	<form style='display: inline' role="form" action="profile/logout" method="GET">
+  	<button class='btn lila' type="submit">User Abmelden</button>
+  </form><br>
 	<div class='col-3'>
-		<label class='label-left yellowtext'>Name:</label><input class='form-input form-input-right' type='text' name='name' disabled='true' placeholder='{{name}}' /><br><br>
-		<label class='label-left yellowtext'>Rolle:</label><input class='form-input form-input-right' type='text' name='name' disabled='true' placeholder='{{role}}' /><br><br>
-		<label class='label-left yellowtext'>Favorisierte Stadt:</label><input class='form-input form-input-right' type='text' name='name' disabled='true' placeholder='{{selectedCity}}' /><br><br>
+		<form role='form' method='POST' name='updateProfile' action='/profile/update'>
+			<label class='label-left yellowtext'>UserEmail:</label><input class='form-input form-input-right' type='text' name='name' disabled='true' placeholder='{{username}}' /><br><br>
+			<label class='label-left yellowtext'>Name:</label><input class='form-input form-input-right' type='text' name='name' disabled='true' placeholder='{{name}}' /><br><br>
+			<label class='label-left yellowtext'>Rolle:</label><input class='form-input form-input-right' type='text' name='name' disabled='true' placeholder='{{role}}' /><br><br>
+			<label class='label-left yellowtext'>Favorisierte Stadt:</label><input class='form-input form-input-right' type='text' name='name' disabled='true' placeholder='{{selectedCity}}' /><br><br>
+			{{!-- <button class='btn' type="submit">User Daten aktualisieren</button> --}}
+			<br><br>
+		</form>
 		{{#if preferredSuppliers}}
 			<label class='label-left yellowtext'>Meine Favoriten:</label>
 			<div class='form-input form-input-div form-input-right floatRight yellowtext'>
