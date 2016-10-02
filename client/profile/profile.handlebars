@@ -1,17 +1,27 @@
 <div class='row'>
-	<h2>PROFIL {{username}} <form style='display: inline' role="form" action="profile/logout" method="GET">
-  	<button type="submit">Abmelden</button></form></h2>
-</div>
-<div class='row'>
-	<p>Name: {{name}}</p>
-	<p>Rolle: {{role}}</p>
-	<p>Meine favorisierte Stadt: {{selectedCity}}</p>
-	<p>Meine Restaurants: {{#supplier}}<a href='/profile/supplier/{{this}}'>{{this}}</a>{{#if @last}}{{else}},{{/if}} {{/supplier}}</p>
-	<p>Meine Favoriten: {{#preferredSuppliers}}{{this}}{{#if @last}}{{else}},{{/if}} {{/preferredSuppliers}}</p>
+	<h3>{{username}} <form style='display: inline' role="form" action="profile/logout" method="GET">
+  	<button class='btn' type="submit">Abmelden</button></form></h3>
+	<div class='col-3'>
+		<label class='label-left yellowtext'>Name:</label><input class='form-input form-input-right' type='text' name='name' disabled='true' placeholder='{{name}}' /><br><br>
+		<label class='label-left yellowtext'>Rolle:</label><input class='form-input form-input-right' type='text' name='name' disabled='true' placeholder='{{role}}' /><br><br>
+		<label class='label-left yellowtext'>Favorisierte Stadt:</label><input class='form-input form-input-right' type='text' name='name' disabled='true' placeholder='{{selectedCity}}' /><br><br>
+		{{#if preferredSuppliers}}
+			<label class='label-left yellowtext'>Meine Favoriten:</label>
+			<div class='form-input form-input-div form-input-right floatRight yellowtext'>
+				{{#preferredSuppliers}}{{this}}{{#if @last}}{{else}},{{/if}} {{/preferredSuppliers}}
+			</div><br><br>
+		{{/if}}
+		{{#if supplier}}
+			<label class='label-left yellowtext'>Meine Restaurants:</label>
+			<div class='form-input form-input-div form-input-right floatRight yellowtext'>
+				{{#supplier}}<a href='/profile/supplier/{{this}}' class='yellowtext'>{{this}}</a>{{#if @last}}{{else}},{{/if}} {{/supplier}}
+			</div>
+		{{/if}}
+	</div>
 </div>
 
 <div class='row'>
-	<input type='submit' id='registerNewSupplierBTN' name='registerNewSupplierBTN' value='Mein Restaurant anmelden' onclick='showRegisterSupplierForm()'>
+	<input type='submit' class='btn' id='registerNewSupplierBTN' name='registerNewSupplierBTN' value='Eigenes Restaurant anmelden' onclick='showRegisterSupplierForm()'>
 	<div class='col-3' id='registerNewSupplierFrame' style='display: none'>
 		<h3 class='yellowtext'>Neues Restaurant anmelden:</h3><br>
 		<form role="form" method="POST" name="registerSupplierForm" action="profile/supplier">
@@ -19,6 +29,22 @@
 		</form>
 	</div>
 </div>
+<style type="text/css">
+	::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+	  color:    #ffec00;
+	}
+	:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+	  color:    #ffec00;
+	  opacity:  1;
+	}
+	::-moz-placeholder { /* Mozilla Firefox 19+ */
+	  color:    #ffec00;
+	  opacity:  1;
+	}
+	:-ms-input-placeholder { /* Internet Explorer 10-11 */
+	  color:    #ffec00;
+	}
+</style>
 
 <script type="text/javascript">
 	function showRegisterSupplierForm (){
