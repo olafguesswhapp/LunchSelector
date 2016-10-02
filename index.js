@@ -52,6 +52,12 @@ var exphbs  = require('express-handlebars')
       },
       checkRole: function(roleA, roleB) {
         return (roleA === roleB);
+      },
+      displayDate: function(datum) {
+        var weekday = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+        var months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+        var d = new Date(datum);
+        return weekday[d.getDay()] + ', ' + d.getDate() + '.' + months[d.getMonth()];
       }
     }
 });	

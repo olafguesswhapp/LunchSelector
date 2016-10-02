@@ -320,7 +320,11 @@ img {
 .form_fixed {
 	width: 226px;
 }
-.form-input {
+.label-left {
+	width: 20%;
+	display: inline-block;
+}
+	.form-input {
 		box-sizing: border-box;
 		border-radius: 4px;
 		padding: 6px 12px;
@@ -362,6 +366,9 @@ img {
 	    border-right-style: inset;
 	    border-right-width: 2px;
 		}
+	  .form-input-right {
+	  	width: 80%;
+	  }
 .btn {
 	box-sizing: content-box;
   padding: 6px 12px;
@@ -459,15 +466,6 @@ img {
   .feature {
   	font-size: 22px;
   }
-
-  .label-left {
-  	width: 30%;
-  	display: inline-block;
-  }
-  .form-input-right {
-  	width: 70%;
-  }
-
 
 .form-frame {
 	text-align: left;
