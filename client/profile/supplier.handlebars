@@ -1,31 +1,45 @@
-<h3>Daten von {{supplierName}}:</h3>
-<form role='form' method='POST' name='updateSupplier' action='/profile/supplier/update'>
-	<input type='hidden' name='supplierId' id='supplierId' value='{{supplierId}}'>
-	<label>Name: <input type='text' name='supplierName' id='supplierName' value='{{supplierName}}'></label><br><br>
-	<label>Beschreibung: <input type='text' name='supplierDescription' id='supplierDescription' value='{{supplierDescription}}'></label><br>
-	<label>Essen: <input type='text' name='supplierType' id='supplierType' value='{{supplierType}}'></label><br>
-	<label>Geöffnet von: <input type='time' name='supplierStart' id='supplierStart' value='{{supplierStart}}'></label>
-	<label>bis <input type='time' name='supplierEnd' id='supplierEnd' value='{{supplierEnd}}'></label><br>
-	<label>Adresse: <input type='text' name='supplierStreet' id='supplierStreet' value='{{supplierStreet}}'>
-	<input type='text' name='supplierZipCode' id='supplierZipCode' value='{{supplierZipCode}}'>
-	<input type='text' name='supplierCity' id='supplierCity' value='{{supplierCity}}'></label><br>
-	<label>Webseite: <input type='url' name='supplierSite' id='supplierSite' value='{{supplierSite}}'></label><br>
-	<label>Email: <input type='email' name='supplierEmail' id='supplierEmail' value='{{supplierEmail}}'></label><br>
-	<label>Telefon: <input type='tel' name='supplierPhone' id='supplierPhone' value='{{supplierPhone}}'></label><br><br>
-	<label>Liefert Essen: <input type='checkbox' name='supplierDoesDeliver' id='supplierDoesDeliver'
-	{{#if supplierDoesDeliver}}checked='checked' {{else}}value='false'{{/if}}><br>
-	<div id='sectionDelivery' style="display:{{#if supplierDoesDeliver}}block{{else}}none{{/if}};">
-		<label>Lieferung durch: <select id='signupRestaurantDelivery' name='signupRestaurantDelivery'>
-		  <option value='Intern' {{#checkVar supplierDeliversWith 'Intern' 'selected' ''}}{{/checkVar}}>Intern</option>
-		  <option value='Foodora' {{#checkVar supplierDeliversWith 'Foodora' 'selected' ''}}{{/checkVar}}>Foodora</option>
-		  <option value='Deliveroo' {{#checkVar supplierDeliversWith 'Deliveroo' 'selected' ''}}{{/checkVar}}>Deliveroo</option>
-		  <option value='Lieferheld' {{#checkVar supplierDeliversWith 'Lieferheld' 'selected' ''}}{{/checkVar}}>Lieferheld</option>
-			<option value='Andere' {{#checkVar supplierDeliversWith 'Andere' 'selected' ''}}{{/checkVar}}>Andere</option></select>
-		</label><br>
-		<label id='sectionOtherDelivery' style="display:{{#checkVar supplierDeliversWith 'Andere' 'block' 'none'}}{{/checkVar}}">Andere: <input id="signupRestaurantOtherDelivery" type="text" name="signupRestaurantOtherDelivery" value={{supplierOtherDelivery}} size="50"></label><br>
-	</div><br>
-	<input type='submit' name='submitUpdate' id='submitUpdate' value='Daten aktualisieren'>
-</form>
+<div class='row'>
+	<h3 class='yellowtext'>{{supplierName}}:</h3>
+	<div class='col-3'>
+		<form role='form' method='POST' name='updateSupplier' action='/profile/supplier/update'>
+			<input type='hidden' name='supplierId' id='supplierId' value='{{supplierId}}'>
+			<label class='label-left yellowtext'>Name:</label><input class='form-input form-input-right' type='text' name='supplierName' id='supplierName' value='{{supplierName}}'><br><br>
+			<label class='label-left yellowtext'>Beschreibung:</label><input class='form-input form-input-right'  type='text' name='supplierDescription' id='supplierDescription' value='{{supplierDescription}}'><br><br>
+			<label class='label-left yellowtext'>Essen:</label><input class='form-input form-input-right'  type='text' name='supplierType' id='supplierType' value='{{supplierType}}'><br><br>
+			<label class='label-left yellowtext'>Geöffnet von:</label><input class='form-input form-input-time' type='time' name='supplierStart' id='supplierStart' value='{{supplierStart}}'>
+			<label class='yellowtext'> bis </label><input class='form-input form-input-time' type='time' name='supplierEnd' id='supplierEnd' value='{{supplierEnd}}'><br><br>
+			<label class='label-left yellowtext'>Adresse:</label><input class='form-input form-input-right'  type='text' name='supplierStreet' id='supplierStreet' value='{{supplierStreet}}'>
+			<label class='label-left yellowtext'></label><br>
+			<div class='form-input-right floatRight'>
+				<input class='form-input form-input-plz' type='text' name='supplierZipCode' id='supplierZipCode' value='{{supplierZipCode}}'>
+				<input class='form-input form-input-city' type='text' name='supplierCity' id='supplierCity' value='{{supplierCity}}'>
+			</div><br><br><br>
+			<label class='label-left yellowtext'>Webseite:</label><input class='form-input form-input-right'  type='url' name='supplierSite' id='supplierSite' value='{{supplierSite}}'><br><br>
+			<label class='label-left yellowtext'>Email:</label><input class='form-input form-input-right'  type='email' name='supplierEmail' id='supplierEmail' value='{{supplierEmail}}'><br><br>
+			<label class='label-left yellowtext'>Telefon:</label><input class='form-input form-input-right' type='tel' name='supplierPhone' id='supplierPhone' value='{{supplierPhone}}'><br><br>
+			<label class='label-left yellowtext'>Liefert Essen:</label><input type='checkbox' name='supplierDoesDeliver' id='supplierDoesDeliver'
+			{{#if supplierDoesDeliver}}checked='checked' {{else}}value='false'{{/if}}><br><br>
+			<div id='sectionDelivery' style="display:{{#if supplierDoesDeliver}}block{{else}}none{{/if}};">
+				<label class='label-left yellowtext'>Lieferung durch:</label>
+				<div class='form-input form-input-div form-input-right floatRight'>
+					<select class='form-input-select' id='signupRestaurantDelivery' name='signupRestaurantDelivery'>
+					  <option value='Intern' {{#checkVar supplierDeliversWith 'Intern' 'selected' ''}}{{/checkVar}}>Intern</option>
+					  <option value='Foodora' {{#checkVar supplierDeliversWith 'Foodora' 'selected' ''}}{{/checkVar}}>Foodora</option>
+					  <option value='Deliveroo' {{#checkVar supplierDeliversWith 'Deliveroo' 'selected' ''}}{{/checkVar}}>Deliveroo</option>
+					  <option value='Lieferheld' {{#checkVar supplierDeliversWith 'Lieferheld' 'selected' ''}}{{/checkVar}}>Lieferheld</option>
+						<option value='Andere' {{#checkVar supplierDeliversWith 'Andere' 'selected' ''}}{{/checkVar}}>Andere</option>
+					</select>
+				</div>
+				<br><br>
+				<div id='sectionOtherDelivery' style="display:{{#checkVar supplierDeliversWith 'Andere' 'block' 'none'}}{{/checkVar}}">
+					<label class='label-left yellowtext'>Andere:</label>
+					<input class='form-input form-input-right floatRight' id="signupRestaurantOtherDelivery" type="text" name="signupRestaurantOtherDelivery" value={{supplierOtherDelivery}}><br>
+				</div><br><br>
+			</div>
+			<input class='btn' type='submit' name='submitUpdate' id='submitUpdate' value='Daten aktualisieren'>
+		</form>
+	</div>
+</div>
 
 <script type="text/javascript">
 		var sectionDelivery = document.getElementById('sectionDelivery');
