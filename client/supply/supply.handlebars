@@ -1,6 +1,7 @@
+{{!-- Title and Select Restaurant --}}
 <div class='row'>
 	<form action='/supply' method='GET'>
-		<label><h3 style='display: inline;"'>Mittagsangebote für  </h3> 
+		<label><h3 style='display: inline;'>Mittagsangebote für  </h3> 
 			<select id="selectedSupplier" class='neutralselect yellow-hover' required name="selectedSupplier" onchange='this.form.submit();'>
 			  {{#each supplier}}
 			  <option value='{{@index}}' {{#checkVar ../selectedSupplier @index 'selected' ''}}{{/checkVar}}>{{this}}</option>
@@ -9,50 +10,59 @@
 		</label>
 	</form>
 </div>
+{{!-- Input the Dish Data --}}
 <div class='row'>
-	<form role='form' method='POST' name='offerInput' action='supply/offer'>
-		<label>Datum: <input type='date' id='offerDate' name='offerDate'></label>
-		<label>Speise: <input type='text' id='offerName' name='offerName'></label>
-		<label>Preis: <input type='number' min='0.01' step='0.01' max='100' id='offerPrice' name='offerPrice'></label>
-		<select name='offerType' class='neutralselect yellow-hover' id='offerType'>
-		  <option value='0'>Vorspeise</option> 
-		  <option value='10' selected>Hauptspeise</option>
-		  <option value='100'>Nachtisch</option>
-	</select>
-		<input class='btn' type='submit' id='offerSubmit' value='Senden'/>
-		<span id='offerAlert' style='display:none;'>Danke, Tagesangebot wurde erfasst</span>
-	</form>
+	<div class='col-3'>
+		<form role='form' method='POST' name='offerInput' action='supply/offer'>
+			<label class='label-left'>Datum: </label><input type='date' class='form-input form-input-right' id='offerDate' name='offerDate'><br><br>
+			<label class='label-left'>Speise: </label><input type='text' class='form-input form-input-right' id='offerName' name='offerName' placeholder='Speise'><br><br>
+			<label class='label-left'>Preis: </label><input type='number' class='form-input form-input-right' id='offerPrice' name='offerPrice' min='0.01' step='0.01' max='100' ><br><br>
+			<label class='label-left'></label>
+			<div class='form-input form-input-div form-input-right floatRight'>
+				<select name='offerType' class='form-input' id='offerType'>
+				  <option value='0'>Vorspeise</option> 
+				  <option value='10' selected>Hauptspeise</option>
+				  <option value='100'>Nachtisch</option>
+				</select>
+			</div>
+			<br><br>
+			<label class='label-left'></label>
+			<input class='btn floatRight' type='submit' id='offerSubmit' value='Speise hochladen'/>
+			<span class='label-left' id='offerAlert' style='display:none;'>Danke, Tagesangebot wurde erfasst</span>
+		</form>
+	</div>
 </div>
-<br>
 {{#if category1}}
+	{{!-- Select Date Range to display your Restaurants Dishes --}}
 	<div class='row'>
 		<form role='form' method='POST' name='reloadSite' action='supply'>
 			<input type='hidden' name='selectedSupplier' value='{{selectedSupplier}}'>
-			<h3>Die Mittagsangebote Deines Restaurants ab dem <input type='date' id='startDate' name='startDate'> für die nächsten <input type='number' name='endNumberDays' id='endNumberDays' min='1' max='14'> Tage: <input type='submit' name='offerUpdate' id='offerUpdate' value='Aktualisieren' style='display: none'></h3>
+			<h3>Die Mittagsangebote Deines Restaurants ab dem <input type='date' class='form-input' id='startDate' name='startDate'> für die nächsten <input type='number' name='endNumberDays' class='form-input' id='endNumberDays' min='1' max='14'> Tage: <input type='submit' class='btn' name='offerUpdate' id='offerUpdate' value='Aktualisieren' style='display: none'></h3>
 		</form>
 	</div>
+	{{!-- Display Dishes per Day --}}
 	<div  class='row'>
-		<div>
-			<span smin='0' max='14' tyle='width:30%; float: left;'>Datum</span>
-			<span style='width:60%; float: left;'>Speise</span>
-			<span style='width:10%; float: right;'>Preis</span>
-		</div>
-		
-		{{#each category1}}
-		<div style='border-style: solid; border-color: antiquewhite; border-width: thin; width: 100%; display: inline-block;'>
-			<div style='width:30%; float: left;'>
-				<span>{{date}}</span>
-			</div>
-			<div id='offers{{date}}' style='width:70%; float: right;'>
-				{{#each offers}}
-					<div id='{{offerId}}'>
-						<span style='width:85.71%; float: left;'>{{offerName}}</span>
-						<span style='width:14.29%; float: right;'>{{offerPrice}}<a href='#' class='floatRight' onclick='deleteOffer("{{offerId}}", "offers{{../date}}"); return false;'><img src='/images/icon-detach.png'></a> </span>
+		<div class='center'>
+			{{#each category1}}
+			<div class='card' style='display: inline-table;'>
+				<div class='card-container'>
+					<div class='card-header'>
+						<h3 class='card-header-title'>{{date}}</h3>
 					</div>
-				{{/each}}
+					{{!-- Card Front Side --}}
+					<div id='offers{{date}}' class='card-frontSide'>
+						{{#offers}}
+						<div id='{{offerId}}'>
+							<div class='card-frontSide-left' style='padding-left: 5px;'><a href='#' onclick='deleteOffer("{{offerId}}", "offers{{../date}}"); return false;'>
+								<img src='/images/icon-detach.png'></a> {{offerName}}</div>
+							<div class='card-frontSide-right'>{{offerPrice}}</div>
+						</div>
+						{{/offers}}
+					</div>
+				</div>
 			</div>
-		</div>
-		{{/each}}
+			{{/each}}
+		</div>		
 	</div>
 {{/if}}
 

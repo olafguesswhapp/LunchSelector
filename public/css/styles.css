@@ -347,6 +347,10 @@ img {
 		.form-input-plz {
 			width: 20%;
 		}
+		.form-input-date {
+			width: 150px;
+	    font-family: inherit;
+		}
 		.form-input-city {
 			width: 78%;
 		}
@@ -452,9 +456,16 @@ img {
 	.marginTop2 {
 		margin-top: 2px;
 	}
-
   .feature {
   	font-size: 22px;
+  }
+
+  .label-left {
+  	width: 30%;
+  	display: inline-block;
+  }
+  .form-input-right {
+  	width: 70%;
   }
 
 
