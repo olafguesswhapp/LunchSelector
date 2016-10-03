@@ -4,6 +4,7 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var Prospects = require('../../models/prospects');
+var emailService = require('../../lib/emailservice');
 
 router.get('/', renderPreLaunch);
 router.post('/login', processLogin);
@@ -78,5 +79,6 @@ function registerProspect(req, res) {
 
 function renderTest(req, res) {
   console.log('*** index.js route - / test ');
+  emailService.sendEmail('olaf@guesswhapp.de', 'Test Subject Line', 'Lieber email Empfänger, dies ist ein Test');
   res.render('../client/landingpage/test', {layout: 'landingpage'});
 };
