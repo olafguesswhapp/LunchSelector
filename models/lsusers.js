@@ -8,6 +8,8 @@ var bcrypt = require('bcrypt'),
 var LSUsersSchema = new Schema({
 	username: { type: String, required: true, unique: true },
 	password: { type: String, required: true },
+	authToken: { type: String, required:true, unique:true },
+	isAuthenticated: { type: Boolean, required:true },
 	name: String,
 	role: String,
 	created: Date,

@@ -5,15 +5,18 @@
 
 var express = require('express');
 var router = express.Router();
+var crypto = require('crypto');
 var LSUsers = require('../../models/lsusers');
 var Suppliers = require('../../models/suppliers');
 var Cities = require('../../models/cities');
+var emailService = require('../../lib/emailservice');
 var moment = require('moment');
 
 router.get('/', displaySignUp);
 router.get('/startdb', initAdmin);
 router.post('/', processSignUp);
 router.post('/verify', verifiyEmail);
+router.get('/verify', authenticateEmail);
 
 module.exports = router;
 
@@ -31,7 +34,7 @@ function displaySignUp(req, res) {
 };
 
 function verifiyEmail(req, res) {
-	console.log('*** client/signup/index.js route - signup/verify - ');
+	console.log('*** client/signup/index.js route POST - signup/verify - ');
 	LSUsers.findOne({'username' : req.body.signupEmail})
 				.select('username')
 				.exec(function(err, user){
@@ -41,6 +44,34 @@ function verifiyEmail(req, res) {
 		} else {
 			console.log('user with this username/email could be verified');
 			res.status(409).json();
+		}
+	});
+};
+
+function authenticateEmail(req, res) {
+	console.log('*** client/signup/index.js route GET - signup/verify - ');
+	LSUsers.findOne({'authToken' : req.query.token})
+				.exec(function(err, user){
+		if (!user) {
+			console.log('No user with this username/email could be verified');
+			res.redirect(303, '/signup');
+		} else {
+			console.log('user with this username/email could be verified');
+			user.isAuthenticated = true;
+      user.save(function (err, newUser) {
+        if (err) {
+        	console.error(err);
+        	res.redirect(303, '/signup');
+        } else {
+        	console.log('succesfully updated user');
+        	console.log(newUser);
+        	var bodytext = 'Hallo ' + newUser.name + ',\n\n' +
+	          'Dein Konto wurde erfolgreich aktiviert.\n\n' +
+	          'Willkommen bei mytiffin.de.\n'
+        	emailService.sendEmail(newUser.username, 'Willkommen bei mytiffin', bodytext);
+        	res.redirect(303, '/soon');
+        }
+      });
 		}
 	});
 };
@@ -79,9 +110,14 @@ function processSignUp(req, res) {
 				console.log(err);
 				res.redirect(303, '/supply');	
 			} else {
+				//generate authentication token
+				var seed = crypto.randomBytes(20);
+		    var authToken = crypto.createHash('sha1').update(seed + req.body.signupEmail).digest('hex');
 				var newUserData = new LSUsers ({
 					username: req.body.signupEmail,
 					password: req.body.signupPassword,
+					authToken: authToken,
+					isAuthenticated: false,
 					name: req.body.signupName,
 					role: newUserRole,
 					created: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
@@ -94,6 +130,11 @@ function processSignUp(req, res) {
 					if(err) {
 						res.redirect(303, '/signup');
 					} else {
+						var bodytext = 'Hallo ' + req.body.signupName + ',\n\n' +
+	          'Dein Konto kann jetzt aktiviert werden. Bitte verifiziere deine E-Mail-Adresse mit einem click auf diesen Link:\n\n' +
+	          'http://' + req.headers.host + '/signup/verify/?token=' + newUser.authToken + '\n\n' + 
+	          'Wenn du kein mytiffin.de Konto erstellst hast lösch bitte diese E-mail.\n'
+						emailService.sendEmail(req.body.signupEmail, 'mytiffin Kontobestätigung', bodytext);
 						if (req.body.signupIsRestaurant && req.body.signupHasLunch) {
 							res.redirect(303, '/supply');	
 						} else {
@@ -104,9 +145,13 @@ function processSignUp(req, res) {
 			}
 		});
 	} else {
+		var seed = crypto.randomBytes(20);
+		var authToken = crypto.createHash('sha1').update(seed + req.body.signupEmail).digest('hex');
 		var newUserData = new LSUsers ({
 			username: req.body.signupEmail,
 			password: req.body.signupPassword,
+			authToken: authToken,
+			isAuthenticated: false,
 			name: req.body.signupName,
 			role: newUserRole,
 			created: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
@@ -119,6 +164,11 @@ function processSignUp(req, res) {
 			if(err) {
 				res.redirect(303, '/signup');
 			} else {
+				var bodytext = 'Hallo ' + req.body.signupName + ',\n\n' +
+        'Dein Konto kann jetzt aktiviert werden. Bitte verifiziere deine E-Mail-Adresse mit einem click auf diesen Link:\n\n' +
+        'http://' + req.headers.host + '/signup/verify/?token=' + newUser.authToken + '\n\n' + 
+        'Wenn du kein mytiffin.de Konto erstellst hast lösch bitte diese E-mail.\n'
+				emailService.sendEmail(req.body.signupEmail, 'mytiffin Kontobestätigung', bodytext);
 				if (req.body.signupIsRestaurant && req.body.signupHasLunch) {
 					res.redirect(303, '/supply');	
 				} else {
@@ -133,6 +183,7 @@ function initAdmin (req, res) {
 	var newUserData = new LSUsers ({
 		username: 'olaf@guesswhapp.de',
 		password: '123',
+		isAuthenticated: true,
 		name: 'Olaf',
 		role: 'admin',
 		created: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
