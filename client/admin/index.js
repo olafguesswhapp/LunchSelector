@@ -55,7 +55,7 @@ function displayAdmin (req, res) {
             context.suppliers = suppliers;
           }
           Prospects.find()
-                .select('prospectEmail created')
+                .select('prospectEmail isAuthenticated created')
                 .limit(5)
                 .sort({ 'created': 'desc'})
                 .exec(function(err, prospect){
