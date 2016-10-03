@@ -35,7 +35,7 @@ function displayAdmin (req, res) {
         context.proposals = proposal;
       }
       LSUsers.find()
-          .select('username name gender age role selectedCity created')
+          .select('username name gender age role selectedCity created isAuthenticated')
           .limit(5)
           .sort({ 'created': 'desc' })
           .exec(function(err, users){
