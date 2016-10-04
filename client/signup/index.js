@@ -17,6 +17,10 @@ router.get('/startdb', initAdmin);
 router.post('/', processSignUp);
 router.post('/verify', verifiyEmail);
 router.get('/verify', authenticateEmail);
+router.get('/request', requestPassword);
+router.post('/reset', resetPassword);
+router.get('/reset', updatePassword);
+router.post('/updatepw', processResetPassword);
 
 module.exports = router;
 
@@ -136,7 +140,7 @@ function processSignUp(req, res) {
 	          'Wenn du kein mytiffin.de Konto erstellst hast lösch bitte diese E-mail.\n'
 						emailService.sendEmail(req.body.signupEmail, 'mytiffin Kontobestätigung', bodytext);
 						if (req.body.signupIsRestaurant && req.body.signupHasLunch) {
-							res.redirect(303, '/supply');	
+							res.redirect(303, '/supply');
 						} else {
 							res.redirect(303, '/offers');
 						}
@@ -180,6 +184,7 @@ function processSignUp(req, res) {
 };
 
 function initAdmin (req, res) {
+	console.log('*** client/signup/index.js route - startdb -');
 	var newUserData = new LSUsers ({
 		username: 'olaf@guesswhapp.de',
 		password: '123',
@@ -197,6 +202,86 @@ function initAdmin (req, res) {
 			res.redirect(303, '/signup');
 		} else {
 			res.redirect(303, '/');
+		}
+	});
+};
+
+function requestPassword(req, res){
+	console.log('*** client/signup/index.js route - signup/request  -');
+	res.render('../client/signup/request', {layout: 'landingpage'});
+};
+
+function resetPassword(req, res){
+	console.log('*** client/signup/index.js route POST - signup/reset -');
+	LSUsers.findOne({'username' : req.body.username})
+				.exec(function(err, user){
+		if (!user){
+			console.log('No user found with the declared email');
+			res.redirect(303, '/signup');
+		} else {
+			// var seed = crypto.randomBytes(20);
+			var authToken = crypto.createHash('sha1').update(req.body.username).digest('hex');
+			user.authToken = authToken;
+			user.isAuthenticated = false;
+			user.save(function (err, updatedUser){
+				if (err){
+					console.log(error);
+          return res.redirect('signup/request');
+				} else {
+					var bodytext = 'Hallo ' + req.body.username + ',\n\n' +
+						'Du hast Dein Passwort vergessen und diesen Erneuerungs-Link beantreagt.' +
+            'Bitte registrier ein neues Passwort auf diesen Link:\n\n' +
+            'http://' + req.headers.host + '/signup/reset/?token=' + updatedUser.authToken + '\n'
+          emailService.sendEmail(req.body.username, 'mytiffin Email Passwort Erneuerung', bodytext);
+          return res.redirect('/');
+				}
+			});
+		}
+	});
+};
+
+function updatePassword(req, res){
+	console.log('*** client/signup/index.js route GET - signup/reset -');
+	LSUsers.findOne({'authToken' : req.query.token})
+				.select('username')
+				.exec(function(err, user){
+		if (!user){
+			console.log('No user found with the token');
+			res.redirect(303, '/');
+		} else {
+			// var seed = crypto.randomBytes(20);
+			var authToken = crypto.createHash('sha1').update(user.username).digest('hex');
+			if (authToken === req.query.token){
+				res.render('../client/signup/reset', { updatetoken: req.query.token, layout: 'landingpagePre'});
+			} else {
+				res.redirect(303, '/signup/request');
+			}
+		}
+	});
+};
+
+function processResetPassword(req, res){
+	console.log('*** client/signup/index.js route POST - signup/updatepw -');
+	LSUsers.findOne({'authToken' : req.body.token})
+				.exec(function(err, user){
+		if (!user){
+			console.log('No user found with the token');
+			res.redirect(303, '/signup');
+		} else {
+			if (user.username === req.body.signupEmail && user.authToken === req.body.token && req.body.signupPassword === req.body.signupPassword2){
+				console.log('Token and User could be verified');
+				user.isAuthenticated = true;
+				user.password = req.body.signupPassword;
+				user.save(function (err, updatedUser){
+					if (err) {
+						console.log('Error saving the updated user');
+						console.log(err);
+						res.redirect(303, '/signup');
+					} else {
+						res.redirect(303, '/soon');
+					}
+				});
+			}
 		}
 	});
 };

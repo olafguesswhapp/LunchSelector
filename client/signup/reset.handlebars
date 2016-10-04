@@ -1,0 +1,34 @@
+<br>
+<br>
+<div class='row'>
+	<div class='col-3 center'>
+		<br><br>
+		<h3>Bitte erneuere Dein Passwort</h3>
+		<form role="form" action="/signup/updatepw" method="POST">
+			<input type='hidden' name='token' value='{{updatetoken}}'>
+			<input id='signupEmail' type="email" required name="signupEmail" class='form-input form-input-standard' placeholder='Email'><br><br>
+			<input type="password" required id='signupPassword' name="signupPassword" class='form-input form-input-standard' placeholder='Passwort' /><br><br>
+		  <input type="password" required id='signupPassword2' name="signupPassword2" onchange="return checkForm(this);" class='form-input form-input-standard' placeholder='Passwort bestätigen' /><br>
+		  <p id="FieldAltertPWUnconfirmed" style="display: none;">
+		  	Warnung: Die Bestätigung des Passwortes stimmt nicht. Bitte bestätige dieses erneut</p><br>
+		  <button class='btn form_fixed' type="submit">Mein Passwort erneuern</button>
+		</form>
+	</div>
+</div>
+<br><br><br><br><br><br>
+<script type="text/javascript">
+	// VERIFY THAT BOTH PASSWORD INPUTS ARE IDENTICAL
+	function checkForm(){
+    var signupPassword = document.getElementById('signupPassword');
+    var signupPassword2 = document.getElementById('signupPassword2');
+    var AlertPWUnconfirmed = document.getElementById('FieldAltertPWUnconfirmed');
+
+    if(!(signupPassword2.value === signupPassword.value)) {
+    AlertPWUnconfirmed.style.display = "block";
+    signupPassword2.value = "";
+    setTimeout((function() { signupPassword2.focus() }), 0);
+    } else {
+    	AlertPWUnconfirmed.style.display = "none";
+    }
+	};
+</script>
