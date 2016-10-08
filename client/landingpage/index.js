@@ -97,7 +97,7 @@ function registerProspect(req, res) {
           } else {
             var bodytext = 'Hallo ' + req.body.username + ',\n\n' +
             'Bitte verifiziere deine E-Mail-Adresse mit einem click auf diesen Link:\n\n' +
-            'http://' + req.headers.host + '/prospect/verify/?token=' + newUser.authToken + '\n\n' + 
+            'http://mytiffin.de/prospect/verify/?token=' + newUser.authToken + '\n\n' + 
             'Wenn Du Dich nicht bei mytiffin.de registriert hast lösch bitte diese E-mail.\n'
             emailService.sendEmail(req.body.username, 'mytiffin Email Verifizierung', bodytext);
             req.session.flash = {

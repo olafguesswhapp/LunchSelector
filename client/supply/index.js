@@ -139,6 +139,10 @@ function recordNewOffer(req, res) {
 		});
 		newSupplierOffer.save(function(err, newOffer){
 			if(err) {
+				req.session.flash = {
+          intro: 'Sorry - es hat einen Fehler gegeben',
+          message: 'Bitte versuche es erneut',
+        };
 				res.redirect(303, '/supply');
 			} else {
 				res.json('Danke für die Anfrage.')
@@ -175,6 +179,10 @@ function recordProposal(req, res) {
 	newProposal.save(function(err, newProp){
 		if(err) {
 			console.log(err);
+			req.session.flash = {
+        intro: 'Sorry - es hat einen Fehler gegeben',
+        message: 'Bitte versuche es erneut',
+      };
 			res.redirect(303, '/offers');
 		} else {
 			res.json('Danke für die Anfrage.')

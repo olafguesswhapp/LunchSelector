@@ -156,7 +156,7 @@ function processSignUp(req, res) {
 					} else {
 						var bodytext = 'Hallo ' + req.body.signupName + ',\n\n' +
 	          'Dein Konto kann jetzt aktiviert werden. Bitte verifiziere deine E-Mail-Adresse mit einem click auf diesen Link:\n\n' +
-	          'http://' + req.headers.host + '/signup/verify/?token=' + newUser.authToken + '\n\n' + 
+	          'http://mytiffin.de/signup/verify/?token=' + newUser.authToken + '\n\n' + 
 	          'Wenn du kein mytiffin.de Konto erstellst hast lösch bitte diese E-mail.\n'
 						emailService.sendEmail(req.body.signupEmail, 'mytiffin Kontobestätigung', bodytext);
 						req.session.flash = {
@@ -194,7 +194,7 @@ function processSignUp(req, res) {
 			} else {
 				var bodytext = 'Hallo ' + req.body.signupName + ',\n\n' +
         'Dein Konto kann jetzt aktiviert werden. Bitte verifiziere deine E-Mail-Adresse mit einem click auf diesen Link:\n\n' +
-        'http://' + req.headers.host + '/signup/verify/?token=' + newUser.authToken + '\n\n' + 
+        'http://mytiffin.de/signup/verify/?token=' + newUser.authToken + '\n\n' + 
         'Wenn du kein mytiffin.de Konto erstellst hast lösch bitte diese E-mail.\n'
 				emailService.sendEmail(req.body.signupEmail, 'mytiffin Kontobestätigung', bodytext);
 				req.session.flash = {
@@ -275,7 +275,7 @@ function resetPassword(req, res){
 					var bodytext = 'Hallo ' + req.body.username + ',\n\n' +
 						'Du hast Dein Passwort vergessen und diesen Erneuerungs-Link beantreagt.' +
             'Bitte registrier ein neues Passwort auf diesen Link:\n\n' +
-            'http://' + req.headers.host + '/signup/reset/?token=' + updatedUser.authToken + '\n'
+            'http://mytiffin.de/signup/reset/?token=' + updatedUser.authToken + '\n'
           emailService.sendEmail(req.body.username, 'mytiffin Email Passwort Erneuerung', bodytext);
           req.session.flash = {
             intro: 'Hallo ' + req.body.username + '. ',
