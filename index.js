@@ -83,6 +83,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+// flash message middleware
+app.use(function(req, res, next){
+  res.locals.flash = req.session.flash;
+  delete req.session.flash;
+  next();
+});
 auth.init();
 app.use(function(req, res, next){
   if (req.user){res.locals.role = req.user.role;} else {res.locals.role = ''}

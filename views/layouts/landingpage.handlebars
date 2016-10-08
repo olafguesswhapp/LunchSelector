@@ -29,6 +29,11 @@
 				<button class='btn' onclick='showLoginForm()'>Einloggen</button>
 			</section>
 	</header>
+	{{#if flash}}
+		<div class="row">
+			<strong>{{flash.intro}}</strong> {{{flash.message}}}
+		</div>
+	{{/if}}
 	<div class='row logindropdown' id='dropdown'>
 		<div class='center'>
 			<form role="form" action="/login" method="POST">

@@ -69,6 +69,10 @@ function registerProspect(req, res) {
         newProspect.save(function(error, newUser){
           if(error) {
             console.log(error);
+            req.session.flash = {
+              intro: 'Sorry - es hat einen Fehler gegeben',
+              message: 'Bitte versuche es erneut',
+            };
             return res.redirect('/');
           } else {
             var bodytext = 'Hallo ' + req.body.username + ',\n\n' +
@@ -76,10 +80,18 @@ function registerProspect(req, res) {
             'http://' + req.headers.host + '/prospect/verify/?token=' + newUser.authToken + '\n\n' + 
             'Wenn Du Dich nicht bei mytiffin.de registriert hast lösch bitte diese E-mail.\n'
             emailService.sendEmail(req.body.username, 'mytiffin Email Verifizierung', bodytext);
+            req.session.flash = {
+              intro: 'Hallo ' + req.body.username + '. ',
+              message: 'Wir haben Dir eine Bestätigungs-Email zugesendet! Danke',
+            };
             return res.redirect('/');
           }
         });
       } else {
+        req.session.flash = {
+          intro: 'Schön Dich wiederzusehen!',
+          message: 'Wir haben Dich bereits in unserer List erfasst - Danke Dir',
+        };
         return res.redirect('/');
       }
     });
@@ -99,6 +111,10 @@ function verifyProspect(req, res) {
         .exec(function(err, prospect){
     if (!prospect) {
       console.log('No prospect with this email could be verified');
+      req.session.flash = {
+        intro: 'Sorry!',
+        message: 'Dein Bestätigungs-Link ist nicht mehr gültig.',
+      };
       res.redirect(303, '/');
     } else {
       console.log('prospect with this email could be verified');
@@ -106,10 +122,18 @@ function verifyProspect(req, res) {
       prospect.save(function (err, newProspect) {
         if (err) {
           console.error(err);
+          req.session.flash = {
+            intro: 'Sorry - es hat einen Fehler gegeben',
+            message: 'Bitte versuche es erneut',
+          };
           res.redirect(303, '/');
         } else {
           console.log('succesfully updated prospect');
           console.log(newProspect);
+          req.session.flash = {
+            intro: 'Danke!',
+            message: 'Du hast Deine Email bestätigt und wir haben Dich in unsere Liste aufgenommen!',
+          };
           res.redirect(303, '/');
         }
       });
