@@ -34,9 +34,17 @@ function processLogin(req, res) {
     if (err) { return next(err) }
     if (!user && info.message == 'Invalid password'){
       console.log('Das Passwort für Username ' + req.body.username + ' stimmt nicht - Bitte versuchen Sie es erneut.');
+      req.session.flash = {
+        intro: 'Sorry - falsches Passwort',
+        message: 'Bitte versuch es erneut oder beantrag ein Neues.',
+      };
       return res.redirect('/signup/request');
     } else if (!user) {
       console.log('Der Username ' + req.body.username + ' wurde bisher nicht angelegt. Wir freuen uns auf Deine Anmeldung.');
+      req.session.flash = {
+        intro: 'Sorry - Deine Email ist uns unbekannt.',
+        message: 'Bitte versuch es mit einer anderen Email oder registrier Dich bei uns.',
+      };
       return res.redirect('/signup');
     }
     req.logIn(user, function(err) {

@@ -16,6 +16,11 @@
 				<a href='/'><img class='logo__image' src='/images/logo-header.png'></a>	
 			</section>
 		</header>
+		{{#if flash}}
+			<div id='flash' class='row center yellowtext flash'>
+				<h3><strong>{{flash.intro}}</strong> {{{flash.message}}} <a href='#' onclick="document.getElementById('flash').style.display = 'none'; return false;"> <img src='/images/icon-detachY.png'></a></h3>
+			</div>
+		{{/if}}
 		{{{body}}}
 		{{> footer}}
 	</div>

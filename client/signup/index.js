@@ -27,13 +27,13 @@ module.exports = router;
 function displaySignUp(req, res) {
 	console.log('*** client/signup/index.js route - signup/ - ');
 	Cities.find().exec(function(err, city){
-		var context;
-		if (err){console.log('Something went wrong');} else {
-			context = {
-				availableCities : city.map(function(cityElement){ return cityElement.cityName })
-			};
+		if (err){
+			console.log('Something went wrong');
+			res.render('../client/signup/signup', { layout: 'register' });
+		} else {
+			var availableCities= city.map(function(cityElement){ return cityElement.cityName });
+			res.render('../client/signup/signup', { availableCities: availableCities, layout: 'register' });
 		}
-		res.render('../client/signup/signup', {layout: 'register', locals: context});
 	});
 };
 
@@ -58,6 +58,10 @@ function authenticateEmail(req, res) {
 				.exec(function(err, user){
 		if (!user) {
 			console.log('No user with this username/email could be verified');
+			req.session.flash = {
+        intro: 'Sorry!',
+        message: 'Dein Bestätigungs-Link ist nicht mehr gültig.',
+      };
 			res.redirect(303, '/signup');
 		} else {
 			console.log('user with this username/email could be verified');
@@ -65,6 +69,10 @@ function authenticateEmail(req, res) {
       user.save(function (err, newUser) {
         if (err) {
         	console.error(err);
+        	req.session.flash = {
+            intro: 'Sorry - es hat einen Fehler gegeben',
+            message: 'Bitte versuche es erneut',
+          };
         	res.redirect(303, '/signup');
         } else {
         	console.log('succesfully updated user');
@@ -73,6 +81,10 @@ function authenticateEmail(req, res) {
 	          'Dein Konto wurde erfolgreich aktiviert.\n\n' +
 	          'Willkommen bei mytiffin.de.\n'
         	emailService.sendEmail(newUser.username, 'Willkommen bei mytiffin', bodytext);
+        	req.session.flash = {
+            intro: 'Herzlich Willkommen!',
+            message: 'Du hast Deine Email bestätigt - Du kannst Dich jetzt einloggen!',
+          };
         	res.redirect(303, '/soon');
         }
       });
@@ -112,6 +124,10 @@ function processSignUp(req, res) {
 			if(err){
 				console.log('something went wrong');
 				console.log(err);
+				req.session.flash = {
+          intro: 'Sorry - es hat einen Fehler gegeben',
+          message: 'Bitte versuche es erneut',
+        };
 				res.redirect(303, '/supply');	
 			} else {
 				//generate authentication token
@@ -132,6 +148,10 @@ function processSignUp(req, res) {
 				});
 				newUserData.save(function(err, newUser){
 					if(err) {
+						req.session.flash = {
+	            intro: 'Sorry - es hat einen Fehler gegeben',
+	            message: 'Bitte versuche es erneut',
+	          };
 						res.redirect(303, '/signup');
 					} else {
 						var bodytext = 'Hallo ' + req.body.signupName + ',\n\n' +
@@ -139,6 +159,10 @@ function processSignUp(req, res) {
 	          'http://' + req.headers.host + '/signup/verify/?token=' + newUser.authToken + '\n\n' + 
 	          'Wenn du kein mytiffin.de Konto erstellst hast lösch bitte diese E-mail.\n'
 						emailService.sendEmail(req.body.signupEmail, 'mytiffin Kontobestätigung', bodytext);
+						req.session.flash = {
+              intro: 'Hallo ' + req.body.signupName + '. ',
+              message: 'Wir haben Dir eine Bestätigungs-Email zugesendet! Danke',
+            };
 						if (req.body.signupIsRestaurant && req.body.signupHasLunch) {
 							res.redirect(303, '/supply');
 						} else {
@@ -173,6 +197,10 @@ function processSignUp(req, res) {
         'http://' + req.headers.host + '/signup/verify/?token=' + newUser.authToken + '\n\n' + 
         'Wenn du kein mytiffin.de Konto erstellst hast lösch bitte diese E-mail.\n'
 				emailService.sendEmail(req.body.signupEmail, 'mytiffin Kontobestätigung', bodytext);
+				req.session.flash = {
+          intro: 'Hallo ' + req.body.signupName + '. ',
+          message: 'Wir haben Dir eine Bestätigungs-Email zugesendet! Danke',
+        };
 				if (req.body.signupIsRestaurant && req.body.signupHasLunch) {
 					res.redirect(303, '/supply');	
 				} else {
@@ -199,8 +227,16 @@ function initAdmin (req, res) {
 	newUserData.save(function(err, newUser){
 		if(err) {
 			console.log(err);
+			req.session.flash = {
+        intro: 'Sorry - es hat einen Fehler gegeben',
+        message: 'Bitte versuche es erneut',
+      };
 			res.redirect(303, '/signup');
 		} else {
+			req.session.flash = {
+        intro: 'Admin has been created',
+        message: 'Der User admin wurde initialisiert.',
+      };
 			res.redirect(303, '/');
 		}
 	});
@@ -217,6 +253,10 @@ function resetPassword(req, res){
 				.exec(function(err, user){
 		if (!user){
 			console.log('No user found with the declared email');
+			req.session.flash = {
+        intro: 'Sorry - Deine Email ist uns unbekannt.',
+        message: 'Bitte versuch es mit einer anderen Email oder registrier Dich bei uns.',
+      };
 			res.redirect(303, '/signup');
 		} else {
 			// var seed = crypto.randomBytes(20);
@@ -226,6 +266,10 @@ function resetPassword(req, res){
 			user.save(function (err, updatedUser){
 				if (err){
 					console.log(error);
+					req.session.flash = {
+            intro: 'Sorry - es hat einen Fehler gegeben',
+            message: 'Bitte versuche es erneut',
+          };
           return res.redirect('signup/request');
 				} else {
 					var bodytext = 'Hallo ' + req.body.username + ',\n\n' +
@@ -233,6 +277,10 @@ function resetPassword(req, res){
             'Bitte registrier ein neues Passwort auf diesen Link:\n\n' +
             'http://' + req.headers.host + '/signup/reset/?token=' + updatedUser.authToken + '\n'
           emailService.sendEmail(req.body.username, 'mytiffin Email Passwort Erneuerung', bodytext);
+          req.session.flash = {
+            intro: 'Hallo ' + req.body.username + '. ',
+            message: 'Wir haben Dir per Email einen Link zur Passwort-Erneuerung zugesendet!',
+          };
           return res.redirect('/');
 				}
 			});
@@ -247,13 +295,25 @@ function updatePassword(req, res){
 				.exec(function(err, user){
 		if (!user){
 			console.log('No user found with the token');
+			req.session.flash = {
+        intro: 'Sorry - es hat einen Fehler gegeben',
+        message: 'Bitte versuche es erneut',
+      };
 			res.redirect(303, '/');
 		} else {
 			// var seed = crypto.randomBytes(20);
 			var authToken = crypto.createHash('sha1').update(user.username).digest('hex');
 			if (authToken === req.query.token){
+				req.session.flash = {
+	        intro: 'Bitte neues Passwort eingeben.',
+	        message: 'Bitte neues Passwort eingeben.',
+	      };
 				res.render('../client/signup/reset', { updatetoken: req.query.token, layout: 'landingpagePre'});
 			} else {
+				req.session.flash = {
+	        intro: 'Sorry!',
+	        message: 'Dein Erneuerungs-Link ist nicht mehr gültig.',
+	      };
 				res.redirect(303, '/signup/request');
 			}
 		}
@@ -266,6 +326,10 @@ function processResetPassword(req, res){
 				.exec(function(err, user){
 		if (!user){
 			console.log('No user found with the token');
+			req.session.flash = {
+        intro: 'Sorry!',
+        message: 'Dein Erneuerungs-Link ist nicht mehr gültig.',
+      };
 			res.redirect(303, '/signup');
 		} else {
 			if (user.username === req.body.signupEmail && user.authToken === req.body.token && req.body.signupPassword === req.body.signupPassword2){
@@ -276,8 +340,16 @@ function processResetPassword(req, res){
 					if (err) {
 						console.log('Error saving the updated user');
 						console.log(err);
+						req.session.flash = {
+	            intro: 'Sorry - es hat einen Fehler gegeben',
+	            message: 'Bitte versuche es erneut',
+	          };
 						res.redirect(303, '/signup');
 					} else {
+						req.session.flash = {
+              intro: 'Hallo ' + req.body.signupEmail + '. ',
+              message: 'Wir haben dein neues Passwort gespeichert - Du kannst Dich damit einloggen.',
+            };
 						res.redirect(303, '/soon');
 					}
 				});
