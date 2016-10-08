@@ -31,7 +31,9 @@ function processLogin(req, res) {
   passport.authenticate('local', function(err, user, info) {
     console.log(err);
     console.log(info);
-    if (err) { return next(err) }
+    if (err) {
+      return next(err);
+    }
     if (!user && info.message == 'Invalid password'){
       console.log('Das Passwort für Username ' + req.body.username + ' stimmt nicht - Bitte versuchen Sie es erneut.');
       req.session.flash = {
@@ -48,11 +50,21 @@ function processLogin(req, res) {
       return res.redirect('/signup');
     }
     req.logIn(user, function(err) {
-      if (err) { return next(err); }
+      if (err) {
+        return next(err);
+      }
       console.log(user);
       if (user.role === 'user'){
+        req.session.flash = {
+          intro: 'Hallo ' + user.username + '. ',
+          message: 'Dies sind heute die Angebote Deiner Lieblings-Restaurants.',
+        };
         return res.redirect('/offers');
       } else {
+        req.session.flash = {
+          intro: 'Hallo ' + user.username + '. ',
+          message: 'Bitte erfasse Gerichte Deines Restaurants.',
+        };
         return res.redirect('/supply');
       }
     });
