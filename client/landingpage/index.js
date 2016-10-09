@@ -29,7 +29,9 @@ function renderLandingPage(req, res) {
 function processLogin(req, res) {
   console.log('*** index.js route - /login/ - ');
   passport.authenticate('local', function(err, user, info) {
+    console.log('Error:');
     console.log(err);
+    console.log('Info:');
     console.log(info);
     if (err) {
       return next(err);
@@ -39,6 +41,13 @@ function processLogin(req, res) {
       req.session.flash = {
         intro: 'Sorry - falsches Passwort',
         message: 'Bitte versuch es erneut oder beantrag ein Neues.',
+      };
+      return res.redirect('/signup/request');
+    } else if (!user && info.message === 'User-Email not authenticated'){
+      console.log('Die Email ' + req.body.username + ' wurde vom User noch nicht verifiziert.');
+      req.session.flash = {
+        intro: 'Bitte Deine Email verifizieren!',
+        message: 'Wir haben dir eine Email mit einem Verifizierungs-Link zugesendet.',
       };
       return res.redirect('/signup/request');
     } else if (!user) {
