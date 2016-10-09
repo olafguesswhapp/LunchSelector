@@ -1,0 +1,18 @@
+<div class='row'>
+	<form role="form" method="POST" name="signupForm" action="/legal/contact">
+		<div class='col-3'>
+			<h2 class='yellowtext'>Wir freuen uns von Dir zu hören:</h2>
+			<br>
+			<input id='contactName' type="text" required name="contactName" class='form-input form-input-standard' placeholder='Name'>
+		  <br><br>
+			<input id='contactEmail' type="email" required name="contactEmail" class='form-input form-input-standard' placeholder='Email'>
+			<br><br>
+			<textarea id='contactText' name='contactText' class='form-input form-input-standard' placeholder='Deine Nachricht'></textarea>
+			<br><br>
+			<input class='btn' type='submit' value='Senden' />
+		</div>
+	</form>
+</div>
+<script type='text/javascript'>
+	document.getElementById('contactName').focus();
+</script>
