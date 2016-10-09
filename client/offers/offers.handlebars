@@ -28,10 +28,12 @@
 				</div>
 				{{!-- Card Front Side --}}
 				<div id="oben{{@index}}" class='card-frontSide' onclick='switchVisible({{@index}});'>
-					{{#offers}}
-					<div class='card-frontSide-left'>{{offerName}}</div>
-					<div class='card-frontSide-right'>{{offerPrice}}</div>
-					{{/offers}}
+					{{#each offers}}
+						<div class='card-frontSide-left'>{{offerName}}</div>
+						<div class='card-frontSide-right'>{{offerPrice}}</div>
+					{{else}}
+						<div class='card-frontSide-left yellowtext'>{{supplierName}} hat heute noch kein Gericht erfasst</div>
+					{{/each}}
 				</div>
 				{{!-- Card Back Side --}}
 				<div id='bottom{{@index}}' class='card-backSide' onclick='switchVisible({{@index}});'>
