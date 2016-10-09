@@ -90,7 +90,7 @@
 	function shareWithFriends(){
 		var subject = "{{userName}}'s Vorschläge für die Mittagspause";
 		var body = 'Hi, hier die heutigen Mittagsgerichte meiner Lieblingsrestaurants in ' + window.selectedCity + ':\r\n\r\n';
-		body += 'Visit us at http://localhost:3000 \r\n\r\n';
+		body += 'Visit us at https://mytiffin.de \r\n\r\n';
 		{{#suppliers}}
 			if (window.selectedCity === '{{supplierCity}}'){
 				body += '{{supplierName}}\r\n';
