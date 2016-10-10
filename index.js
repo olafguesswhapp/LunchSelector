@@ -3,6 +3,7 @@ var path = require('path')
 var app = express()
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+var sm = require('sitemap');
 var mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
@@ -34,6 +35,21 @@ switch(app.get('env')){
     default:
         throw new Error('Unknown execution environment: ' + app.get('env'));
 }
+
+var sitemap = sm.createSitemap ({
+  hostname: 'https://mytiffin.de',
+  cacheTime: 600000,        // 600 sec - cache purge period 
+  urls: [
+    { url: '/offers/',  changefreq: 'daily', priority: 0.4 },
+    { url: '/offers/select/',  changefreq: 'weekly',  priority: 0.2 },
+    { url: '/profile/', changefreq: 'monthly',  priority: 0.1},
+    { url: '/signup/', changefreq: 'daily',  priority: 0.1},
+    { url: '/supply/',   changefreq: 'weekly',  priority: 0.05 },
+    { url: '/legal/datenschutz/', changefreq: 'monthly',  priority: 0.05 },
+    { url: '/legal/impressum/', changefreq: 'monthly',  priority: 0.05 },
+    { url: '/legal/contact/', changefreq: 'monthly',  priority: 0.05 },
+  ]
+});
 
 var exphbs  = require('express-handlebars')
 	.create({ defaultLayout:'main',
@@ -103,6 +119,16 @@ app.use(function(req, res, next){
 // );
 
 require('./routes.js')(app);
+
+app.get('/sitemap.xml', function(req, res) {
+  sitemap.toXML( function (err, xml) {
+    if (err) {
+      return res.status(500).end();
+    }
+    res.header('Content-Type', 'application/xml');
+    res.send( xml );
+  });
+});
 
 // All other routes should redirect to the Landing Page
 app.all('/*', function(req, res) {
