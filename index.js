@@ -120,6 +120,10 @@ app.use(function(req, res, next){
 
 require('./routes.js')(app);
 
+app.get('/googlebb5cc353d93d0d90.html',function(req,res){
+  res.sendFile('/googlebb5cc353d93d0d90.html');
+});
+
 app.get('/sitemap.xml', function(req, res) {
   sitemap.toXML( function (err, xml) {
     if (err) {
