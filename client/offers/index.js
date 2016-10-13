@@ -38,7 +38,7 @@ function displayOffers(req, res) {
 						currentlyOnOffers: true,
 						suppliers: []
 					};
-					supplierOffers.suppliers = supplier.map(function(supplierElement){
+					supplierOffers.suppliers = supplier.filter(function(filterElement){return filterElement.supplierWeekday[today.getDay()]}).map(function(supplierElement){
 						helpArray.push(supplierElement.supplierCity);
 						return {
 							supplierId: 					supplierElement._id,
