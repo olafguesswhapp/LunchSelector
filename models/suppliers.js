@@ -8,6 +8,7 @@ var suppliersSchema = new Schema({
 	supplierType: String,
 	supplierStart: String,
 	supplierEnd: String,
+	supplierWeekday: [Boolean],
 	supplierStreet: String,
 	supplierZipCode: String,
 	supplierCity: String,

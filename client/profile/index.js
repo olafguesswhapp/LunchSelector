@@ -23,6 +23,15 @@ function processProfileUpdate(req, res){
 
 function processSupplierEdit(req, res){
 	console.log('*** client/profile/index.js route POST - /profile/supplier/update -');
+	console.log(req.body);
+	var supplierWeekday = [false, false, false, false, false, false, false];
+	if (req.body.supplierDay1) {supplierWeekday[0]= true} else {supplierWeekday[0]= false}
+	if (req.body.supplierDay2) {supplierWeekday[1]= true} else {supplierWeekday[1]= false}
+	if (req.body.supplierDay3) {supplierWeekday[2]= true} else {supplierWeekday[2]= false}
+	if (req.body.supplierDay4) {supplierWeekday[3]= true} else {supplierWeekday[3]= false}
+	if (req.body.supplierDay5) {supplierWeekday[4]= true} else {supplierWeekday[4]= false}
+	if (req.body.supplierDay6) {supplierWeekday[5]= true} else {supplierWeekday[5]= false}
+	if (req.body.supplierDay7) {supplierWeekday[6]= true} else {supplierWeekday[6]= false}
 	var whoDelivers;
 	var supplierDoesDeliver;
 	if (req.body.hasOwnProperty('supplierDoesDeliver')){ supplierDoesDeliver = true} else {supplierDoesDeliver = false};
@@ -38,6 +47,7 @@ function processSupplierEdit(req, res){
 						supplierType: req.body.supplierType,
 						supplierStart: req.body.supplierStart,
 						supplierEnd: req.body.supplierEnd,
+						supplierWeekday: supplierWeekday,
 						supplierStreet: req.body.supplierStreet,
 						supplierZipCode: req.body.supplierZipCode,
 						supplierCity: req.body.supplierCity,
@@ -78,6 +88,7 @@ function supplierEdit(req, res) {
 				supplierType: supplier.supplierType,
 				supplierStart: supplier.supplierStart,
 				supplierEnd: supplier.supplierEnd,
+				supplierWeekday: supplierWeekday,
 				supplierStreet: supplier.supplierStreet,
 				supplierZipCode: supplier.supplierZipCode,
 				supplierCity: supplier.supplierCity,
@@ -88,6 +99,14 @@ function supplierEdit(req, res) {
 				supplierDeliversWith: supplierDeliversWith,
 				supplierOtherDelivery: supplierOtherDelivery
 			};
+			var supplierWeekday = supplier.supplierWeekday;
+			if (supplierWeekday[0]){context.supplierDay1 = 'on'}
+			if (supplierWeekday[1]){context.supplierDay2 = 'on'}
+			if (supplierWeekday[2]){context.supplierDay3 = 'on'}
+			if (supplierWeekday[3]){context.supplierDay4 = 'on'}
+			if (supplierWeekday[4]){context.supplierDay5 = 'on'}
+			if (supplierWeekday[5]){context.supplierDay6 = 'on'}
+			if (supplierWeekday[6]){context.supplierDay7 = 'on'}
 			res.render('../client/profile/supplier', context);
 		}
 	});
@@ -139,12 +158,21 @@ function addSupplier(req, res) {
 	if (req.body.signupRestaurantDelivery === 'Andere') {
 		if (req.body.signupRestaurantOtherDelivery) {whoDelivers = req.body.signupRestaurantOtherDelivery} else (whoDelivers = 'Andere')
 	} else {whoDelivers = req.body.signupRestaurantDelivery}
+	var supplierWeekday = [false, false, false, false, false, false, false];
+	if (req.body.supplierDay1) {supplierWeekday[0]= true} else {supplierWeekday[0]= false}
+	if (req.body.supplierDay2) {supplierWeekday[1]= true} else {supplierWeekday[1]= false}
+	if (req.body.supplierDay3) {supplierWeekday[2]= true} else {supplierWeekday[2]= false}
+	if (req.body.supplierDay4) {supplierWeekday[3]= true} else {supplierWeekday[3]= false}
+	if (req.body.supplierDay5) {supplierWeekday[4]= true} else {supplierWeekday[4]= false}
+	if (req.body.supplierDay6) {supplierWeekday[5]= true} else {supplierWeekday[5]= false}
+	if (req.body.supplierDay7) {supplierWeekday[6]= true} else {supplierWeekday[6]= false}
 	var newSupplierData = new Suppliers ({
 		supplierName: req.body.signupRestaurantName,
 		supplierDescription: req.body.signupRestaurantType,
 		supplierType: req.body.signupRestaurantType,
 		supplierStart: req.body.signupRestaurantStart,
 		supplierEnd: req.body.signupRestaurantEnd,
+		supplierWeekday: supplierWeekday,
 		supplierStreet: req.body.signupRestaurantStreet,
 		supplierZipCode: req.body.signupRestaurantPLZ,
 		supplierCity: req.body.signupRestaurantCity,

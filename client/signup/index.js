@@ -32,7 +32,7 @@ function displaySignUp(req, res) {
 			res.render('../client/signup/signup', { layout: 'register' });
 		} else {
 			var availableCities= city.map(function(cityElement){ return cityElement.cityName });
-			res.render('../client/signup/signup', { availableCities: availableCities, layout: 'register' });
+			res.render('../client/signup/signup', { locals: {availableCities}, layout: 'register' });
 		}
 	});
 };
@@ -104,12 +104,21 @@ function processSignUp(req, res) {
 		if (req.body.signupRestaurantDelivery === 'Andere') {
 			if (req.body.signupRestaurantOtherDelivery) {whoDelivers = req.body.signupRestaurantOtherDelivery} else {whoDelivers = 'Andere'}
 		} else {whoDelivers = req.body.signupRestaurantDelivery}
+		var supplierWeekday = [false, false, false, false, false, false, false];
+		if (req.body.supplierDay1) {supplierWeekday[0]= true} else {supplierWeekday[0]= false}
+		if (req.body.supplierDay2) {supplierWeekday[1]= true} else {supplierWeekday[1]= false}
+		if (req.body.supplierDay3) {supplierWeekday[2]= true} else {supplierWeekday[2]= false}
+		if (req.body.supplierDay4) {supplierWeekday[3]= true} else {supplierWeekday[3]= false}
+		if (req.body.supplierDay5) {supplierWeekday[4]= true} else {supplierWeekday[4]= false}
+		if (req.body.supplierDay6) {supplierWeekday[5]= true} else {supplierWeekday[5]= false}
+		if (req.body.supplierDay7) {supplierWeekday[6]= true} else {supplierWeekday[6]= false}
 		var newSupplierData = new Suppliers ({
 			supplierName: req.body.signupRestaurantName,
 			supplierDescription: req.body.signupRestaurantType,
 			supplierType: req.body.signupRestaurantType,
 			supplierStart: req.body.signupRestaurantStart,
 			supplierEnd: req.body.signupRestaurantEnd,
+			supplierWeekday: supplierWeekday,
 			supplierStreet: req.body.signupRestaurantStreet,
 			supplierZipCode: req.body.signupRestaurantPLZ,
 			supplierCity: req.body.signupRestaurantCity,
@@ -120,6 +129,7 @@ function processSignUp(req, res) {
 			supplierDeliversWith: whoDelivers,
 			suppplierCreated: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
 		});
+
 		newSupplierData.save(function(err, newSupplier) {
 			if(err){
 				console.log('something went wrong');
