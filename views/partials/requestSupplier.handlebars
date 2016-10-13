@@ -8,11 +8,12 @@
       <br>
       <div id='sectionRequestCheckboxes' style="display: block">
         <br>
+        <input id="requestMessage" type="text" name="requestMessage" class='form-input widthfull' placeholder='Deine persönliche Nachricht an das Restaurant' /><br><br>
         <label class='yellowtext'><input id="requestUpdate" type="checkbox" name="requestUpdate" >Sollen wir Dich per Email informieren sobald das Restaurant sich bei uns angemeldet hat?</label><br>
         <label class='yellowtext'><input id="requestPersonal" type="checkbox" name="requestPersonal">Der Restaurant-Inhaber darf meinen Namen erfahren? (Deine Email wird nicht weitergeben!)</label>  
       </div>
       <br>
-      <input class='btn' type='submit' id='requestBtn' value='Vorschlag absenden'/>
+      <input class='btn' type='submit' id='requestBtn' value='Vorschlag absenden'/><br><br>
     </form>
     <div id='requestResponse'></div>
   </div>
@@ -21,6 +22,7 @@
 <script type="text/javascript">
   var requestResponse = document.getElementById('requestResponse');
   var requestInfo = document.getElementById('requestInfo');
+  var requestMessage = document.getElementById('requestMessage');
   var requestUpdate = document.getElementById('requestUpdate');
   var requestPersonal = document.getElementById('requestPersonal');
   var form = document.forms.namedItem("requestData");
@@ -39,6 +41,7 @@
   form.addEventListener('submit', function(event) {
     var requestData = 
       encodeURIComponent('requestInfo')+'='+encodeURIComponent(requestInfo.value)+ '\&' +
+      encodeURIComponent('requestMessage')+'='+encodeURIComponent(requestMessage.value)+ '\&' +
       encodeURIComponent('requestUpdate')+'='+encodeURIComponent(requestUpdate.checked)+'\&'+
       encodeURIComponent('requestPersonal')+'='+encodeURIComponent(requestPersonal.checked);
     var request = new XMLHttpRequest();

@@ -170,6 +170,7 @@ function recordProposal(req, res) {
 	console.log('*** client/supply/index.js route - supply/request - ');
 	var newProposal = new Proposals ({
 		proposalInfo: req.body.requestInfo,
+		proposalMessage: req.body.requestMessage,
 		proposalUpdate: req.body.requestUpdate,
 		proposalRevealToSupplier: req.body.requestPersonal,
 		proposalBy: req.user._id,

@@ -4,6 +4,7 @@ var LSUSers = require('./lsusers.js');
 
 var ProposalsSchema = new Schema({
 	proposalInfo: String,
+	proposalMessage: String,
 	proposalUpdate: Boolean,
 	proposalRevealToSupplier: Boolean,
 	proposalBy: { type: Schema.Types.ObjectId, required: true, ref: 'LSUsers'},
