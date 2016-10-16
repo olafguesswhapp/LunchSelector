@@ -12,7 +12,15 @@
 		{{/cities}}
 	</div>
 	<br>
-	<div>
+	<div class='row'>
+		<h3>Nachrichten:</h3>
+		{{#contacts}}
+			<p>{{contactName}} {{contactEmail}} {{contactText}} {{created}}</p>
+		{{/contacts}}
+	</div>
+
+
+	<div class='row'>
 		<h3>Offene Anfragen:</h3>
 		{{#proposals}}
 			<p>"{{proposalInfo}}" von: {{proposalBy.username}} am: {{proposalCreated}} status: <select id='{{_id}}' onchange='changeStatus(this)'>
@@ -22,25 +30,28 @@
 				<option value='rejected' {{#checkVar proposalStatus 'rejected' 'selected' ''}}{{/checkVar}}>Abgelehnt</option>
 			</select></p>
 		{{/proposals}}
-	</div><br>
-	<div>
+	</div>
+
+	<div class='row'>
 		<h3>Letzte Restaurant-Anmeldungen:</h3>
 		{{#suppliers}}
 			<p>{{supplierName}} {{supplierType}} {{supplierCity}}</p>
 		{{/suppliers}}
-	</div><br>
-	<div>
+	</div>
+
+	<div class='row'>
 		<h3>Letzte User-Anmeldungen:</h3>
 		{{#users}}
 			<p>{{isAuthenticated}} {{name}} {{username}} {{role}} {{gender}} {{age}} {{created}}</p>
 		{{/users}}
-	</div><br>
-	<div>
+	</div>
+
+	<div class='row'>
 		<h3>Letzte Prospects-Anmeldungen:</h3>
 		{{#prospects}}
 			<p>{{prospectEmail}} {{isAuthenticated}} {{created}}</p>
 		{{/prospects}}
-	</div><br>
+	</div>
 </div>
 
 <script type="text/javascript">

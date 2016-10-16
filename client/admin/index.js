@@ -7,6 +7,7 @@ var Suppliers = require('../../models/suppliers');
 var Cities = require('../../models/cities');
 var Proposals = require('../../models/proposals');
 var Prospects = require('../../models/prospects');
+var Contacts = require('../../models/contacts');
 var authentication = require('../../lib/authentication');
 
 router.get('/', authentication.isLoggedInAsAdmin, displayAdmin);
@@ -64,7 +65,17 @@ function displayAdmin (req, res) {
             } else {
               context.prospects = prospect;
             }
-            res.render('../client/admin/admin', context);
+            Contacts.find()
+                    .limit(5)
+                    .sort({ 'created': 'desc'})
+                    .exec(function(err, contact){
+              if(err){
+                console.log('Something went wrong');
+              } else {
+                context.contacts = contact;
+              }
+              res.render('../client/admin/admin', context);
+            });
           });
         });
       });
