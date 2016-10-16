@@ -10,13 +10,13 @@
 			<label class='yellowtext'> bis </label><input class='form-input form-input-time' type='time' name='supplierEnd' id='supplierEnd' value='{{supplierEnd}}'><br><br>
 
 			<label class='label-left yellowtext'>Geöffnet am:</label>
-				<label class='yellowtext'>Mo<input type='checkbox' name='supplierDay1' id='supplierDay1' {{#if supplierDay1}}checked{{/if}} /></label>
-				<label class='yellowtext'>Di<input type='checkbox' name='supplierDay2' id='supplierDay2' {{#if supplierDay2}}checked{{/if}} /></label>
-				<label class='yellowtext'>Mi<input type='checkbox' name='supplierDay3' id='supplierDay3' {{#if supplierDay3}}checked{{/if}} /></label>
-				<label  class='yellowtext'>Do<input type='checkbox' name='supplierDay4' id='supplierDay4' {{#if supplierDay4}}checked{{/if}} /></label>
-				<label  class='yellowtext'>Fr<input type='checkbox' name='supplierDay5' id='supplierDay5' {{#if supplierDay5}}checked{{/if}} /></label>
-				<label  class='yellowtext'>Sa<input type='checkbox' name='supplierDay6' id='supplierDay6' {{#if supplierDay6}}checked{{/if}} /></label>
-				<label  class='yellowtext'>So<input type='checkbox' name='supplierDay7' id='supplierDay7' {{#if supplierDay7}}checked{{/if}} /></label>
+				<label class='yellowtext'>Mo<input type='checkbox' name='supplierDay1' id='supplierDay1' {{#if supplierDay1}}checked{{/if}} onclick='checkSupplierDays();' /></label>
+				<label class='yellowtext'>Di<input type='checkbox' name='supplierDay2' id='supplierDay2' {{#if supplierDay2}}checked{{/if}} onclick='checkSupplierDays();' /></label>
+				<label class='yellowtext'>Mi<input type='checkbox' name='supplierDay3' id='supplierDay3' {{#if supplierDay3}}checked{{/if}} onclick='checkSupplierDays();' /></label>
+				<label  class='yellowtext'>Do<input type='checkbox' name='supplierDay4' id='supplierDay4' {{#if supplierDay4}}checked{{/if}} onclick='checkSupplierDays();' /></label>
+				<label  class='yellowtext'>Fr<input type='checkbox' name='supplierDay5' id='supplierDay5' {{#if supplierDay5}}checked{{/if}} onclick='checkSupplierDays();' /></label>
+				<label  class='yellowtext'>Sa<input type='checkbox' name='supplierDay6' id='supplierDay6' {{#if supplierDay6}}checked{{/if}} onclick='checkSupplierDays();' /></label>
+				<label  class='yellowtext'>So<input type='checkbox' name='supplierDay7' id='supplierDay7' {{#if supplierDay7}}checked{{/if}} onclick='checkSupplierDays();' /></label>
 			<br><br>
 
 			<label class='label-left yellowtext'>Adresse:</label><input class='form-input form-input-right'  type='text' name='supplierStreet' id='supplierStreet' value='{{supplierStreet}}'>
@@ -57,6 +57,19 @@
 		var supplierDoesDeliver = document.getElementById('supplierDoesDeliver');
 		var sectionOtherDelivery = document.getElementById('sectionOtherDelivery');
 		var signupRestaurantDelivery = document.getElementById('signupRestaurantDelivery');
+
+		// Check if all weekdays are closed (not allowed)
+		function checkSupplierDays(){
+			if (document.getElementById('supplierDay1').checked == false && 
+					document.getElementById('supplierDay2').checked == false && 
+					document.getElementById('supplierDay3').checked == false &&
+					document.getElementById('supplierDay4').checked == false &&
+					document.getElementById('supplierDay5').checked == false &&
+					document.getElementById('supplierDay6').checked == false &&
+					document.getElementById('supplierDay7').checked == false ) {
+				document.getElementById('supplierDay1').checked = true;
+			}
+		};
 
 		supplierDoesDeliver.addEventListener('change',function() {
 	    if (supplierDoesDeliver.checked == true){

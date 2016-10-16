@@ -112,6 +112,9 @@ function processSignUp(req, res) {
 		if (req.body.supplierDay5) {supplierWeekday[4]= true} else {supplierWeekday[4]= false}
 		if (req.body.supplierDay6) {supplierWeekday[5]= true} else {supplierWeekday[5]= false}
 		if (req.body.supplierDay7) {supplierWeekday[6]= true} else {supplierWeekday[6]= false}
+		if (supplierWeekday == [false, false, false, false, false, false, false]){
+			supplierWeekday = [true, false, false, false, false, false, false];
+		}
 		var newSupplierData = new Suppliers ({
 			supplierName: req.body.signupRestaurantName,
 			supplierDescription: req.body.signupRestaurantType,

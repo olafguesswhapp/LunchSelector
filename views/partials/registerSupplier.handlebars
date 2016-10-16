@@ -5,13 +5,13 @@
 <label class='yellowtext'>Mittagsessen von <input id="signupRestaurantStart" type="time" name="signupRestaurantStart" value="12:00" class='form-input form-input-time' />  bis <input id="signupRestaurantEnd" type="time" name="signupRestaurantEnd" value="14:30" class='form-input form-input-time' /></label>
 <br><br>
 <label class='label-left yellowtext'>Geöffnet am:</label>
-<label class='yellowtext'>Mo<input type='checkbox' name='supplierDay1' id='supplierDay1' checked /></label>
-<label class='yellowtext'>Di<input type='checkbox' name='supplierDay2' id='supplierDay2' checked /></label>
-<label class='yellowtext'>Mi<input type='checkbox' name='supplierDay3' id='supplierDay3' checked /></label>
-<label class='yellowtext'>Do<input type='checkbox' name='supplierDay4' id='supplierDay4' checked /></label>
-<label class='yellowtext'>Fr<input type='checkbox' name='supplierDay5' id='supplierDay5' checked /></label>
-<label class='yellowtext'>Sa<input type='checkbox' name='supplierDay6' id='supplierDay6' /></label>
-<label class='yellowtext'>So<input type='checkbox' name='supplierDay7' id='supplierDay7' /></label>
+<label class='yellowtext'>Mo<input type='checkbox' name='supplierDay1' id='supplierDay1' checked onclick='checkSupplierDays();' /></label>
+<label class='yellowtext'>Di<input type='checkbox' name='supplierDay2' id='supplierDay2' checked onclick='checkSupplierDays();' /></label>
+<label class='yellowtext'>Mi<input type='checkbox' name='supplierDay3' id='supplierDay3' checked onclick='checkSupplierDays();' /></label>
+<label class='yellowtext'>Do<input type='checkbox' name='supplierDay4' id='supplierDay4' checked onclick='checkSupplierDays();' /></label>
+<label class='yellowtext'>Fr<input type='checkbox' name='supplierDay5' id='supplierDay5' checked onclick='checkSupplierDays();' /></label>
+<label class='yellowtext'>Sa<input type='checkbox' name='supplierDay6' id='supplierDay6' onclick='checkSupplierDays();' /></label>
+<label class='yellowtext'>So<input type='checkbox' name='supplierDay7' id='supplierDay7' onclick='checkSupplierDays();' /></label>
 <br><br>
 <input id='signupRestaurantStreet' type="text" name="signupRestaurantStreet" class='form-input form-input-standard' placeholder='Strasse und Haus-Nr.'>
 <br><br>
@@ -49,6 +49,19 @@
 		var signupRestaurantDoesDeliver = document.getElementById('signupRestaurantDoesDeliver');
 		var sectionOtherDelivery = document.getElementById('sectionOtherDelivery');
 		var signupRestaurantDelivery = document.getElementById('signupRestaurantDelivery');
+
+		// Check if all weekdays are closed (not allowed)
+		function checkSupplierDays(){
+			if (document.getElementById('supplierDay1').checked == false && 
+					document.getElementById('supplierDay2').checked == false && 
+					document.getElementById('supplierDay3').checked == false &&
+					document.getElementById('supplierDay4').checked == false &&
+					document.getElementById('supplierDay5').checked == false &&
+					document.getElementById('supplierDay6').checked == false &&
+					document.getElementById('supplierDay7').checked == false ) {
+				document.getElementById('supplierDay1').checked = true;
+			}
+		};
 
 		// EXPAND DELIVERY-INPUT FORM IF USER HAS A RESTAURANT AND WANTS TO REGISTER IT
 		if (sectionDelivery) {
