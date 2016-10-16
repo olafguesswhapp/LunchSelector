@@ -19,26 +19,52 @@ module.exports = router;
 function suppliersSiteGet(req, res) {
 	console.log('*** client/supply/index.js route - /supply -');
 	var offerCategory = 1; // 1 = Lunch
-	var startDate = new Date();
-	var endDate = new Date();
 	var selectedSupplier;
-	startDate.setUTCHours(0,0,0,0);
-	endDate.setUTCHours(0,0,0,0);
-  endDate.setDate(endDate.getDate() + 5);
-  if (req.query.selectedSupplier){selectedSupplier = req.query.selectedSupplier} else {selectedSupplier = 0}
-	displaySupplierOffers(req, res, startDate, endDate, offerCategory, selectedSupplier);
+	if (req.query.selectedSupplier){selectedSupplier = req.query.selectedSupplier} else {selectedSupplier = 0}
+	checkDate(req.user.supplier[selectedSupplier]).then(function(startDate){
+		var endDate = new Date();
+		endDate.setUTCHours(0,0,0,0);
+	  endDate.setDate(endDate.getDate() + 5);
+		displaySupplierOffers(req, res, startDate, endDate, offerCategory, selectedSupplier);
+	});
 };
 
 function suppliersSitePost(req, res) {
 	console.log('*** client/supply/index.js route POST - /supply -');
 	var offerCategory = 1; // 1 = Lunch
+	var selectedSupplier = parseInt(req.body.selectedSupplier, 10);
 	var startDate = new Date(req.body.startDate);
 	var endDate = new Date(startDate);
 	var endDate = new Date();
-	var selectedSupplier = parseInt(req.body.selectedSupplier, 10);
 	startDate.setUTCHours(0,0,0,0);
   endDate.setDate(endDate.getDate() + parseInt(req.body.endNumberDays));
 	displaySupplierOffers(req, res, startDate, endDate, offerCategory, selectedSupplier);
+};
+
+function checkDate(supplierId){
+	return new Promise(function(resolve, reject){
+		var startDate = new Date();
+		startDate.setUTCHours(0,0,0,0);
+		Suppliers.findById(supplierId)
+						.select('supplierWeekday')
+						.exec(function(err, supplier){
+			if(err || supplier.length == 0){
+				resolve (startDate)
+			} else if (supplier.supplierWeekday.every(function(item){return (item === false)})){
+				// this should not be allowed
+			} else if (supplier.supplierWeekday[startDate.getDay()]){
+				resolve (startDate)
+			} else {
+				for(var i=1;i<7;i++){
+					startDate.setDate(startDate.getDate() + 1);
+					if(supplier.supplierWeekday[startDate.getDay()]){
+						break;
+					}
+				}
+				resolve (startDate)
+			}
+		});
+	});
 };
 
 function displaySupplierOffers(req, res, startDate, endDate, offerCategory, selectedSupplier) {
@@ -83,7 +109,7 @@ function displaySupplierOffers(req, res, startDate, endDate, offerCategory, sele
 		}
 	}).then(function(){
 		Suppliers.find({ _id: {$in: req.user.supplier}})
-						.select('supplierName')
+						.select('supplierName supplierWeekday')
 						.exec(function(err, suppliers){
 			if (err || suppliers === null){
 				console.log('Something is wrong - cannot find the users suppliers');
