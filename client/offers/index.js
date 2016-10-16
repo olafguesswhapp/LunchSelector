@@ -24,6 +24,10 @@ function displayOffers(req, res) {
 				.exec(function(err, currentOffers){
 		if (err) {
 			console.log('Preferred Suppliers do not have any offers'); // FLASH MESSAGE you have not yet selected a preferred supplier
+			req.session.flash = {
+        intro: 'Such Dir Deine Lieblings-Restaurants aus!',
+        message: 'Bitte wähle aus den folgenden Restaurants bzw. trage unten Dein Wunsch ein.',
+      };
 			res.redirect('/offers/select');
 		} else {
 			Suppliers.find({ _id : { $in: req.user.preferredSuppliers1 }})

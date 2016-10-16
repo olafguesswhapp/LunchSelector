@@ -23,7 +23,6 @@ function processProfileUpdate(req, res){
 
 function processSupplierEdit(req, res){
 	console.log('*** client/profile/index.js route POST - /profile/supplier/update -');
-	console.log(req.body);
 	var supplierWeekday = [false, false, false, false, false, false, false];
 	if (req.body.supplierDay1) {supplierWeekday[0]= true} else {supplierWeekday[0]= false}
 	if (req.body.supplierDay2) {supplierWeekday[1]= true} else {supplierWeekday[1]= false}
@@ -61,8 +60,23 @@ function processSupplierEdit(req, res){
 						supplierDeliversWith: whoDelivers
 					}},
 					{safe: true, upsert: true, new : true}, function(err, newSupplier){
+		if(err || newSupplier.length == 0){
+			console.log('Something went wrong');
+			req.session.flash = {
+        intro: 'Warnung!',
+        message: 'Beim Speichern ist ein Fehler aufgetreten - bitte versuch es erneut.',
+      };
+			res.redirect('/profile/supplier/' + req.body.supplierName);
+		} else {
+			console.log(newSupplier);
+			req.session.flash = {
+        intro: 'Gespeichert!',
+        message: 'Wir haben die Änderungen übernohmen.',
+      };
+      res.redirect('/profile/supplier/' + req.body.supplierName);
+		}
 	});
-	res.redirect('/profile/supplier/' + req.body.supplierName);
+	
 };
 
 function supplierEdit(req, res) {
