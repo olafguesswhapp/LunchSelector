@@ -98,7 +98,7 @@ function displaySupplierOffers(req, res, startDate, endDate, offerCategory, sele
 				var helpObject = {
 					offerId: offerElement._id,
 					offerName: offerElement.offerName,
-					offerPrice: offerElement.offerPrice,
+					offerPrice: offerElement.offerPrice.toFixed(2),
 					offerSortIndex: offerElement.offerSortIndex
 				};
 				context[ 'category' + offerElement.offerCategory][helpIndex]['offers'].push(helpObject);

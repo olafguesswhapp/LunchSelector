@@ -30,6 +30,15 @@ function displayOffers(req, res) {
       };
 			res.redirect('/offers/select');
 		} else {
+			var returnedOffers = currentOffers.map(function(element){
+				return {
+					offerDate: element.offerDate,
+					offerName: element.offerName,
+					offerPrice: element.offerPrice.toFixed(2),
+					offerSortIndex: element.offerSortIndex,
+					offerSupplier: element.offerSupplier
+				};
+			});
 			Suppliers.find({ _id : { $in: req.user.preferredSuppliers1 }})
 					.exec(function(err, supplier){
 				if (err || supplier.length === 0) {
@@ -57,13 +66,12 @@ function displayOffers(req, res) {
 							supplierSite: 				supplierElement.supplierSite,
 							supplierEmail: 				supplierElement.supplierEmail,
 							supplierPhone: 				supplierElement.supplierPhone ,
-							offers: 							currentOffers.filter(function(offerElement){
+							offers: 							returnedOffers.filter(function(offerElement){
 								return (JSON.stringify(offerElement.offerSupplier) === JSON.stringify(supplierElement._id))
 							}).sort(sortBySortIndex)
 						}
 					});
 					supplierOffers.availableCities = helpArray.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
-					console.log(supplierOffers);
 	    		res.render('../client/offers/offers', supplierOffers);
 				}
 			});
