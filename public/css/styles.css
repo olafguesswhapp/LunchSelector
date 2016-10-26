@@ -60,6 +60,9 @@ img {
 	position: relative;
 	margin: auto;
 }
+.row:last-of-type{
+	margin-bottom: 25px;
+}
 .row:before, 
 .row:after {
  	content: '';
