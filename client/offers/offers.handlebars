@@ -24,7 +24,7 @@
 					
 					<h3 class='card-header-title'><a href='#' onclick='switchVisible({{@index}})'><img src='/images/icon-turn.png'></a> {{supplierName}}<a href='#' class='floatRight' onclick='removeSupplier({{@index}});return false;'><img src='/images/icon-detachB.png'></a></h3>
 					
-					<span>{{supplierStart}} - {{supplierEnd}} {{#restaurantOpen supplierStart supplierEnd}}{{/restaurantOpen}}</span>
+					<span>{{supplierStart}} - {{supplierEnd}} derzeit {{#restaurantOpen supplierStart supplierEnd}}{{/restaurantOpen}}</span>
 				</div>
 				{{!-- Card Front Side --}}
 				<div id="oben{{@index}}" class='card-frontSide' onclick='switchVisible({{@index}});'>
@@ -94,10 +94,12 @@
 		{{#suppliers}}
 			if (window.selectedCity === '{{supplierCity}}'){
 				body += '{{supplierName}}\r\n';
-				body +='{{supplierStart}} - {{supplierEnd}} {{#restaurantOpen supplierStart supplierEnd}}{{/restaurantOpen}}\r\n';
-				{{#offers}}
-					body += '{{dish}}\t\t{{price}}\r\n';
-				{{/offers}}
+				body +='{{supplierStart}} - {{supplierEnd}} derzeit {{#restaurantOpen supplierStart supplierEnd}}{{/restaurantOpen}}\r\n';
+				{{#each offers}}
+					body += '{{offerName}}\t\t{{offerPrice}}\r\n';
+				{{else}}
+					body += '{{supplierName}} hat heute noch kein Gericht erfasst\r\n';
+				{{/each}}
 				body += '\r\n';
 			}
 		{{/suppliers}}
