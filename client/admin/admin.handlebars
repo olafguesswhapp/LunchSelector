@@ -4,54 +4,54 @@
 	<label>Neue Stadt erfassen: 
 	<input type='text' name='cityName' id ='cityName'><input type='submit' name='submitBTN' id='submitBTN'></label>
 
-	<div id='parent'>
+	<div class='row' id='parent'>
 		{{#cities}}
 		<div>
 			<label><input type='checkbox' id='city{{_id}}' {{#if cityStatus}}checked{{/if}} onclick='changeCityStatus("{{_id}}")'>{{cityName}}</label>
 		</div>
 		{{/cities}}
 	</div>
-	<br>
-	<div class='row'>
-		<h3>Nachrichten:</h3>
-		{{#contacts}}
-			<p>{{contactName}} {{contactEmail}} {{contactText}} {{created}}</p>
-		{{/contacts}}
-	</div>
+</div>
+<br>
+<div class='row'>
+	<h3>Nachrichten:</h3>
+	{{#contacts}}
+		<p>{{contactName}} {{contactEmail}} {{contactText}} {{created}}</p>
+	{{/contacts}}
+</div>
 
 
-	<div class='row'>
-		<h3>Offene Anfragen:</h3>
-		{{#proposals}}
-			<p>"{{proposalInfo}}" von: {{proposalBy.username}} am: {{proposalCreated}} status: <select id='{{_id}}' onchange='changeStatus(this)'>
-				<option value='recorded' {{#checkVar proposalStatus 'recorded' 'selected' ''}}{{/checkVar}}>Eingereicht</option>
-				<option value='assigned' {{#checkVar proposalStatus 'assigned' 'selected' ''}}{{/checkVar}}>In Bearbeitung</option>
-				<option value='completed' {{#checkVar proposalStatus 'completed' 'selected' ''}}{{/checkVar}}>Erledigt</option>
-				<option value='rejected' {{#checkVar proposalStatus 'rejected' 'selected' ''}}{{/checkVar}}>Abgelehnt</option>
-			</select></p>
-		{{/proposals}}
-	</div>
+<div class='row'>
+	<h3>Offene Anfragen:</h3>
+	{{#proposals}}
+		<p>"{{proposalInfo}}" von: {{proposalBy.username}} am: {{proposalCreated}} status: <select id='{{_id}}' onchange='changeStatus(this)'>
+			<option value='recorded' {{#checkVar proposalStatus 'recorded' 'selected' ''}}{{/checkVar}}>Eingereicht</option>
+			<option value='assigned' {{#checkVar proposalStatus 'assigned' 'selected' ''}}{{/checkVar}}>In Bearbeitung</option>
+			<option value='completed' {{#checkVar proposalStatus 'completed' 'selected' ''}}{{/checkVar}}>Erledigt</option>
+			<option value='rejected' {{#checkVar proposalStatus 'rejected' 'selected' ''}}{{/checkVar}}>Abgelehnt</option>
+		</select></p>
+	{{/proposals}}
+</div>
 
-	<div class='row'>
-		<h3>Letzte Restaurant-Anmeldungen:</h3>
-		{{#suppliers}}
-			<p>{{supplierName}} {{supplierType}} {{supplierCity}}</p>
-		{{/suppliers}}
-	</div>
+<div class='row'>
+	<h3>Letzte Restaurant-Anmeldungen:</h3>
+	{{#suppliers}}
+		<p>{{supplierName}} {{supplierType}} {{supplierCity}}</p>
+	{{/suppliers}}
+</div>
 
-	<div class='row'>
-		<h3>Letzte User-Anmeldungen:</h3>
-		{{#users}}
-			<p>{{isAuthenticated}} {{name}} {{username}} {{role}} {{gender}} {{age}} {{created}}</p>
-		{{/users}}
-	</div>
+<div class='row'>
+	<h3>Letzte User-Anmeldungen:</h3>
+	{{#users}}
+		<p>{{isAuthenticated}} {{name}} {{username}} {{role}} {{gender}} {{age}} {{created}}</p>
+	{{/users}}
+</div>
 
-	<div class='row'>
-		<h3>Letzte Prospects-Anmeldungen:</h3>
-		{{#prospects}}
-			<p>{{prospectEmail}} {{isAuthenticated}} {{created}}</p>
-		{{/prospects}}
-	</div>
+<div class='row'>
+	<h3>Letzte Prospects-Anmeldungen:</h3>
+	{{#prospects}}
+		<p>{{prospectEmail}} {{isAuthenticated}} {{created}}</p>
+	{{/prospects}}
 </div>
 
 <script type="text/javascript">
