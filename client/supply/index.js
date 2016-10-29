@@ -5,6 +5,7 @@ var router = express.Router();
 var Offers = require('../../models/offers');
 var Suppliers = require('../../models/suppliers');
 var Proposals = require('../../models/proposals');
+var logservice = require('../../lib/logservice');
 var authentication = require('../../lib/authentication');
 var moment = require('moment');
 
@@ -216,7 +217,8 @@ function recordProposal(req, res) {
       };
 			res.redirect(303, '/offers');
 		} else {
-			res.json('Danke für die Anfrage.')
+			res.json('Danke für die Anfrage.');
+			logservice.recLog(req.user._id, 4);
 		}
 	});
 };
