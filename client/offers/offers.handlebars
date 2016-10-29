@@ -12,7 +12,10 @@
 			</select>
 		</li>
 	</ul>
+	{{#if suppliers}}
 	<p class='center yellowtext'>Mittagesgerichte am {{#displayDate displayDate}}{{/displayDate}}</p>
+	{{else}}
+	{{/if}}
 </div>
 <div class='row'>
 	<div id='offersParent' class='center'>
