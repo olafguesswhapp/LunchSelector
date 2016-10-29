@@ -19,9 +19,11 @@ module.exports = router;
 
 function displayAdmin (req, res) {
   console.log('*** client/admin/index.js route - /admin - ');
-  var context;
+  var context = {
+    navAdmin: true,
+    cities: []
+  };
   Cities.find().exec(function(err, city){
-    context = { cities: []};
     if (err || city.length === 0) {
       context.cities = [{ cityName: 'no cities recorded yet', cityStatus: false }];
     } else {

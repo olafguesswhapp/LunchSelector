@@ -69,6 +69,7 @@ function checkDate(supplierId){
 
 function displaySupplierOffers(req, res, startDate, endDate, offerCategory, selectedSupplier) {
 	var context = {
+		navSupply: true,
 		startDate: moment(new Date(startDate)).format('YYYY-MM-DD'),
 		numberDays: Math.round((endDate- startDate)/(1000*60*60*24)),
 		'category1': [],

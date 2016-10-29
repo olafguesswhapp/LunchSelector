@@ -99,6 +99,7 @@ function supplierEdit(req, res) {
 				supplierDeliversWith = supplier.supplierDeliversWith;
 			}
 			var context = {
+				navProfile: true,
 				supplierId: supplier._id,
 				supplierName: supplier.supplierName,
 				supplierDescription: supplier.supplierDescription,
@@ -146,6 +147,7 @@ function displayProfile(req, res) {
 				console.log('This user is not in charge of any supplier');
 			} else {
 				var context = {
+					navProfile: true,
 					username: req.user.username,
 					name: req.user.name,
 					role: req.user.role,

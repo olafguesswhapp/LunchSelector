@@ -16,27 +16,27 @@
 				<a class='nav-link' href='/'><img class='logo__image' src='/images/logo-header.png'></a>	
 			</section>
 			<section class='right nonmobile'>
-				<a class='nav-link yellow-hover' href="/offers">Was gibt es heute?</a>
+				<a class='nav-link {{#if navOffers}}active{{/if}}' href="/offers">Was gibt es heute?</a>
 			</section>
 			<section class='right nonmobile'>
-				<a class='nav-link yellow-hover' href="/offers/select">Restaurants</a>
+				<a class='nav-link {{#if navSelect}}active{{/if}}' href="/offers/select">Restaurants</a>
 			</section>
 			{{#if (checkRole role 'supplier')}}
 				<section class='right nonmobile'>
-					<a class='nav-link yellow-hover' href="/supply">Meine Angebote</a>
+					<a class='nav-link {{#if navSupply}}active{{/if}}' href="/supply">Meine Angebote</a>
 				</section>
 			{{/if}}
 			{{#if (checkRole role 'admin')}}
 				<section class='right nonmobile'>
-					<a class='nav-link yellow-hover' href="/supply">Meine Angebote</a>
+					<a class='nav-link {{#if navSupply}}active{{/if}}' href="/supply">Meine Angebote</a>
 				</section>
 			{{/if}}
 			<section class='right nonmobile'>
-				<a class='nav-link' href="/profile"><img src='/images/icon-profile.png' alt='Dein Profil'></a>
+				<a class='nav-link {{#if navProfile}}active{{/if}}' href="/profile"><img src='/images/icon-profile.png' alt='Dein Profil'></a>
 			</section>
 			{{#if (checkRole role 'admin')}}
 				<section class='right nonmobile'>
-					<a class='nav-link' href="/admin"><img src='/images/icon-admin.png' alt='Admim'></a>
+					<a class='nav-link {{#if navAdmin}}active{{/if}}' href="/admin"><img src='/images/icon-admin.png' alt='Admin'></a>
 				</section>
 			{{/if}}
 			<section class='right mobileonly'>

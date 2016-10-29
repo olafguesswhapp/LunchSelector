@@ -53,6 +53,7 @@ function displayOffers(req, res, date){
 						userName: req.user.username,
 						selectedCity: req.user.selectedCity,
 						displayDate: date,
+						navOffers: true,
 						currentlyOnOffers: true,
 						suppliers: []
 					};
@@ -167,6 +168,7 @@ function displaySupplierSelection(req, res) {
 			var supplierSelection = {
 				selectedCity: selectedCity,
 				availableCities: availableCities,
+				navSelect: true,
 				currentlyOnOffers: false,
 				suppliers: supplierHelp
 			};
