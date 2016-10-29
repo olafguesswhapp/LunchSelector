@@ -8,20 +8,22 @@ var Offers = require('../../models/offers');
 var Cities = require('../../models/cities');
 var authentication = require('../../lib/authentication');
 
-router.get('/', authentication.isLoggedIn, displayOffers);
+router.get('/', authentication.isLoggedIn, displayTodaysOffers);
 router.post('/remove', authentication.isLoggedIn, removeSupplierFromPreferred);
 router.get('/select', authentication.isLoggedIn, displaySupplierSelection);
 router.post('/select/append', authentication.isLoggedIn, addSupplierToPreferred);
 
 module.exports = router;
 
-function displayOffers(req, res) {
+function displayTodaysOffers(req, res) {
 	console.log('*** client/offfers/index.js route - offers/ - ');
 	var today = new Date(new Date().setUTCHours(0,0,0,0));
-	console.log(today);
-	console.log(today.getDay());
+	return displayOffers(req, res, today);
+};
+
+function displayOffers(req, res, date){
 	var helpArray = [];
-	Offers.find({ offerCategory: 1 , offerSupplier: { $in: req.user.preferredSuppliers1 }, offerDate: today})
+	Offers.find({ offerCategory: 1 , offerSupplier: { $in: req.user.preferredSuppliers1 }, offerDate: date})
 				.select('offerDate offerName offerPrice  offerSortIndex offerSupplier')
 				.exec(function(err, currentOffers){
 		if (err) {
@@ -43,7 +45,6 @@ function displayOffers(req, res) {
 			});
 			Suppliers.find({ _id : { $in: req.user.preferredSuppliers1 }})
 					.exec(function(err, supplier){
-				console.log(supplier.supplierWeekday);
 				if (err || supplier.length === 0) {
 					console.log('User has no preferredSupplier'); // Direct to supplier Selectio or MESSAGE
 					res.redirect('/offers/select');
@@ -51,10 +52,11 @@ function displayOffers(req, res) {
 					var supplierOffers = {
 						userName: req.user.username,
 						selectedCity: req.user.selectedCity,
+						displayDate: date,
 						currentlyOnOffers: true,
 						suppliers: []
 					};
-					supplierOffers.suppliers = supplier.filter(function(filterElement){return filterElement.supplierWeekday[today.getDay()]}).map(function(supplierElement){
+					supplierOffers.suppliers = supplier.filter(function(filterElement){return filterElement.supplierWeekday[date.getDay()]}).map(function(supplierElement){
 						helpArray.push(supplierElement.supplierCity);
 						return {
 							supplierId: 					supplierElement._id,
@@ -75,6 +77,7 @@ function displayOffers(req, res) {
 						}
 					});
 					supplierOffers.availableCities = helpArray.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
+					console.log(supplierOffers);
 	    		res.render('../client/offers/offers', supplierOffers);
 				}
 			});
