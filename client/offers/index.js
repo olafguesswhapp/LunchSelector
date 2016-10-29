@@ -18,6 +18,8 @@ module.exports = router;
 function displayOffers(req, res) {
 	console.log('*** client/offfers/index.js route - offers/ - ');
 	var today = new Date(new Date().setUTCHours(0,0,0,0));
+	console.log(today);
+	console.log(today.getDay());
 	var helpArray = [];
 	Offers.find({ offerCategory: 1 , offerSupplier: { $in: req.user.preferredSuppliers1 }, offerDate: today})
 				.select('offerDate offerName offerPrice  offerSortIndex offerSupplier')
@@ -41,6 +43,7 @@ function displayOffers(req, res) {
 			});
 			Suppliers.find({ _id : { $in: req.user.preferredSuppliers1 }})
 					.exec(function(err, supplier){
+				console.log(supplier.supplierWeekday);
 				if (err || supplier.length === 0) {
 					console.log('User has no preferredSupplier'); // Direct to supplier Selectio or MESSAGE
 					res.redirect('/offers/select');

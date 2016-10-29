@@ -24,13 +24,13 @@ function processProfileUpdate(req, res){
 function processSupplierEdit(req, res){
 	console.log('*** client/profile/index.js route POST - /profile/supplier/update -');
 	var supplierWeekday = [false, false, false, false, false, false, false];
-	if (req.body.supplierDay1) {supplierWeekday[0]= true} else {supplierWeekday[0]= false}
-	if (req.body.supplierDay2) {supplierWeekday[1]= true} else {supplierWeekday[1]= false}
-	if (req.body.supplierDay3) {supplierWeekday[2]= true} else {supplierWeekday[2]= false}
-	if (req.body.supplierDay4) {supplierWeekday[3]= true} else {supplierWeekday[3]= false}
-	if (req.body.supplierDay5) {supplierWeekday[4]= true} else {supplierWeekday[4]= false}
-	if (req.body.supplierDay6) {supplierWeekday[5]= true} else {supplierWeekday[5]= false}
-	if (req.body.supplierDay7) {supplierWeekday[6]= true} else {supplierWeekday[6]= false}
+	if (req.body.supplierDay1) {supplierWeekday[1]= true} else {supplierWeekday[1]= false}
+	if (req.body.supplierDay2) {supplierWeekday[2]= true} else {supplierWeekday[2]= false}
+	if (req.body.supplierDay3) {supplierWeekday[3]= true} else {supplierWeekday[3]= false}
+	if (req.body.supplierDay4) {supplierWeekday[4]= true} else {supplierWeekday[4]= false}
+	if (req.body.supplierDay5) {supplierWeekday[5]= true} else {supplierWeekday[5]= false}
+	if (req.body.supplierDay6) {supplierWeekday[6]= true} else {supplierWeekday[6]= false}
+	if (req.body.supplierDay7) {supplierWeekday[0]= true} else {supplierWeekday[0]= false}
 	if (supplierWeekday == [false, false, false, false, false, false, false]){
 		supplierWeekday = [true, false, false, false, false, false, false];
 	}
@@ -117,13 +117,13 @@ function supplierEdit(req, res) {
 				supplierOtherDelivery: supplierOtherDelivery
 			};
 			var supplierWeekday = supplier.supplierWeekday;
-			if (supplierWeekday[0]){context.supplierDay1 = 'on'}
-			if (supplierWeekday[1]){context.supplierDay2 = 'on'}
-			if (supplierWeekday[2]){context.supplierDay3 = 'on'}
-			if (supplierWeekday[3]){context.supplierDay4 = 'on'}
-			if (supplierWeekday[4]){context.supplierDay5 = 'on'}
-			if (supplierWeekday[5]){context.supplierDay6 = 'on'}
-			if (supplierWeekday[6]){context.supplierDay7 = 'on'}
+			if (supplierWeekday[1]){context.supplierDay1 = 'on'}
+			if (supplierWeekday[2]){context.supplierDay2 = 'on'}
+			if (supplierWeekday[3]){context.supplierDay3 = 'on'}
+			if (supplierWeekday[4]){context.supplierDay4 = 'on'}
+			if (supplierWeekday[5]){context.supplierDay5 = 'on'}
+			if (supplierWeekday[6]){context.supplierDay6 = 'on'}
+			if (supplierWeekday[0]){context.supplierDay7 = 'on'}
 			res.render('../client/profile/supplier', context);
 		}
 	});
@@ -176,13 +176,13 @@ function addSupplier(req, res) {
 		if (req.body.signupRestaurantOtherDelivery) {whoDelivers = req.body.signupRestaurantOtherDelivery} else (whoDelivers = 'Andere')
 	} else {whoDelivers = req.body.signupRestaurantDelivery}
 	var supplierWeekday = [false, false, false, false, false, false, false];
-	if (req.body.supplierDay1) {supplierWeekday[0]= true} else {supplierWeekday[0]= false}
-	if (req.body.supplierDay2) {supplierWeekday[1]= true} else {supplierWeekday[1]= false}
-	if (req.body.supplierDay3) {supplierWeekday[2]= true} else {supplierWeekday[2]= false}
-	if (req.body.supplierDay4) {supplierWeekday[3]= true} else {supplierWeekday[3]= false}
-	if (req.body.supplierDay5) {supplierWeekday[4]= true} else {supplierWeekday[4]= false}
-	if (req.body.supplierDay6) {supplierWeekday[5]= true} else {supplierWeekday[5]= false}
-	if (req.body.supplierDay7) {supplierWeekday[6]= true} else {supplierWeekday[6]= false}
+	if (req.body.supplierDay1) {supplierWeekday[1]= true} else {supplierWeekday[1]= false}
+	if (req.body.supplierDay2) {supplierWeekday[2]= true} else {supplierWeekday[2]= false}
+	if (req.body.supplierDay3) {supplierWeekday[3]= true} else {supplierWeekday[3]= false}
+	if (req.body.supplierDay4) {supplierWeekday[4]= true} else {supplierWeekday[4]= false}
+	if (req.body.supplierDay5) {supplierWeekday[5]= true} else {supplierWeekday[5]= false}
+	if (req.body.supplierDay6) {supplierWeekday[6]= true} else {supplierWeekday[6]= false}
+	if (req.body.supplierDay7) {supplierWeekday[0]= true} else {supplierWeekday[0]= false}
 	if (supplierWeekday == [false, false, false, false, false, false, false]){
 		supplierWeekday = [true, false, false, false, false, false, false];
 	}
