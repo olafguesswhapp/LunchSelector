@@ -108,34 +108,38 @@
 	};
 
 	document.forms.namedItem('offerInput').addEventListener('submit', function(event) {
-		var requestData = encodeURIComponent('offerDate') + '=' + 
-		encodeURIComponent(document.getElementById('offerDate').value) + '\&' +
-		encodeURIComponent('offerName') + '=' + 
-		encodeURIComponent(document.getElementById('offerName').value) + '\&' +
-		encodeURIComponent('selectedSupplier') + '=' + 
-		encodeURIComponent(document.getElementById('selectedSupplier').value) + '\&' +
-		encodeURIComponent('offerPrice') + '=' + 
-		encodeURIComponent(document.getElementById('offerPrice').value) + '\&' +
-		encodeURIComponent('offerCategory') + '=' + 1 + '\&' + // 1 = Lunch
-		encodeURIComponent('offerType') + '=' + 
-		encodeURIComponent(document.getElementById('offerType').value);
-		console.log(requestData);
-		var request = new XMLHttpRequest();
-	  request.open('POST', '/supply/offer', true);
-	  request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	  request.onload = function() {
-	    if (request.status == 200) {
-	    	console.log(request.statusText);
-	    	document.getElementById('offerDate').valueAsDate = new Date();
-	    	document.getElementById('offerName').value = '';
-	    	document.getElementById('offerPrice').value = 0;
-	    	document.getElementById('offerAlert').style.display = 'block';
-	    	document.getElementById('offerName').focus();
-	    } else {
-	    	console.log(request.status);
-	    }
-	  };
-	  request.send(requestData);
-	  event.preventDefault();
+		if (document.getElementById('offerName').value.length > 0){
+			var requestData = encodeURIComponent('offerDate') + '=' + 
+			encodeURIComponent(document.getElementById('offerDate').value) + '\&' +
+			encodeURIComponent('offerName') + '=' + 
+			encodeURIComponent(document.getElementById('offerName').value) + '\&' +
+			encodeURIComponent('selectedSupplier') + '=' + 
+			encodeURIComponent(document.getElementById('selectedSupplier').value) + '\&' +
+			encodeURIComponent('offerPrice') + '=' + 
+			encodeURIComponent(document.getElementById('offerPrice').value) + '\&' +
+			encodeURIComponent('offerCategory') + '=' + 1 + '\&' + // 1 = Lunch
+			encodeURIComponent('offerType') + '=' + 
+			encodeURIComponent(document.getElementById('offerType').value);
+			console.log(requestData);
+			var request = new XMLHttpRequest();
+		  request.open('POST', '/supply/offer', true);
+		  request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		  request.onload = function() {
+		    if (request.status == 200) {
+		    	console.log(request.statusText);
+		    	document.getElementById('offerDate').valueAsDate = new Date();
+		    	document.getElementById('offerName').value = '';
+		    	document.getElementById('offerPrice').value = 0;
+		    	document.getElementById('offerAlert').style.display = 'block';
+		    	document.getElementById('offerName').focus();
+		    } else {
+		    	console.log(request.status);
+		    }
+		  };
+		  request.send(requestData);
+		} else {
+			document.getElementById('offerName').placeholder = 'Bitte tragen Sie den Namen des Gerichtes ein';
+		}
+		event.preventDefault();
 	}, false);
 </script>
