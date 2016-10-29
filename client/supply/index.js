@@ -108,6 +108,9 @@ function displaySupplierOffers(req, res, startDate, endDate, offerCategory, sele
 			});
 		}
 	}).then(function(){
+		context.category1.sort(function(a,b){
+			return new Date(a.date) - new Date(b.date);
+		});
 		Suppliers.find({ _id: {$in: req.user.supplier}})
 						.select('supplierName supplierWeekday')
 						.exec(function(err, suppliers){
