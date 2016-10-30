@@ -6,7 +6,7 @@ module.exports = function(app) {
 	app.use('/offers', 			require('./client/offers'));
 	app.use('/profile', 		require('./client/profile'));
 	app.use('/admin',				require('./client/admin'));
-	app.use('/', 						require('./client/landingpage'));
-	app.use('/login', 			require('./client/landingpage'));
 	app.use('/legal',				require('./client/legal'));
+	app.use('/login', 			require('./client/landingpage'));
+	app.use('/', 						require('./client/landingpage'));
 }
