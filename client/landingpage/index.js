@@ -5,11 +5,12 @@ var router = express.Router();
 var crypto = require('crypto');
 var passport = require('passport');
 var Prospects = require('../../models/prospects');
+var quoteService = require('../../lib/quoteservice');
 var emailService = require('../../lib/emailservice');
 
-router.get('/', renderPreLaunch);
+router.get('/', renderLandingPage);
+router.get('/soon', renderPreLaunch);
 router.post('/login', processLogin);
-router.get('/soon', renderLandingPage);
 router.post('/prospect', registerProspect);
 router.get('/prospect/verify', verifyProspect);
 router.get('/toon', renderTest);
@@ -23,7 +24,13 @@ function renderPreLaunch(req, res) {
 
 function renderLandingPage(req, res) {
   console.log('*** index.js route - / soon ');
-  res.render('../client/landingpage/landingpageSoon', {layout: 'landingpage'});
+  quoteService.selectQuote(1).then(function(quote){
+    req.session.flash = {
+      intro: quote.quoteAuthor + ': ',
+      message: '"' + quote.quoteText + '"',
+    };
+    res.render('../client/landingpage/landingpage', {layout: 'landingpage'});
+  });
 };
 
 function processLogin(req, res) {
