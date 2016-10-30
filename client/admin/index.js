@@ -7,6 +7,7 @@ var Suppliers = require('../../models/suppliers');
 var Cities = require('../../models/cities');
 var Proposals = require('../../models/proposals');
 var Prospects = require('../../models/prospects');
+var Protocols = require('../../models/protocols');
 var Contacts = require('../../models/contacts');
 var authentication = require('../../lib/authentication');
 
@@ -21,7 +22,8 @@ function displayAdmin (req, res) {
   console.log('*** client/admin/index.js route - /admin - ');
   var context = {
     navAdmin: true,
-    cities: []
+    cities: [],
+    logs: []
   };
   Cities.find().exec(function(err, city){
     if (err || city.length === 0) {
@@ -29,54 +31,67 @@ function displayAdmin (req, res) {
     } else {
       context.cities = city;
     }
-    return context;
   }).then(function(){
-    Proposals.find({ proposalStatus: { $ne: 'completed'}})
-            .populate('proposalBy', 'username')
-            .exec(function(err, proposal){
-      if (err) { console.log('Something went wrong')} else {
-        context.proposals = proposal;
-      }
-      LSUsers.find()
-          .select('username name gender age role selectedCity created isAuthenticated')
-          .limit(5)
-          .sort({ 'created': 'desc' })
-          .exec(function(err, users){
-        if (err) {
-          console.log('Something went wrong');
-        } else {
-          context.users = users;
+    var yesterday = new Date();
+    yesterday.setHours(2,0,0,0);
+    Protocols.find({ 'date': {"$gt": yesterday }})
+            .populate('user', 'username')
+            .exec(function(err, logs){
+      var help = logs.forEach(function(logItem, logIndex){
+        context.logs.push({
+          type: logItem.type,
+          date: logItem.date,
+          user: logItem.user.username
+        });
+      });
+    }).then(function(){
+      Proposals.find({ proposalStatus: { $ne: 'completed'}})
+              .populate('proposalBy', 'username')
+              .exec(function(err, proposal){
+        if (err) { console.log('Something went wrong')} else {
+          context.proposals = proposal;
         }
-        Suppliers.find()
-                .select('supplierName supplierType supplierCity')
-                .limit(5)
-                .sort({ 'suppplierCreated': 'desc'})
-                .exec(function(err, suppliers){
+        LSUsers.find()
+            .select('username name gender age role selectedCity created isAuthenticated')
+            .limit(5)
+            .sort({ 'created': 'desc' })
+            .exec(function(err, users){
           if (err) {
             console.log('Something went wrong');
           } else {
-            context.suppliers = suppliers;
+            context.users = users;
           }
-          Prospects.find()
-                .select('prospectEmail isAuthenticated created')
-                .limit(5)
-                .sort({ 'created': 'desc'})
-                .exec(function(err, prospect){
+          Suppliers.find()
+                  .select('supplierName supplierType supplierCity')
+                  .limit(5)
+                  .sort({ 'suppplierCreated': 'desc'})
+                  .exec(function(err, suppliers){
             if (err) {
               console.log('Something went wrong');
             } else {
-              context.prospects = prospect;
+              context.suppliers = suppliers;
             }
-            Contacts.find()
-                    .limit(5)
-                    .sort({ 'created': 'desc'})
-                    .exec(function(err, contact){
-              if(err){
+            Prospects.find()
+                  .select('prospectEmail isAuthenticated created')
+                  .limit(5)
+                  .sort({ 'created': 'desc'})
+                  .exec(function(err, prospect){
+              if (err) {
                 console.log('Something went wrong');
               } else {
-                context.contacts = contact;
+                context.prospects = prospect;
               }
-              res.render('../client/admin/admin', context);
+              Contacts.find()
+                      .limit(5)
+                      .sort({ 'created': 'desc'})
+                      .exec(function(err, contact){
+                if(err){
+                  console.log('Something went wrong');
+                } else {
+                  context.contacts = contact;
+                }
+                res.render('../client/admin/admin', context);
+              });
             });
           });
         });
