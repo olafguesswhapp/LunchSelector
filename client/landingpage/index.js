@@ -111,16 +111,19 @@ function registerProspect(req, res) {
             };
             return res.redirect('/');
           } else {
-            var bodytext = 'Hallo ' + req.body.username + ',\n\n' +
-            'Bitte verifiziere deine E-Mail-Adresse mit einem click auf diesen Link:\n\n' +
-            'http://mytiffin.de/prospect/verify/?token=' + newUser.authToken + '\n\n' + 
-            'Wenn Du Dich nicht bei mytiffin.de registriert hast lösch bitte diese E-mail.\n'
-            emailService.sendEmail(req.body.username, 'mytiffin Email Verifizierung', bodytext);
-            req.session.flash = {
-              intro: 'Hallo ' + req.body.username + '. ',
-              message: 'Wir haben Dir eine Bestätigungs-Email zugesendet! Danke',
-            };
-            return res.redirect('/');
+            quoteService.selectQuote(1).then(function(quote){
+              var bodytext = quote.quoteAuthor + ': "' + quote.quoteText + '"\n\n' + 
+              'Hallo ' + req.body.username + ',\n\n' +
+              'Bitte verifiziere deine E-Mail-Adresse mit einem click auf diesen Link:\n\n' +
+              'http://mytiffin.de/prospect/verify/?token=' + newUser.authToken + '\n\n' + 
+              'Wenn Du Dich nicht bei mytiffin.de registriert hast lösch bitte diese E-mail.\n'
+              emailService.sendEmail(req.body.username, 'mytiffin Email Verifizierung', bodytext);
+              req.session.flash = {
+                intro: 'Hallo ' + req.body.username + '. ',
+                message: 'Wir haben Dir eine Bestätigungs-Email zugesendet! Danke',
+              };
+              return res.redirect('/');
+            });
           }
         });
       } else {
