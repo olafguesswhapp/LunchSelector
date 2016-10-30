@@ -72,6 +72,9 @@ function displayOffers(req, res, date){
 							supplierCity: 				supplierElement.supplierCity,
 							supplierSite: 				supplierElement.supplierSite,
 							supplierEmail: 				supplierElement.supplierEmail,
+							supplierFB: 					supplierElement.supplierFB,
+							supplierTw: 					supplierElement.supplierTw,
+							supplierInst: 				supplierElement.supplierInst,
 							supplierPhone: 				supplierElement.supplierPhone ,
 							offers: 							returnedOffers.filter(function(offerElement){
 								return (JSON.stringify(offerElement.offerSupplier) === JSON.stringify(supplierElement._id))

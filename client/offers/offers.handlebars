@@ -46,6 +46,11 @@
 					<div>{{supplierPhone}}</div>
 					<div><a href='{{supplierSite}}' target='_blank'>{{supplierSite}}</a></div>
 					<div><span onclick='noDefault();'><a href='mailto:{{supplierEmail}}' onclick='noDefault(this);'></span><img src='/images/icon-mail-small.png'> </a>{{supplierEmail}}</div>
+					<div>
+						{{#if supplierFB}}<a target="_blank" href='{{supplierFB}}'><img src='/images/icon-facebook.png' /></a>&emsp;{{/if}}
+						{{#if supplierTw}}<a target="_blank" href='{{supplierTw}}'><img src='/images/icon-twitter.png' /></a>&emsp;{{/if}}
+						{{#if supplierInst}}<a target="_blank" href='{{supplierInst}}'><img src='/images/icon-instagram.png' /></a>&emsp;{{/if}}
+					</div>
 				</div>
 				{{!-- Card Alert --}}
 				<div id='alert{{@index}}' class='card-alert'>
