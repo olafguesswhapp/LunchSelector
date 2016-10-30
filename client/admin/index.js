@@ -9,14 +9,47 @@ var Proposals = require('../../models/proposals');
 var Prospects = require('../../models/prospects');
 var Protocols = require('../../models/protocols');
 var Contacts = require('../../models/contacts');
+var Quotes = require('../../models/quotes');
 var authentication = require('../../lib/authentication');
 
 router.get('/', authentication.isLoggedInAsAdmin, displayAdmin);
 router.post('/city', authentication.isLoggedInAsAdmin, recordCity);
 router.put('/city', authentication.isLoggedInAsAdmin, setCityStatus);
 router.put('/proposal', authentication.isLoggedInAsAdmin, setProposalStatus);
+router.get('/quotes', authentication.isLoggedInAsAdmin, displayQuotes);
+router.post('/quotes', authentication.isLoggedInAsAdmin, processInputQuotes);
 
 module.exports = router;
+
+function displayQuotes(req, res) {
+  console.log('*** client/admin/index.js route GET - /admin/quotes - ');
+  var context = { quotes : [] };
+  Quotes.find().exec(function(err, quote){
+    if (err || quote.length === 0) {
+      context.quotes = [{ quoteText: 'no quotes recorded yet', quoteStatus: false }];
+    } else {
+      context.quotes = quote;
+    }
+    res.render('../client/admin/quotes', context);
+  });
+};
+
+function processInputQuotes(req, res) {
+  console.log('*** client/admin/index.js route POST - /admin/quotes - ');
+  var newQuote = new Quotes({
+    quoteAuthor: req.body.quoteAuthor,
+    quoteText: req.body.quoteText,
+    quoteType: 1,
+    quoteStatus: true
+  });
+  newQuote.save(function(err, savedQuote){
+    if(err){
+      console.log('Fehler beim speichern des Zitats');
+    } else {
+      res.redirect('/admin/quotes');
+    }
+  });
+};
 
 function displayAdmin (req, res) {
   console.log('*** client/admin/index.js route - /admin - ');
