@@ -18,12 +18,12 @@ router.get('/toon', renderTest);
 module.exports = router;
 
 function renderPreLaunch(req, res) {
-  console.log('*** index.js route - / - ');
+  console.log('*** index.js route - / soon ');
   res.render('../client/landingpage/landingpagePre', {layout: 'landingpagePre'});
 };
 
 function renderLandingPage(req, res) {
-  console.log('*** index.js route - / soon ');
+  console.log('*** index.js route - / - ');
   quoteService.selectQuote(1).then(function(quote){
     req.session.flash = {
       intro: quote.quoteAuthor + ': ',
