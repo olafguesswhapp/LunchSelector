@@ -137,7 +137,7 @@ app.get('/sitemap.xml', function(req, res) {
 // 404 catch-all handler (middleware)
 app.use(function(req, res, next){
   console.log('CHECK ************* 1 **********');
-  res.status(404).send({ error: 'Something failed!' });
+  res.status(404).send({ error: 'This URL does not exist - please return' });
 });
 
 // 500 error handler (middleware)
