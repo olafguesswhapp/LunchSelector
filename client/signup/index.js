@@ -9,6 +9,7 @@ var crypto = require('crypto');
 var LSUsers = require('../../models/lsusers');
 var Suppliers = require('../../models/suppliers');
 var Cities = require('../../models/cities');
+var quoteService = require('../../lib/quoteservice');
 var emailService = require('../../lib/emailservice');
 var moment = require('moment');
 
@@ -77,15 +78,18 @@ function authenticateEmail(req, res) {
         } else {
         	console.log('succesfully updated user');
         	console.log(newUser);
-        	var bodytext = 'Hallo ' + newUser.name + ',\n\n' +
-	          'Dein Konto wurde erfolgreich aktiviert.\n\n' +
-	          'Willkommen bei mytiffin.de.\n'
-        	emailService.sendEmail(newUser.username, 'Willkommen bei mytiffin', bodytext);
-        	req.session.flash = {
-            intro: 'Herzlich Willkommen!',
-            message: 'Du hast Deine Email bestätigt - Du kannst Dich jetzt einloggen!',
-          };
-        	res.redirect(303, '/soon');
+        	quoteService.selectQuote(1).then(function(quote){
+        		var bodytext = quote.quoteAuthor + ': "' + quote.quoteText + '"\n\n' + 
+        			'Hallo ' + newUser.name + ',\n\n' +
+		          'Dein Konto wurde erfolgreich aktiviert.\n\n' +
+		          'Willkommen bei mytiffin.de.\n'
+	        	emailService.sendEmail(newUser.username, 'Willkommen bei mytiffin', bodytext);
+	        	req.session.flash = {
+	            intro: 'Herzlich Willkommen!',
+	            message: 'Du hast Deine Email bestätigt - Du kannst Dich jetzt einloggen!',
+	          };
+	        	res.redirect(303, '/');
+        	});
         }
       });
 		}
@@ -135,7 +139,6 @@ function processSignUp(req, res) {
 			supplierDeliversWith: whoDelivers,
 			suppplierCreated: moment(new Date()).format('YYYY-MM-DDTHH:mm'),
 		});
-
 		newSupplierData.save(function(err, newSupplier) {
 			if(err){
 				console.log('something went wrong');
@@ -170,20 +173,19 @@ function processSignUp(req, res) {
 	          };
 						res.redirect(303, '/signup');
 					} else {
-						var bodytext = 'Hallo ' + req.body.signupName + ',\n\n' +
-	          'Dein Konto kann jetzt aktiviert werden. Bitte verifiziere deine E-Mail-Adresse mit einem click auf diesen Link:\n\n' +
-	          'http://mytiffin.de/signup/verify/?token=' + newUser.authToken + '\n\n' + 
-	          'Wenn du kein mytiffin.de Konto erstellst hast lösch bitte diese E-mail.\n'
-						emailService.sendEmail(req.body.signupEmail, 'mytiffin Kontobestätigung', bodytext);
-						req.session.flash = {
-              intro: 'Hallo ' + req.body.signupName + '. ',
-              message: 'Wir haben Dir eine Bestätigungs-Email zugesendet! Danke',
-            };
-						if (req.body.signupIsRestaurant && req.body.signupHasLunch) {
-							res.redirect(303, '/supply');
-						} else {
-							res.redirect(303, '/offers');
-						}
+						quoteService.selectQuote(1).then(function(quote){
+							var bodytext = quote.quoteAuthor + ': "' + quote.quoteText + '"\n\n' + 
+							'Hallo ' + req.body.signupName + ',\n\n' +
+		          'Dein Konto kann jetzt aktiviert werden. Bitte verifiziere deine E-Mail-Adresse mit einem click auf diesen Link:\n\n' +
+		          'http://mytiffin.de/signup/verify/?token=' + newUser.authToken + '\n\n' + 
+		          'Wenn du kein mytiffin.de Konto erstellst hast lösch bitte diese E-mail.\n'
+							emailService.sendEmail(req.body.signupEmail, 'mytiffin Kontobestätigung', bodytext);
+							res.locals.flash = {
+	              intro: 'Hallo ' + req.body.signupName + '. ',
+	              message: 'Wir haben Dir eine Bestätigungs-Email zugesendet! Danke',
+	            };
+							res.redirect(303, '/');
+						});
 					}
 				});
 			}
@@ -208,20 +210,19 @@ function processSignUp(req, res) {
 			if(err) {
 				res.redirect(303, '/signup');
 			} else {
-				var bodytext = 'Hallo ' + req.body.signupName + ',\n\n' +
-        'Dein Konto kann jetzt aktiviert werden. Bitte verifiziere deine E-Mail-Adresse mit einem click auf diesen Link:\n\n' +
-        'http://mytiffin.de/signup/verify/?token=' + newUser.authToken + '\n\n' + 
-        'Wenn du kein mytiffin.de Konto erstellst hast lösch bitte diese E-mail.\n'
-				emailService.sendEmail(req.body.signupEmail, 'mytiffin Kontobestätigung', bodytext);
-				req.session.flash = {
-          intro: 'Hallo ' + req.body.signupName + '. ',
-          message: 'Wir haben Dir eine Bestätigungs-Email zugesendet! Danke',
-        };
-				if (req.body.signupIsRestaurant && req.body.signupHasLunch) {
-					res.redirect(303, '/supply');	
-				} else {
-					res.redirect(303, '/offers');
-				}
+				quoteService.selectQuote(1).then(function(quote){
+					var bodytext = quote.quoteAuthor + ': "' + quote.quoteText + '"\n\n' + 
+					'Hallo ' + req.body.signupName + ',\n\n' +
+	        'Dein Konto kann jetzt aktiviert werden. Bitte verifiziere deine E-Mail-Adresse mit einem click auf diesen Link:\n\n' +
+	        'http://mytiffin.de/signup/verify/?token=' + newUser.authToken + '\n\n' + 
+	        'Wenn du kein mytiffin.de Konto erstellst hast lösch bitte diese E-mail.\n'
+					emailService.sendEmail(req.body.signupEmail, 'mytiffin Kontobestätigung', bodytext);
+					req.session.flash = {
+	          intro: 'Hallo ' + req.body.signupName + '. ',
+	          message: 'Wir haben Dir eine Bestätigungs-Email zugesendet! Danke',
+	        };
+					res.redirect(303, '/');
+				});			
 			}
 		});
 	}
@@ -297,7 +298,7 @@ function resetPassword(req, res){
             intro: 'Hallo ' + req.body.username + '. ',
             message: 'Wir haben Dir per Email einen Link zur Passwort-Erneuerung zugesendet!',
           };
-          return res.redirect('/');
+          return res.redirect(303, '/');
 				}
 			});
 		}
@@ -366,7 +367,7 @@ function processResetPassword(req, res){
               intro: 'Hallo ' + req.body.signupEmail + '. ',
               message: 'Wir haben dein neues Passwort gespeichert - Du kannst Dich damit einloggen.',
             };
-						res.redirect(303, '/soon');
+						res.redirect(303, '/');
 					}
 				});
 			}

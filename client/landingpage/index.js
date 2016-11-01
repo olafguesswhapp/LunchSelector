@@ -25,10 +25,12 @@ function renderPreLaunch(req, res) {
 function renderLandingPage(req, res) {
   console.log('*** index.js route - / - ');
   quoteService.selectQuote(1).then(function(quote){
-    req.session.flash = {
-      intro: quote.quoteAuthor + ': ',
-      message: '"' + quote.quoteText + '"',
-    };
+    if(!res.locals.flash){
+      res.locals.flash = {
+        intro: quote.quoteAuthor + ': ',
+        message: '"' + quote.quoteText + '"',
+      };
+    }
     res.render('../client/landingpage/landingpage', {layout: 'landingpage'});
   });
 };
