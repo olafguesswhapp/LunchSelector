@@ -137,16 +137,14 @@ app.get('/sitemap.xml', function(req, res) {
 // 404 catch-all handler (middleware)
 app.use(function(req, res, next){
   console.log('CHECK ************* 1 **********');
-  res.status(404);
-  res.redirect('/');
+  res.status(404).send({ error: 'Something failed!' });
 });
 
 // 500 error handler (middleware)
 app.use(function(err, req, res, next){
   console.log('CHECK ************* 2 **********');
   console.error(err.stack);
-  res.status(500);
-  res.redirect('/');
+  res.status(500).send({ error: 'Something failed!' });
 });
 
 
