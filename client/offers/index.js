@@ -6,6 +6,7 @@ var LSUsers = require('../../models/lsusers');
 var Suppliers = require('../../models/suppliers');
 var Offers = require('../../models/offers');
 var Cities = require('../../models/cities');
+var quoteService = require('../../lib/quoteservice');
 var logservice = require('../../lib/logservice');
 var authentication = require('../../lib/authentication');
 
@@ -82,8 +83,11 @@ function displayOffers(req, res, date){
 						}
 					});
 					supplierOffers.availableCities = helpArray.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
-	    		res.render('../client/offers/offers', supplierOffers);
-	    		logservice.recLog(req.user._id, 1);
+					quoteService.selectQuote(1).then(function(quote){
+						supplierOffers.quote = quote;
+						res.render('../client/offers/offers', supplierOffers);
+	    			logservice.recLog(req.user._id, 1);
+					});
 				}
 			});
 		}

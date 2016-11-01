@@ -98,14 +98,15 @@
 
 	function shareWithFriends(){
 		var subject = "{{userName}}'s Vorschläge für die Mittagspause";
-		var body = 'Hi, hier die heutigen Mittagsgerichte meiner Lieblingsrestaurants in ' + window.selectedCity + ':\r\n\r\n';
+		var body = '{{quote.quoteAuthor}}: "{{quote.quoteText}}" \r\n\r\n';
+		body += 'Hi, hier die heutigen Mittagsgerichte meiner Lieblingsrestaurants in ' + window.selectedCity + ':\r\n\r\n';
 		body += 'Visit us at https://mytiffin.de \r\n\r\n';
 		{{#suppliers}}
 			if (window.selectedCity === '{{supplierCity}}'){
 				body += '{{supplierName}}\r\n';
 				body +='{{supplierStart}} - {{supplierEnd}} derzeit {{#restaurantOpen supplierStart supplierEnd}}{{/restaurantOpen}}\r\n';
 				{{#each offers}}
-					body += '{{offerName}}\t\t{{offerPrice}}\r\n';
+					body += '{{offerName}}</td><td>{{offerPrice}}\r\n';
 				{{else}}
 					body += '{{supplierName}} hat heute noch kein Gericht erfasst\r\n';
 				{{/each}}
