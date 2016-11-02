@@ -177,7 +177,7 @@ function processSignUp(req, res) {
 							var bodytext = quote.quoteAuthor + ': "' + quote.quoteText + '"\n\n' + 
 							'Hallo ' + req.body.signupName + ',\n\n' +
 		          'Dein Konto kann jetzt aktiviert werden. Bitte verifiziere deine E-Mail-Adresse mit einem click auf diesen Link:\n\n' +
-		          'http://mytiffin.de/signup/verify/?token=' + newUser.authToken + '\n\n' + 
+		          'https://mytiffin.de/signup/verify/?token=' + newUser.authToken + '\n\n' + 
 		          'Wenn du kein mytiffin.de Konto erstellst hast lösch bitte diese E-mail.\n'
 							emailService.sendEmail(req.body.signupEmail, 'mytiffin Kontobestätigung', bodytext);
 							res.locals.flash = {

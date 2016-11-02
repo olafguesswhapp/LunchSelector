@@ -106,7 +106,7 @@
 				body += '{{supplierName}}\r\n';
 				body +='{{supplierStart}} - {{supplierEnd}} derzeit {{#restaurantOpen supplierStart supplierEnd}}{{/restaurantOpen}}\r\n';
 				{{#each offers}}
-					body += '{{offerName}}</td><td>{{offerPrice}}\r\n';
+					body += '{{offerName}}{{offerPrice}}\r\n';
 				{{else}}
 					body += '{{supplierName}} hat heute noch kein Gericht erfasst\r\n';
 				{{/each}}
