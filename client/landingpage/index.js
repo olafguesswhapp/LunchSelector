@@ -8,32 +8,18 @@ var Prospects = require('../../models/prospects');
 var quoteService = require('../../lib/quoteservice');
 var emailService = require('../../lib/emailservice');
 
+var Suppliers = require('../../models/suppliers');
+var Offers = require('../../models/offers');
+var quoteService = require('../../lib/quoteservice');
+var logservice = require('../../lib/logservice');
+
 router.get('/', renderLandingPage);
-router.get('/soon', renderPreLaunch);
 router.post('/login', processLogin);
 router.post('/prospect', registerProspect);
 router.get('/prospect/verify', verifyProspect);
 router.get('/toon', renderTest);
 
 module.exports = router;
-
-function renderPreLaunch(req, res) {
-  console.log('*** index.js route - / soon ');
-  res.render('../client/landingpage/landingpagePre', {layout: 'landingpagePre'});
-};
-
-function renderLandingPage(req, res) {
-  console.log('*** index.js route - / - ');
-  quoteService.selectQuote(1).then(function(quote){
-    if(!res.locals.flash){
-      res.locals.flash = {
-        intro: quote.quoteAuthor + ': ',
-        message: '"' + quote.quoteText + '"',
-      };
-    }
-    res.render('../client/landingpage/landingpage', {layout: 'landingpage'});
-  });
-};
 
 function processLogin(req, res) {
   console.log('*** index.js route - /login/ - ');
@@ -180,4 +166,92 @@ function verifyProspect(req, res) {
       });
     }
   });
+};
+
+function renderLandingPage(req, res) {
+  console.log('*** index.js route - / test ');
+  var date = new Date(new Date().setUTCHours(0,0,0,0));
+  var helpArray = [];
+  Offers.find({ offerCategory: 1 , offerDate: date})
+        .select('offerDate offerName offerPrice  offerSortIndex offerSupplier')
+        .exec(function(err, currentOffers){
+    if (err) {
+      console.log('Today there are not any offers');
+      req.session.flash = {
+        intro: 'Heute gibt es keine Mittagsangebote',
+        message: 'Bitte schau morgen wieder vorbei bzw. trage unten Dein Wunsch ein.',
+      };
+      res.redirect('/'); // No REDIRECT!!!
+    } else {
+      var returnedOffers = currentOffers.map(function(element){
+        return {
+          offerDate: element.offerDate,
+          offerName: element.offerName,
+          offerPrice: element.offerPrice.toFixed(2),
+          offerSortIndex: element.offerSortIndex,
+          offerSupplier: element.offerSupplier
+        };
+      }); // end var returnedOffers
+      Suppliers.find()
+               .exec(function(err, supplier){
+        if (err || supplier.length === 0) {
+          console.log('No Suppliers found');
+          res.redirect('/'); // No REDIRECT
+        } else {
+          var supplierOffers = {
+            selectedCity: 'Düsseldorf',
+            displayDate: date,
+            navOffers: true,
+            currentlyOnOffers: true,
+            suppliers: []
+          }; // end var supplierOffers
+          var helpSuppliers = supplier.filter(function(filterElement){
+            return filterElement.supplierWeekday[date.getDay()]
+          }).map(function(supplierElement){
+            helpArray.push(supplierElement.supplierCity);
+            return {
+              supplierId:           supplierElement._id,
+              supplierName:         supplierElement.supplierName,
+              supplierDescription:  supplierElement.supplierDescription,
+              supplierType:         supplierElement.supplierType,
+              supplierStart:        supplierElement.supplierStart,
+              supplierEnd:          supplierElement.supplierEnd,
+              supplierStreet:       supplierElement.supplierStreet,
+              supplierZipCode:      supplierElement.supplierZipCode,
+              supplierCity:         supplierElement.supplierCity,
+              supplierSite:         supplierElement.supplierSite,
+              supplierEmail:        supplierElement.supplierEmail,
+              supplierFB:           supplierElement.supplierFB,
+              supplierTw:           supplierElement.supplierTw,
+              supplierInst:         supplierElement.supplierInst,
+              supplierPhone:        supplierElement.supplierPhone ,
+              offers:               returnedOffers.filter(function(offerElement){
+                return (JSON.stringify(offerElement.offerSupplier) === JSON.stringify(supplierElement._id))
+              }).sort(sortBySortIndex)
+            }
+          }); // end supplierOffers.suppliers = supplier.filter
+          // Delete Suppliers without an offer and than
+          // Reduce number of offers on Landing Page to 3
+          supplierOffers.suppliers = helpSuppliers.filter(function(supplierElement){
+            return supplierElement.offers.length>0
+          }).filter(function(supplier2Element, index){
+            return index < 3;
+          });
+          quoteService.selectQuote(1).then(function(quote){
+            if(!res.locals.flash){
+              res.locals.flash = {
+                intro: quote.quoteAuthor + ': ',
+                message: '"' + quote.quoteText + '"',
+              };
+            }
+            res.render('../client/landingpage/landingpage', { data: supplierOffers, layout: 'landingpage'});
+          }); // end quoteService.selectQuote(1)
+        } // end else no err Suppliers.find
+      }); // end Suppliers.find
+    } // end else no err Offers.find
+  }); // end Offers.find
+}; // end renderNewLandingPage
+
+function sortBySortIndex (a, b){
+  return (a.offerSortIndex - b.offerSortIndex)
 };
